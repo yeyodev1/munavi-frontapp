@@ -66,7 +66,7 @@ watch(
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, rgba($surface, 0.95), rgba($surface, 0.35) 55%, transparent 72%);
+    background: radial-gradient(circle at 40% 35%, $surface 0%, rgba($sage, 0.55) 62%, rgba($sage, 0) 72%);
   }
 
   &__item {
@@ -111,7 +111,7 @@ watch(
 
     &--ghost {
       border-radius: $radius-md;
-      background: linear-gradient(90deg, rgba($surface, 0.5) 25%, rgba($surface, 0.85) 50%, rgba($surface, 0.5) 75%);
+      background: linear-gradient(90deg, rgba($sage, 0.35) 25%, rgba($surface, 0.85) 50%, rgba($sage, 0.35) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.6s linear infinite;
 

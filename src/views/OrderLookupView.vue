@@ -77,7 +77,7 @@ function submit() {
     height: 3.2rem;
     margin-bottom: 0.4rem;
     border-radius: 50%;
-    background: $blush;
+    background: $sage-soft;
     color: $accent;
     font-size: 1.2rem;
   }

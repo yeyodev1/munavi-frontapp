@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Prices } from '@/types'
-import { money, savingsPercent } from '@/utils/price'
+import { hasPrice, money, savingsPercent } from '@/utils/price'
 import { productCopy as copy } from '@/config/copy/product'
 
 const props = withDefaults(
@@ -13,11 +13,20 @@ const props = withDefaults(
   { compareAtPrice: null, size: 'sm' },
 )
 
+const priced = computed(() => hasPrice(props.prices))
 const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices.card))
 </script>
 
 <template>
-  <div class="price" :class="`price--${size}`">
+  <div v-if="!priced" class="price price--pending" :class="`price--${size}`">
+    <span class="price__tag">
+      <i class="fa-regular fa-clock" aria-hidden="true"></i>
+      {{ copy.noPrice }}
+    </span>
+    <p class="price__others">{{ copy.noPriceHint }}</p>
+  </div>
+
+  <div v-else class="price" :class="`price--${size}`">
     <span class="price__label">{{ copy.cardPrice }}</span>
     <div class="price__main">
       <strong class="price__card">{{ money(prices.card) }}</strong>
@@ -76,6 +85,29 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
     font-size: 0.72rem;
     color: $ink-muted;
     line-height: 1.4;
+  }
+
+  &__tag {
+    @include flex(row, center, flex-start, 0.45rem);
+    font-family: $font-display;
+    font-size: 0.92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    color: $accent-deep;
+    padding: 0.28rem 0.7rem;
+    border-radius: $radius-pill;
+    background: rgba($accent, 0.08);
+    border: 1px solid rgba($accent, 0.18);
+
+    i {
+      font-size: 0.8em;
+      color: $accent;
+    }
+  }
+
+  &--lg &__tag {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    padding: 0.45rem 1.1rem;
   }
 
   &--lg &__label {

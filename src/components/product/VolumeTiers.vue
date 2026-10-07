@@ -68,8 +68,8 @@ const first = computed(() => list.value[0])
     font-weight: 500;
     padding: 0.45rem 0.85rem;
     border-radius: $radius-pill;
-    background: #fbe3ef;
-    color: #8f2457;
+    background: $blush;
+    color: $rose-deep;
     @include transition;
 
     &--active {

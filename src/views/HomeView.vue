@@ -3,6 +3,7 @@ import HomeHero from '@/components/home/HomeHero.vue'
 import SomosBlock from '@/components/home/SomosBlock.vue'
 import HomeTrust from '@/components/home/HomeTrust.vue'
 import HomeCategories from '@/components/home/HomeCategories.vue'
+import HomeFamily from '@/components/home/HomeFamily.vue'
 import HomeProducts from '@/components/home/HomeProducts.vue'
 import HomePromos from '@/components/home/HomePromos.vue'
 import HomeFlavors from '@/components/home/HomeFlavors.vue'
@@ -26,6 +27,7 @@ const { featured, bestSellers } = homeCopy
       primary
     />
     <HomeCategories />
+    <HomeFamily />
     <HomePromos />
     <HomeProducts
       :eyebrow="bestSellers.eyebrow"

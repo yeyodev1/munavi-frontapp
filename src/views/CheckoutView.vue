@@ -194,7 +194,7 @@ const submitLabel = computed(() => {
     span {
       height: 1.1rem;
       border-radius: $radius-sm;
-      background: linear-gradient(90deg, #f3edf6 25%, #faf6fb 50%, #f3edf6 75%);
+      background: linear-gradient(90deg, $sand 25%, $sage-soft 50%, $sand 75%);
       background-size: 200% 100%;
       animation: shimmer 1.6s linear infinite;
 

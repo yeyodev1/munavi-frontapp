@@ -91,7 +91,7 @@ const contact: Array<{ key: Field; type: string; autocomplete: string; inputmode
 
   &__legend {
     @include flex(row, center, flex-start, 0.6rem);
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
     margin-bottom: 1rem;
 
     span {

@@ -37,14 +37,14 @@ withDefaults(
 
   // Columnas de ancho fijo para que la última fila no se estire.
   > .grid__cell {
-    flex: 0 1 calc(50% - 0.425rem);
+    flex: 0 1 calc(50% - 0.43rem);
 
     @include from('md') {
-      flex-basis: calc(33.333% - 0.834rem);
+      flex-basis: calc(33.333% - 0.85rem);
     }
 
     @include from('lg') {
-      flex-basis: calc(25% - 0.9375rem);
+      flex-basis: calc(25% - 0.95rem);
     }
   }
 

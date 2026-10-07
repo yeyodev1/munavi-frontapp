@@ -3,8 +3,15 @@
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string
   readonly VITE_META_PIXEL_ID: string
+  readonly VITE_GA_ID: string
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
+}
+
+// Cajita de Pagos de Payphone: llega por script del CDN, sin tipos propios.
+declare class PPaymentButtonBox {
+  constructor(config: Record<string, unknown>)
+  render(containerId: string): void
 }

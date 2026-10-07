@@ -72,7 +72,7 @@ const lineTotal = computed(() => {
     flex: 0 0 4.8rem;
     height: 4.8rem;
     border-radius: $radius-sm;
-    background: $blush;
+    background: $sage-soft;
     overflow: hidden;
     color: rgba($accent, 0.4);
 
@@ -159,7 +159,7 @@ const lineTotal = computed(() => {
   &__tier {
     font-size: 0.7rem;
     font-weight: 600;
-    color: $rose-deep;
+    color: $accent-deep;
   }
 }
 </style>

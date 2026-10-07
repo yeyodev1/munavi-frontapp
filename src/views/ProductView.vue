@@ -12,18 +12,21 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import { useProductDetail } from '@/composables/useProductDetail'
 import { useSettingsStore } from '@/stores/settings'
 import { whatsappLink } from '@/config/site'
-import { productDetailCopy as copy } from '@/config/copy/product'
+import { productCopy, productDetailCopy as copy } from '@/config/copy/product'
 
 const route = useRoute()
 const settings = useSettingsStore()
 const slug = computed(() => String(route.params.slug ?? ''))
 
 const {
-  product, loading, error, variants, variantSlug, hasFlavors, inStock, maxQty,
+  product, loading, error, variants, variant, variantSlug, hasFlavors, inStock, priced, maxQty,
   quantity, images, activeImage, categorySlug, categoryName, load, add, buyNow,
 } = useProductDetail(slug)
 
 const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name ?? ''), settings.whatsapp))
+const askPriceLink = computed(() =>
+  whatsappLink(productCopy.askPriceMessage(product.value?.name ?? '', variant.value?.name), settings.whatsapp),
+)
 </script>
 
 <template>
@@ -69,21 +72,27 @@ const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name 
           <p v-if="product.shortDescription" class="pdp__short">{{ product.shortDescription }}</p>
 
           <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" size="lg" />
-          <VolumeTiers :tiers="product.volumeDiscounts" :quantity="quantity" />
+          <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" :quantity="quantity" />
 
           <FlavorPicker v-if="hasFlavors" v-model="variantSlug" :variants="variants" />
 
-          <div class="pdp__buy">
-            <QuantityStepper v-model="quantity" :max="maxQty" class="pdp__qty" />
-            <button class="btn btn--primary pdp__add" :disabled="!inStock" @click="add">
-              <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
-              {{ inStock ? copy.addToCart : copy.unavailable }}
+          <a v-if="!priced" :href="askPriceLink" target="_blank" rel="noopener" class="btn btn--whatsapp pdp__now">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+            {{ productCopy.askPrice }}
+          </a>
+          <template v-else>
+            <div class="pdp__buy">
+              <QuantityStepper v-model="quantity" :max="maxQty" class="pdp__qty" />
+              <button class="btn btn--primary pdp__add" :disabled="!inStock" @click="add">
+                <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+                {{ inStock ? copy.addToCart : copy.unavailable }}
+              </button>
+            </div>
+            <button class="btn btn--dark pdp__now" :disabled="!inStock" @click="buyNow">
+              {{ copy.buyNow }}
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </button>
-          </div>
-          <button class="btn btn--dark pdp__now" :disabled="!inStock" @click="buyNow">
-            {{ copy.buyNow }}
-            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          </button>
+          </template>
 
           <ul class="pdp__perks">
             <li v-for="perk in copy.perks" :key="perk.text">
@@ -91,7 +100,7 @@ const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name 
               {{ perk.text }}
             </li>
           </ul>
-          <a :href="askLink" target="_blank" rel="noopener" class="pdp__ask">
+          <a v-if="priced" :href="askLink" target="_blank" rel="noopener" class="pdp__ask">
             <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
             {{ copy.ask }}
           </a>

@@ -3,20 +3,31 @@ import { computed } from 'vue'
 import type { ProductCard } from '@/types'
 import PriceBlock from './PriceBlock.vue'
 import VolumeTiers from './VolumeTiers.vue'
-import { savingsPercent } from '@/utils/price'
+import { hasPrice, savingsPercent } from '@/utils/price'
 import { useAddToCart } from '@/composables/useAddToCart'
+import { useSettingsStore } from '@/stores/settings'
+import { whatsappLink } from '@/config/site'
 import { productCopy as copy } from '@/config/copy/product'
 
 const props = defineProps<{ product: ProductCard }>()
 
 const { addToCart } = useAddToCart()
+const settings = useSettingsStore()
 
 const to = computed(() => ({ name: 'Product', params: { slug: props.product.slug } }))
 const activeVariants = computed(() => props.product.variants.filter((v) => v.isActive))
 const available = computed(() => activeVariants.value.filter((v) => v.inStock))
 const soldOut = computed(() => activeVariants.value.length > 0 && available.value.length === 0)
 const hasFlavors = computed(() => activeVariants.value.length > 1)
-const savings = computed(() => savingsPercent(props.product.compareAtPrice, props.product.prices.card))
+const priced = computed(() => hasPrice(props.product.prices))
+const savings = computed(() =>
+  priced.value ? savingsPercent(props.product.compareAtPrice, props.product.prices.card) : 0,
+)
+// Con varios sabores no sabemos cuál le interesa; el sabor solo va si es único.
+const askLink = computed(() => {
+  const flavor = activeVariants.value.length === 1 ? activeVariants.value[0]?.name : undefined
+  return whatsappLink(copy.askPriceMessage(props.product.name, flavor), settings.whatsapp)
+})
 const image = computed(() => props.product.image || available.value[0]?.image?.url || '')
 
 // Con un solo sabor se agrega directo; con varios, se elige en la ficha.
@@ -64,9 +75,13 @@ function quickAdd() {
       <p v-if="product.presentation" class="pcard__presentation">{{ product.presentation }}</p>
 
       <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" />
-      <VolumeTiers :tiers="product.volumeDiscounts" compact />
+      <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" compact />
 
-      <RouterLink v-if="hasFlavors" :to="to" class="btn btn--ghost pcard__cta">
+      <a v-if="!priced" :href="askLink" target="_blank" rel="noopener" class="btn btn--whatsapp pcard__cta">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        {{ copy.askPrice }}
+      </a>
+      <RouterLink v-else-if="hasFlavors" :to="to" class="btn btn--ghost pcard__cta">
         {{ copy.chooseFlavor }}
       </RouterLink>
       <button v-else class="btn btn--primary pcard__cta" :disabled="soldOut" @click="quickAdd">
@@ -102,7 +117,8 @@ function quickAdd() {
   &__img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 8%;
     transition: transform 0.6s $ease;
   }
 

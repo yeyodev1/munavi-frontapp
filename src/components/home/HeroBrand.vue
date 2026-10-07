@@ -144,8 +144,8 @@ const showcase = ref(true)
 
     &--c {
       width: clamp(90px, 12vw, 170px);
-      bottom: 40px;
-      left: -30px;
+      bottom: -10px;
+      left: -50px;
       transform: rotate(30deg);
       opacity: 0.35;
       display: none;

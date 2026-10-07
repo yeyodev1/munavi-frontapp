@@ -23,7 +23,6 @@ const settings = useSettingsStore()
 </template>
 
 <style scoped lang="scss">
-$wa: #25d366;
 
 .help {
   @include container;
@@ -50,7 +49,7 @@ $wa: #25d366;
     width: 3.4rem;
     height: 3.4rem;
     border-radius: 50%;
-    background: rgba($wa, 0.14);
+    background: rgba($whatsapp, 0.14);
     color: #128c4a;
     font-size: 1.6rem;
   }
@@ -70,7 +69,7 @@ $wa: #25d366;
   }
 
   &__btn {
-    background: $wa;
+    background: $whatsapp;
     color: #0b3d1f;
 
     &:hover {

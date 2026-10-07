@@ -77,9 +77,17 @@ function quickAdd() {
       <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" />
       <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" compact />
 
-      <a v-if="!priced" :href="askLink" target="_blank" rel="noopener" class="btn btn--whatsapp pcard__cta">
+      <a
+        v-if="!priced"
+        :href="askLink"
+        target="_blank"
+        rel="noopener"
+        class="btn btn--whatsapp pcard__cta"
+        :aria-label="copy.askPrice"
+      >
         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-        {{ copy.askPrice }}
+        <span class="pcard__cta-short">{{ copy.askPriceShort }}</span>
+        <span class="pcard__cta-long">{{ copy.askPrice }}</span>
       </a>
       <RouterLink v-else-if="hasFlavors" :to="to" class="btn btn--ghost pcard__cta">
         {{ copy.chooseFlavor }}
@@ -210,6 +218,21 @@ function quickAdd() {
     margin-top: auto;
     padding: 0.7rem 1rem;
     width: 100%;
+  }
+
+  // En la grilla de 2 columnas del móvil el texto largo partía el botón en 3 líneas.
+  &__cta-long {
+    display: none;
+  }
+
+  @include from('md') {
+    &__cta-short {
+      display: none;
+    }
+
+    &__cta-long {
+      display: inline;
+    }
   }
 
   &--soldout &__img {

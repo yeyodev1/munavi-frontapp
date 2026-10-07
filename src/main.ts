@@ -17,7 +17,7 @@ const userStore = useUserStore(pinia)
 window.addEventListener('auth:token-expired', () => {
   userStore.clear()
   if (router.currentRoute.value.meta.requiresAuth) {
-    router.replace({ name: 'Login', query: { next: router.currentRoute.value.fullPath } })
+    router.replace({ name: 'AdminLogin', query: { next: router.currentRoute.value.fullPath } })
   }
 })
 

@@ -7,7 +7,7 @@ const copy = homeCopy.categories
 const { categories, loading } = useCategories()
 
 // Sin foto, cada categoría toma un tono de la paleta para no verse vacía.
-const tones = ['#efe4f5', '$blush', '#f1ece6', '#e9e1f7', '#fde9df']
+const tones = ['#efe4f5', '#fbe3ef', '#f1ece6', '#e9e1f7', '#fde9df']
 const icons: Record<string, string> = {
   colagenos: 'fa-solid fa-spa',
   vitaminas: 'fa-solid fa-capsules',
@@ -89,12 +89,20 @@ const icons: Record<string, string> = {
     }
   }
 
+  // Las fotos son envases sin fondo: se contienen sobre el tono para no recortarlos.
   &__img {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    top: 0.9rem;
+    left: 0.9rem;
+    width: calc(100% - 1.8rem);
+    height: calc(100% - 4.4rem);
+    object-fit: contain;
+    filter: drop-shadow(0 10px 14px rgba($ink, 0.14));
+    transition: transform 0.5s $ease;
+  }
+
+  &__item:hover &__img {
+    transform: scale(1.05) translateY(-2px);
   }
 
   &__img + &__name {

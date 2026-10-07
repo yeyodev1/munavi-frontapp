@@ -12,15 +12,6 @@
 </template>
 
 <style scoped lang="scss">
-@keyframes shimmer {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
-}
-
 %shine {
   background: linear-gradient(90deg, #f3edf6 25%, #faf6fb 50%, #f3edf6 75%);
   background-size: 200% 100%;

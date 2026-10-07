@@ -59,7 +59,7 @@ const settings = useSettingsStore()
   }
 
   &__title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
     margin-bottom: 0.3rem;
   }
 

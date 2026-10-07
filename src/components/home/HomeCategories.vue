@@ -67,9 +67,14 @@ const icons: Record<string, string> = {
     flex: 0 0 42%;
     aspect-ratio: 4 / 5;
 
+    // Cuatro por fila con ancho fijo: así la última fila no se estira a lo ancho.
     @include from('md') {
-      flex: 1 1 150px;
+      flex: 0 0 calc(25% - 0.75rem);
       aspect-ratio: 1;
+    }
+
+    @include from('lg') {
+      aspect-ratio: 5 / 4;
     }
     border-radius: $radius-md;
     overflow: hidden;

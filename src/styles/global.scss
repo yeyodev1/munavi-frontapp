@@ -220,3 +220,14 @@ label {
     transition-duration: 0.01ms !important;
   }
 }
+
+// Brillo de los skeletons de carga. Uno solo y global: los componentes lo
+// usan con `animation: shimmer …` sin declarar su propio keyframe.
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}

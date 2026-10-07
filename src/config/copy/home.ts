@@ -1,20 +1,22 @@
 // Textos del home. Lo que Nathalie edita (banners, anuncio) llega por settings.
 export const homeCopy = {
   hero: {
-    eyebrow: '7 años cuidándote',
+    // Firma de marca en script de pincel, como en la web anterior.
     title: 'Te quiero vida',
-    text: 'Suplementos hechos en Ecuador con materias primas importadas, en sabores que da gusto tomar todos los días.',
-    primary: 'Ver la tienda',
+    text: 'Somos especializados en desarrollo y producción de suplementos alimenticios enfocados en la línea de belleza, nutrición y salud.',
+    primary: 'Compra ahora',
     secondary: 'Asesoría por WhatsApp',
-    chips: [
-      { icon: 'fa-solid fa-location-dot', label: 'Hecho en Ecuador' },
-      { icon: 'fa-solid fa-earth-americas', label: 'Materia prima importada' },
-      { icon: 'fa-solid fa-ice-cream', label: 'Muchos sabores' },
-    ],
     prev: 'Banner anterior',
     next: 'Banner siguiente',
     goTo: 'Ir al banner',
     showcaseLabel: 'Productos destacados',
+  },
+  somos: {
+    script: 'Somos',
+    name: 'Munavi',
+    text: 'En Munavi desarrollamos y producimos suplementos alimenticios en Ecuador, con materias primas importadas y sabores que da gusto tomar todos los días. Buscamos lo que exactamente necesitas para cuidarte y disfrutar la vida.',
+    cta: 'Conócenos más',
+    to: '/nosotros',
   },
   categories: {
     eyebrow: 'Categorías',

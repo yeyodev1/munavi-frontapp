@@ -85,7 +85,7 @@ const payments = Object.values(site.paymentMethods)
 
 <style scoped lang="scss">
 .footer {
-  background: #1d1226;
+  background: $ink-brand;
   color: rgba($paper, 0.8);
   margin-top: auto;
 
@@ -140,7 +140,7 @@ const payments = Object.values(site.paymentMethods)
     line-height: 1;
 
     span {
-      color: #e2589b;
+      color: $rose;
     }
   }
 

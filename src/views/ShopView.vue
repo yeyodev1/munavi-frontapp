@@ -75,7 +75,7 @@ const emptyText = computed(() => (category.value && !q.value ? copy.emptyCategor
     padding: $space-lg $space-md;
     border-radius: $radius-lg;
     background:
-      radial-gradient(circle at 90% 10%, rgba(#e2589b, 0.16), transparent 45%),
+      radial-gradient(circle at 90% 10%, rgba($rose, 0.16), transparent 45%),
       linear-gradient(135deg, rgba($accent, 0.1), rgba($accent, 0.03));
 
     @include from('md') {

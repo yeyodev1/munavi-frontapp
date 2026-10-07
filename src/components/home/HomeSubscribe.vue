@@ -33,7 +33,7 @@ const copy = homeCopy.subscribe
     border-radius: $radius-lg;
     color: $surface;
     background:
-      radial-gradient(circle at 100% 0%, rgba(#e2589b, 0.55), transparent 50%),
+      radial-gradient(circle at 100% 0%, rgba($rose, 0.55), transparent 50%),
       linear-gradient(135deg, $accent-deep, $accent);
 
     @include from('md') {

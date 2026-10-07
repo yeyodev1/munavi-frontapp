@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useBodyScroll } from '@/composables/useBodyScroll'
+import MunaviLogo from '@/components/brand/MunaviLogo.vue'
 
 const links = [
   { to: '/admin', label: 'Panel', icon: 'fa-solid fa-house', exact: true },
@@ -38,7 +39,7 @@ function logout() {
 <template>
   <div class="admin">
     <header class="admin__top">
-      <RouterLink to="/admin" class="admin__brand">Munavi <span>Panel</span></RouterLink>
+      <RouterLink to="/admin" class="admin__brand"><MunaviLogo /> <span>Panel</span></RouterLink>
       <button
         class="admin__burger"
         type="button"
@@ -53,7 +54,7 @@ function logout() {
 
     <aside id="admin-nav" class="admin__side" :class="{ 'admin__side--open': menuOpen }">
       <RouterLink to="/admin" class="admin__brand admin__brand--side"
-        >Munavi <span>Panel</span></RouterLink
+        ><MunaviLogo /> <span>Panel</span></RouterLink
       >
 
       <nav class="admin__nav" aria-label="Panel de administración">
@@ -103,7 +104,7 @@ $side-width: 250px;
     @include flex(row, center, space-between);
     height: 3.6rem;
     padding-inline: 1rem;
-    background: $ink;
+    background: $ink-brand;
     color: $surface;
 
     @include from('lg') {
@@ -112,9 +113,9 @@ $side-width: 250px;
   }
 
   &__brand {
-    font-family: $font-display;
-    font-size: 1.35rem;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.3rem;
     color: $surface;
 
     span {
@@ -132,7 +133,7 @@ $side-width: 250px;
       padding: 0.4rem 0.8rem 1.4rem;
 
       @include from('lg') {
-        display: block;
+        display: inline-flex;
       }
     }
   }
@@ -154,7 +155,7 @@ $side-width: 250px;
     width: min(82vw, 300px);
     @include flex(column, stretch, flex-start, 1rem);
     padding: 1.2rem 0.8rem;
-    background: $ink;
+    background: $ink-brand;
     overflow-y: auto;
     transform: translateX(-100%);
     transition: transform 0.3s $ease;

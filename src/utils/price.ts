@@ -21,3 +21,8 @@ export function sortedTiers(tiers: VolumeDiscount[] = []): VolumeDiscount[] {
 export function tierFor(tiers: VolumeDiscount[] = [], quantity: number): VolumeDiscount | null {
   return sortedTiers(tiers).filter((t) => t.minQty <= quantity).pop() ?? null
 }
+
+/** Hay productos publicados antes de tener precio: se muestran pero no se venden. */
+export function hasPrice(prices?: { card: number } | null): boolean {
+  return !!prices && prices.card > 0
+}

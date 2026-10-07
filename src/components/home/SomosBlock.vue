@@ -59,7 +59,7 @@ const copy = homeCopy.somos
   }
 
   &__script {
-    @include script(clamp(4rem, 2.4rem + 6vw, 7rem), $accent-deep);
+    @include script(clamp(5rem, 3rem + 6vw, 8rem), $accent-deep);
     margin-left: -0.08em;
   }
 

@@ -1,7 +1,12 @@
 // Solo variables. Las fuentes se cargan con <link> en index.html: este archivo
 // se inyecta en cada SFC vía vite.config.ts, así que no debe emitir CSS.
 
-$font-display: 'Fraunces', Georgia, serif;
-$font-principal: 'Montserrat', system-ui, sans-serif;
+// Títulos: el manual pide Aquamax Pro DemiBold, que no está en Google Fonts.
+// Quicksand es la sans geométrica redondeada más parecida al "Munavi" del logo.
+$font-display: 'Quicksand', 'Raleway', system-ui, sans-serif;
+// Subtítulos, textos y UI: Raleway, tipografía principal del manual.
+$font-principal: 'Raleway', system-ui, sans-serif;
+// Firma de pincel: solo para "Te quiero vida" y el "Somos" de Somos Munavi.
+$font-script: 'Water Brush', cursive;
 $font-secondary: $font-principal;
 $font-body: $font-principal;

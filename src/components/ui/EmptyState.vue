@@ -27,7 +27,7 @@ withDefaults(
   text-align: center;
   padding: $space-lg $space-md;
   border-radius: $radius-lg;
-  background: linear-gradient(160deg, rgba($accent, 0.06), rgba(#e2589b, 0.06));
+  background: linear-gradient(160deg, rgba($accent, 0.06), rgba($rose, 0.06));
   border: 1px dashed rgba($accent, 0.25);
 
   &__icon {

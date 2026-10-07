@@ -2,6 +2,7 @@ import { computed, ref, shallowRef, watch, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ApiError, Product } from '@/types'
 import { site } from '@/config/site'
+import { hasPrice } from '@/utils/price'
 import { catalogService } from '@/services/catalog.service'
 import { useAddToCart } from '@/composables/useAddToCart'
 import { trackViewContent } from '@/composables/useTracking'
@@ -25,6 +26,7 @@ export function useProductDetail(slug: Ref<string>) {
     const v = variant.value
     return !!v && v.inStock !== false && (v.stock == null || v.stock > 0)
   })
+  const priced = computed(() => hasPrice(product.value?.prices))
   const maxQty = computed(() => Math.min(50, variant.value?.stock ?? 50))
   const categorySlug = computed(() => {
     const c = product.value?.category
@@ -73,7 +75,7 @@ export function useProductDetail(slug: Ref<string>) {
   function add(openDrawer = true) {
     const p = product.value
     const v = variant.value
-    if (!p || !v || !inStock.value) return
+    if (!p || !v || !inStock.value || !priced.value) return
     addToCart(
       {
         productId: p._id,
@@ -93,7 +95,7 @@ export function useProductDetail(slug: Ref<string>) {
   }
 
   function buyNow() {
-    if (!inStock.value) return
+    if (!inStock.value || !priced.value) return
     add(false)
     router.push({ name: 'Checkout' })
   }
@@ -107,6 +109,7 @@ export function useProductDetail(slug: Ref<string>) {
     variantSlug,
     hasFlavors,
     inStock,
+    priced,
     maxQty,
     quantity,
     images,

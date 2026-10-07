@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import HeaderSearch from '@/components/layout/HeaderSearch.vue'
+import MunaviLogo from '@/components/brand/MunaviLogo.vue'
 import { site, whatsappLink } from '@/config/site'
 import { layoutCopy } from '@/config/copy/layout'
 import { useCartStore } from '@/stores/cart'
@@ -54,7 +55,7 @@ function toggleSearch() {
         </button>
 
         <RouterLink to="/" class="header__logo" :aria-label="site.name">
-          {{ site.name.toLowerCase() }}<span class="header__dot" aria-hidden="true">.</span>
+          <MunaviLogo />
         </RouterLink>
 
         <nav class="header__nav" aria-label="Principal">
@@ -102,8 +103,16 @@ function toggleSearch() {
   top: 0;
   z-index: 100;
 
+  // Franja de los secundarios del manual de marca.
+  &::before {
+    content: '';
+    display: block;
+    height: 4px;
+    @include brand-stripe;
+  }
+
   &__announce {
-    background: $accent;
+    background: $accent-deep;
     color: $surface;
     text-align: center;
     font-size: $text-xs;
@@ -126,11 +135,7 @@ function toggleSearch() {
   }
 
   &__logo {
-    font-family: $font-display;
-    font-size: 1.75rem;
-    font-weight: 600;
-    font-style: italic;
-    letter-spacing: -0.03em;
+    font-size: 1.55rem;
     color: $accent;
     line-height: 1;
 
@@ -139,10 +144,6 @@ function toggleSearch() {
       left: 50%;
       transform: translateX(-50%);
     }
-  }
-
-  &__dot {
-    color: $rose;
   }
 
   &__nav {
@@ -202,8 +203,8 @@ function toggleSearch() {
     height: 1.2rem;
     padding-inline: 0.3rem;
     border-radius: $radius-pill;
-    background: $rose;
-    color: $surface;
+    background: $sun;
+    color: $ink-brand;
     font-size: 0.66rem;
     font-weight: 700;
     line-height: 1.2rem;

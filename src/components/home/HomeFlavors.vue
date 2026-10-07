@@ -33,7 +33,7 @@ const copy = homeCopy.flavors
 .flavors {
   margin-top: $space-section;
   background:
-    radial-gradient(circle at 0% 0%, rgba(#e2589b, 0.14), transparent 40%),
+    radial-gradient(circle at 0% 0%, rgba($rose, 0.14), transparent 40%),
     linear-gradient(180deg, #f6eefa, #fdf7fa);
   padding-block: $space-xl;
 
@@ -79,8 +79,8 @@ const copy = homeCopy.flavors
       font-weight: 600;
       padding: 0.35rem 0.75rem;
       border-radius: $radius-pill;
-      background: #fbe3ef;
-      color: #8f2457;
+      background: $blush;
+      color: $rose-deep;
     }
   }
 

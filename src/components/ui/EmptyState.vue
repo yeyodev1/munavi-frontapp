@@ -27,7 +27,7 @@ withDefaults(
   text-align: center;
   padding: $space-lg $space-md;
   border-radius: $radius-lg;
-  background: linear-gradient(160deg, rgba($accent, 0.06), rgba($rose, 0.06));
+  background: linear-gradient(160deg, rgba($accent, 0.06), rgba($sage, 0.18));
   border: 1px dashed rgba($accent, 0.25);
 
   &__icon {
@@ -46,7 +46,7 @@ withDefaults(
   }
 
   &__title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
   }
 
   &__text {

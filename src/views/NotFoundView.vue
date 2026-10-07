@@ -25,7 +25,7 @@ import { notFoundCopy as copy } from '@/config/copy/about'
   &__code {
     @include display(clamp(5rem, 3rem + 10vw, 9rem), 500);
     font-style: italic;
-    background: linear-gradient(135deg, $accent, #e2589b);
+    background: linear-gradient(135deg, $accent, $rose);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

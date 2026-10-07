@@ -16,7 +16,7 @@ const showcase = ref(true)
 <template>
   <section class="brand" :class="{ 'brand--split': showcase }">
     <LeafDecor variant="monstera" class="brand__leaf brand__leaf--a" />
-    <LeafDecor variant="frond" tone="fresh" class="brand__leaf brand__leaf--b" />
+    <LeafDecor variant="palm" class="brand__leaf brand__leaf--b" />
     <LeafDecor variant="monstera" tone="fresh" class="brand__leaf brand__leaf--c" />
 
     <div class="brand__inner">
@@ -134,12 +134,13 @@ const showcase = ref(true)
       opacity: 0.95;
     }
 
+    // La palma original nace en su borde derecho: espejada, abre hacia adentro.
     &--b {
-      width: clamp(110px, 16vw, 220px);
-      top: -30px;
-      left: -40px;
-      transform: rotate(150deg);
-      opacity: 0.5;
+      width: clamp(90px, 14vw, 200px);
+      top: -40px;
+      left: -30px;
+      transform: scaleX(-1) rotate(-25deg);
+      opacity: 0.85;
     }
 
     &--c {

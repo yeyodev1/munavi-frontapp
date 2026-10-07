@@ -141,7 +141,8 @@ const payments = Object.values(site.paymentMethods)
   }
 
   &__logo {
-    font-size: 1.9rem;
+    display: inline-flex;
+    font-size: 2.3rem;
     color: $surface;
     line-height: 1;
   }

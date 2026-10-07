@@ -1,63 +1,147 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import SubscribeForm from '@/components/SubscribeForm.vue'
 import { site, whatsappLink } from '@/config/site'
+import { layoutCopy } from '@/config/copy/layout'
+import { useCategories } from '@/composables/useCatalog'
+import { useSettingsStore } from '@/stores/settings'
 
+const copy = layoutCopy.footer
+const route = useRoute()
+const settings = useSettingsStore()
+const { categories } = useCategories()
 const year = new Date().getFullYear()
+
+// El home ya tiene su propio bloque de suscripción.
+const showSubscribe = computed(() => route.name !== 'Home')
+
+const socials = computed(() =>
+  [
+    { key: 'instagram', icon: 'fa-brands fa-instagram', url: settings.social.instagram },
+    { key: 'facebook', icon: 'fa-brands fa-facebook-f', url: settings.social.facebook },
+    { key: 'tiktok', icon: 'fa-brands fa-tiktok', url: settings.social.tiktok },
+  ].filter((s) => s.url),
+)
+const payments = Object.values(site.paymentMethods)
 </script>
 
 <template>
   <footer class="footer">
+    <div v-if="showSubscribe" class="footer__sub">
+      <div class="footer__sub-copy">
+        <h2 class="footer__sub-title">{{ copy.subscribeTitle }}</h2>
+        <p>{{ copy.subscribeText }}</p>
+      </div>
+      <SubscribeForm source="footer" tone="dark" class="footer__sub-form" />
+    </div>
+
     <div class="footer__inner">
       <div class="footer__brand">
-        <span class="footer__name">{{ site.name }}</span>
-        <p class="footer__tagline">{{ site.tagline }}</p>
+        <RouterLink to="/" class="footer__logo">{{ site.name.toLowerCase() }}<span>.</span></RouterLink>
+        <p class="footer__tagline">{{ site.brand.promise }}</p>
+        <p class="footer__origin"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ site.brand.origin }}</p>
+        <div v-if="socials.length" class="footer__socials" :aria-label="copy.follow">
+          <a v-for="s in socials" :key="s.key" :href="s.url" target="_blank" rel="noopener" :aria-label="s.key">
+            <i :class="s.icon" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <div v-if="categories.length" class="footer__col">
+        <h3 class="footer__heading">{{ copy.categories }}</h3>
+        <RouterLink v-for="cat in categories" :key="cat._id" :to="`/tienda/${cat.slug}`">{{ cat.name }}</RouterLink>
       </div>
 
       <div class="footer__col">
-        <h4 class="footer__heading">Navegación</h4>
-        <RouterLink v-for="link in site.nav" :key="link.to" :to="link.to">
-          {{ link.label }}
+        <h3 class="footer__heading">{{ copy.help }}</h3>
+        <RouterLink v-for="link in copy.links" :key="link.to" :to="link.to">
+          <i :class="link.icon" aria-hidden="true"></i> {{ link.label }}
         </RouterLink>
+        <a :href="whatsappLink(undefined, settings.whatsapp)" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> {{ copy.whatsapp }}
+        </a>
+        <a :href="`mailto:${site.email}`"><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ site.email }}</a>
       </div>
 
       <div class="footer__col">
-        <h4 class="footer__heading">Contacto</h4>
-        <a :href="`mailto:${site.email}`">
-          <i class="fa-solid fa-envelope"></i> {{ site.email }}
-        </a>
-        <a v-if="site.whatsapp" :href="whatsappLink()" target="_blank" rel="noopener">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp
-        </a>
+        <h3 class="footer__heading">{{ copy.payments }}</h3>
+        <p v-for="method in payments" :key="method.label" class="footer__pay">
+          <i :class="method.icon" aria-hidden="true"></i> {{ method.label }}
+        </p>
+        <p class="footer__note"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.paymentsNote }}</p>
       </div>
     </div>
 
     <div class="footer__bar">
-      <span>© {{ year }} {{ site.name }}</span>
-      <span class="footer__credit">Hecho por <a href="https://bakano.ec" target="_blank" rel="noopener">Bakano</a></span>
+      <span>© {{ year }} {{ site.name }} · {{ site.tagline }}</span>
+      <span class="footer__bar-links">
+        <RouterLink to="/admin/login" class="footer__admin">{{ copy.admin }}</RouterLink>
+        <span>{{ copy.credit }} <a href="https://bakano.ec" target="_blank" rel="noopener">Bakano</a></span>
+      </span>
     </div>
   </footer>
 </template>
 
 <style scoped lang="scss">
 .footer {
-  background: $ink;
-  color: rgba($paper, 0.85);
+  background: #1d1226;
+  color: rgba($paper, 0.8);
   margin-top: auto;
+
+  &__sub {
+    @include container;
+    @include flex(column, flex-start, flex-start, 1.2rem);
+    padding-block: $space-lg;
+    border-bottom: 1px solid rgba($paper, 0.1);
+
+    @include from('md') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-lg;
+    }
+
+    p {
+      font-size: $text-sm;
+      color: rgba($paper, 0.65);
+    }
+  }
+
+  &__sub-title {
+    @include display($text-xl, 500);
+    color: $paper;
+    margin-bottom: 0.35rem;
+  }
+
+  &__sub-form {
+    @include from('md') {
+      flex: 0 1 460px;
+    }
+  }
 
   &__inner {
     @include container;
-    @include flex-cards(220px, 2.5rem);
-    padding-block: $space-xl 2rem;
+    @include flex-cards(200px, 2.5rem);
+    padding-block: $space-xl 2.5rem;
   }
 
   &__brand {
     flex: 2 1 260px;
+    @include flex(column, flex-start, flex-start, 0.7rem);
   }
 
-  &__name {
-    @include display($text-xl, 600);
+  &__logo {
+    font-family: $font-display;
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: 600;
     color: $paper;
-    display: block;
-    margin-bottom: 0.6rem;
+    line-height: 1;
+
+    span {
+      color: #e2589b;
+    }
   }
 
   &__tagline {
@@ -66,8 +150,31 @@ const year = new Date().getFullYear()
     max-width: 34ch;
   }
 
+  &__origin {
+    font-size: $text-xs;
+    color: #f4b8d4;
+  }
+
+  &__socials {
+    @include flex(row, center, flex-start, 0.5rem);
+
+    a {
+      @include flex(row, center, center);
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1px solid rgba($paper, 0.2);
+      @include transition;
+
+      &:hover {
+        background: $accent;
+        border-color: $accent;
+      }
+    }
+  }
+
   &__col {
-    @include flex(column, flex-start, flex-start, 0.55rem);
+    @include flex(column, flex-start, flex-start, 0.6rem);
     font-size: $text-sm;
 
     a {
@@ -75,29 +182,59 @@ const year = new Date().getFullYear()
       @include transition(color);
 
       &:hover {
-        color: $accent-soft;
+        color: #f4b8d4;
       }
+    }
+
+    i {
+      width: 1.1rem;
+      opacity: 0.7;
     }
   }
 
   &__heading {
     @include eyebrow;
-    color: $accent-soft;
-    margin-bottom: 0.4rem;
+    color: #f4b8d4;
+    margin-bottom: 0.3rem;
+  }
+
+  &__pay {
+    color: rgba($paper, 0.75);
+  }
+
+  &__note {
+    font-size: $text-xs;
+    color: rgba($paper, 0.5);
   }
 
   &__bar {
     @include container;
-    @include flex(row, center, space-between, 1rem);
+    @include flex(row, center, space-between, 0.8rem);
     flex-wrap: wrap;
-    padding-block: 1.2rem;
+    padding-block: 1.2rem 5.5rem;
     border-top: 1px solid rgba($paper, 0.1);
     font-size: $text-xs;
-    color: rgba($paper, 0.55);
+    color: rgba($paper, 0.5);
+
+    @include from('md') {
+      padding-bottom: 1.2rem;
+    }
+
+    a {
+      color: rgba($paper, 0.75);
+    }
   }
 
-  &__credit a {
-    color: rgba($paper, 0.8);
+  &__bar-links {
+    @include flex(row, center, flex-end, 1.2rem);
+  }
+
+  &__admin {
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 </style>

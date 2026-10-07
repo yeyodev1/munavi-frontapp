@@ -37,6 +37,22 @@ import { site } from '@/config/site'
     color: $accent;
   }
 
+  // Cada pilar toma un secundario del manual, siempre en tinte suave.
+  &__item:nth-child(2) &__icon {
+    background: rgba($olive, 0.16);
+    color: darken($olive, 14%);
+  }
+
+  &__item:nth-child(3) &__icon {
+    background: rgba($orange, 0.14);
+    color: darken($orange, 14%);
+  }
+
+  &__item:nth-child(4) &__icon {
+    background: rgba($red, 0.12);
+    color: $sale;
+  }
+
   &__title {
     font-family: $font-principal;
     font-size: $text-sm;

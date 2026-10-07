@@ -80,7 +80,7 @@ const freeShipping = computed(() => {
   }
 
   &--1 {
-    background: #fbe3ef;
+    background: $blush;
   }
 
   &--2 {

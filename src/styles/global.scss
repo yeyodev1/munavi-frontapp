@@ -163,6 +163,17 @@ label {
     color: $surface;
   }
 
+  // Para productos sin precio: la compra se resuelve por chat.
+  &--whatsapp {
+    background: #1f9d55;
+    color: $surface;
+
+    &:hover {
+      background: #17804a;
+      transform: translateY(-1px);
+    }
+  }
+
   &:disabled {
     opacity: 0.45;
     pointer-events: none;

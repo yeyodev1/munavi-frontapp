@@ -94,7 +94,7 @@ async function submit() {
 
   &__brand {
     align-self: flex-start;
-    font-size: 1.6rem;
+    font-size: 2rem;
     color: $accent;
   }
 

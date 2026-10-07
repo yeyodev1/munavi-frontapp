@@ -16,7 +16,7 @@ withDefaults(
   <span
     class="logo"
     :class="{ 'logo--stacked': stacked, 'logo--mark': variant === 'mark' }"
-    :style="{ color }"
+    :style="color === 'currentColor' ? undefined : { color }"
     role="img"
     aria-label="Munavi"
   >

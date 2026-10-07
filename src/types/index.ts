@@ -166,7 +166,7 @@ export interface Quote {
   shipping: number
   total: number
   freeShippingThreshold: number | null
-  amountToFreeShipping: number
+  amountToFreeShipping: number | null
 }
 
 export interface Customer {

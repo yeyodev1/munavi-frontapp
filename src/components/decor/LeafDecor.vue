@@ -1,11 +1,13 @@
 <script setup lang="ts">
-// Hojas tropicales dibujadas a mano en SVG (sin imágenes remotas). Decorativas:
-// el tamaño y la posición los decide quien las usa, con CSS sobre la raíz.
+// Hojas tropicales decorativas. Único lugar donde viven las hojas de la web:
+// para cambiarlas por los archivos de la marca, se reemplaza este componente.
+// "palm" es la acuarela original de la web anterior; "monstera" y "frond" son
+// SVG propios. El tamaño y la posición los decide quien las usa.
 import { computed, useId } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    variant?: 'monstera' | 'frond'
+    variant?: 'monstera' | 'frond' | 'palm'
     tone?: 'deep' | 'fresh'
   }>(),
   { variant: 'monstera', tone: 'deep' },
@@ -53,7 +55,19 @@ const frond = computed(() => {
 </script>
 
 <template>
+  <img
+    v-if="variant === 'palm'"
+    src="/brand/hoja-palma.webp"
+    alt=""
+    class="leaf leaf--img"
+    width="449"
+    height="687"
+    loading="lazy"
+    decoding="async"
+    aria-hidden="true"
+  />
   <svg
+    v-else
     class="leaf"
     :class="`leaf--${tone}`"
     viewBox="0 0 200 220"
@@ -103,6 +117,11 @@ const frond = computed(() => {
   display: block;
   overflow: visible;
   pointer-events: none;
+
+  &--img {
+    height: auto;
+    user-select: none;
+  }
 
   &--deep {
     .leaf__stop-a {

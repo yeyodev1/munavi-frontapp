@@ -230,7 +230,7 @@ const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name 
     border-radius: $radius-md;
     background: linear-gradient(90deg, #f3edf6 25%, #faf6fb 50%, #f3edf6 75%);
     background-size: 200% 100%;
-    animation: pdp-shimmer 1.6s linear infinite;
+    animation: shimmer 1.6s linear infinite;
     height: 1.2rem;
 
     &--media {
@@ -259,12 +259,4 @@ const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name 
   }
 }
 
-@keyframes pdp-shimmer {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
-}
 </style>

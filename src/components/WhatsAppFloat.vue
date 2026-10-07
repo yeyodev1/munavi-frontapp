@@ -22,7 +22,6 @@ const href = computed(() => whatsappLink(copy.message, settings.whatsapp))
 </template>
 
 <style scoped lang="scss">
-$wa: #25d366;
 
 .wa {
   position: fixed;
@@ -34,7 +33,7 @@ $wa: #25d366;
   min-width: 3.4rem;
   padding-inline: 0;
   border-radius: $radius-pill;
-  background: $wa;
+  background: $whatsapp;
   color: $surface;
   box-shadow: 0 10px 30px rgba(#128c4a, 0.35);
   @include transition;

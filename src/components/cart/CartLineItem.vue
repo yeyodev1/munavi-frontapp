@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import { MAX_QTY, useCartStore, type CartItem } from '@/stores/cart'
-import { money, tierFor } from '@/utils/price'
+import { hasPrice, money, tierFor } from '@/utils/price'
 import { cartCopy as copy } from '@/config/copy/checkout'
 import { productCopy } from '@/config/copy/product'
 
@@ -53,7 +53,7 @@ const lineTotal = computed(() => {
       <div class="line__foot">
         <QuantityStepper v-model="qty" :max="MAX_QTY" class="line__qty" />
         <div class="line__price">
-          <strong>{{ money(lineTotal) }}</strong>
+          <strong>{{ hasPrice(item.snapshot.prices) ? money(lineTotal) : productCopy.noPrice }}</strong>
           <span v-if="tier" class="line__tier">{{ productCopy.tier(tier.minQty, tier.percent) }}</span>
         </div>
       </div>
@@ -79,7 +79,8 @@ const lineTotal = computed(() => {
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      padding: 0.2rem;
     }
 
     @include from('md') {

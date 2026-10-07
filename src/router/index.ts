@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'Finalizar compra' },
   },
   {
-    path: '/pago/respuesta',
+    path: '/pay-response',
     name: 'PaymentResponse',
     component: () => import('@/views/PaymentResponseView.vue'),
     meta: { title: 'Confirmando tu pago' },

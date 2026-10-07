@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import HeroShowcase from './HeroShowcase.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { useCarousel } from '@/composables/useCarousel'
 import { whatsappLink } from '@/config/site'
@@ -9,6 +10,8 @@ const copy = homeCopy.hero
 const settings = useSettingsStore()
 const slides = computed(() => settings.heroSlides.filter((s) => s.image?.url))
 const { index, go, next, prev, start, stop } = useCarousel(computed(() => slides.value.length))
+
+const showcase = ref(true)
 
 const isExternal = (to: string) => /^https?:\/\//.test(to)
 </script>
@@ -54,7 +57,7 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     </div>
   </section>
 
-  <section v-else class="hero hero--brand">
+  <section v-else class="hero hero--brand" :class="{ 'hero--split': showcase }">
     <span class="hero__blob hero__blob--a" aria-hidden="true"></span>
     <span class="hero__blob hero__blob--b" aria-hidden="true"></span>
     <div class="hero__content hero__content--brand">
@@ -75,11 +78,11 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
         </li>
       </ul>
     </div>
+    <HeroShowcase v-if="showcase" @empty="showcase = false" />
   </section>
 </template>
 
 <style scoped lang="scss">
-
 .hero {
   position: relative;
   overflow: hidden;
@@ -97,6 +100,31 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
       linear-gradient(140deg, #f4ecf8 0%, #fdf2f7 60%, #fff 100%);
     min-height: min(78vh, 640px);
     @include flex(row, center, center);
+  }
+
+  // Con destacados: texto arriba y envases abajo; en desktop, lado a lado.
+  &--split {
+    flex-direction: column;
+    padding-bottom: $space-lg;
+
+    @include from('md') {
+      flex-direction: row;
+      padding: 0 $space-lg 0 0;
+    }
+  }
+
+  &--split &__content--brand {
+    @include from('md') {
+      flex: 1 1 54%;
+      align-items: flex-start;
+      text-align: left;
+      padding-left: $space-xl;
+
+      .hero__actions,
+      .hero__chips {
+        justify-content: flex-start;
+      }
+    }
   }
 
   &__blob {

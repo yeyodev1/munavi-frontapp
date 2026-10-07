@@ -63,7 +63,7 @@ const settings = useSettingsStore()
     padding: $space-xl 1.25rem;
     border-radius: $radius-lg;
     background:
-      radial-gradient(circle at 85% 15%, rgba(#e2589b, 0.25), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba($rose, 0.25), transparent 45%),
       linear-gradient(140deg, #f4ecf8, #fdf2f7);
   }
 

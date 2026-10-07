@@ -142,7 +142,7 @@ function toggleSearch() {
   }
 
   &__dot {
-    color: #e2589b;
+    color: $rose;
   }
 
   &__nav {
@@ -202,7 +202,7 @@ function toggleSearch() {
     height: 1.2rem;
     padding-inline: 0.3rem;
     border-radius: $radius-pill;
-    background: #e2589b;
+    background: $rose;
     color: $surface;
     font-size: 0.66rem;
     font-weight: 700;

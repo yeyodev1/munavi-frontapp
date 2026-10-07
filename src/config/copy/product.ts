@@ -18,6 +18,7 @@ export const productCopy = {
   noPrice: 'Precio por confirmar',
   noPriceHint: 'Escríbenos y te lo confirmamos',
   askPrice: 'Consultar por WhatsApp',
+  askPriceShort: 'Consultar',
   askPriceMessage: (name: string, flavor?: string) =>
     `Hola Munavi, quiero información y precio de ${name}${flavor ? ` (${flavor})` : ''}`,
 }

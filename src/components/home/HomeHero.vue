@@ -79,7 +79,6 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
 </template>
 
 <style scoped lang="scss">
-$rose: #e2589b;
 
 .hero {
   position: relative;

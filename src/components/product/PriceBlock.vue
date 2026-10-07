@@ -76,7 +76,7 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
     font-size: 0.7rem;
     font-weight: 700;
     color: $surface;
-    background: $rose;
+    background: $sale;
     padding: 0.15rem 0.45rem;
     border-radius: $radius-pill;
   }

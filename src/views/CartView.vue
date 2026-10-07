@@ -136,7 +136,7 @@ onMounted(() => {
   }
 
   &__aside-title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
   }
 
   &__totals {
@@ -155,7 +155,7 @@ onMounted(() => {
   }
 
   &__discount dd {
-    color: $rose-deep !important;
+    color: $accent-deep !important;
   }
 
   &__total {

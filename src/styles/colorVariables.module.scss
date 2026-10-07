@@ -2,31 +2,39 @@
 // papel y acento, no de "rosa" o "gris 700".
 @use 'sass:color';
 
-// Acento de marca
-$accent: #6b2d8c;
-$accent-deep: color.adjust($accent, $lightness: -12%);
+// Color principal del manual de marca: Pantone 363 C. Con blanco encima da
+// 4.6:1, así que sirve para botones, links, barra de anuncio y logo.
+$accent: #518936;
+$accent-deep: color.adjust($accent, $lightness: -9%);
 $accent-soft: color.mix($accent, #ffffff, 14%);
 
-// Acentos de los empaques (línea infantil y promociones)
-$rose: #e2589b;
-$rose-deep: #8f2457;
-$blush: #fbe3ef;
+// Secundarios del manual. Acentos puntuales; la marca es blanco + verde.
+$olive: #ada01f; // Pantone 398 C
+$sun: #fbba00; // Pantone 7549 C
+$orange: #f18700; // Pantone 144 C
+$red: #d5461f; // Pantone 373 C
+// Rojo del manual un punto más oscuro para que el texto blanco pase AA (5:1).
+$sale: color.adjust($red, $lightness: -6%);
+
+// Tintes verdes de fondo (de la web anterior de Munavi)
+$sage: #b6d7ac; // bloques "Somos Munavi" y curva del hero
+$sage-soft: #f3faf0; // tinte de fondo muy claro
 $whatsapp: #25d366;
 
 // Superficies
-$paper: #fdfcfa; // fondo base
+$paper: #fcfdfb; // fondo base
 $surface: #ffffff; // superficies elevadas
-$sand: #f1ece6; // bloques suaves
-$line: #e7e1d9; // bordes
+$sand: #eef4ea; // bloques suaves
+$line: #e2e9de; // bordes
 
 // Texto
-$ink: #191423; // texto principal
-$ink-soft: #4a4552; // texto secundario
-$ink-muted: #8a8590; // terciario / labels
+$ink: #1f261c; // texto principal
+$ink-soft: #4b5348; // texto secundario
+$ink-muted: #7f877b; // terciario / labels
 
-$ink-brand: #1d1226; // fondo del footer y bloques oscuros de marca
+$ink-brand: #1b2d12; // fondo del footer y bloques oscuros de marca
 
-$overlay: rgba(#100c14, 0.55);
+$overlay: rgba(#0e160b, 0.55);
 
 // Estados
 $success: #3bb77e;

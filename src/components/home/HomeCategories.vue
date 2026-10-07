@@ -7,7 +7,7 @@ const copy = homeCopy.categories
 const { categories, loading } = useCategories()
 
 // Sin foto, cada categoría toma un tono de la paleta para no verse vacía.
-const tones = ['#efe4f5', '#fbe3ef', '#f1ece6', '#e9e1f7', '#fde9df']
+const tones = ['#efe4f5', '$blush', '#f1ece6', '#e9e1f7', '#fde9df']
 const icons: Record<string, string> = {
   colagenos: 'fa-solid fa-spa',
   vitaminas: 'fa-solid fa-capsules',
@@ -85,7 +85,7 @@ const icons: Record<string, string> = {
     &--loading {
       background: linear-gradient(90deg, #f3edf6 25%, #faf6fb 50%, #f3edf6 75%);
       background-size: 200% 100%;
-      animation: cats-shimmer 1.6s linear infinite;
+      animation: shimmer 1.6s linear infinite;
     }
   }
 
@@ -122,12 +122,4 @@ const icons: Record<string, string> = {
   }
 }
 
-@keyframes cats-shimmer {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
-}
 </style>

@@ -18,6 +18,11 @@ export const homeCopy = {
     cta: 'Conócenos más',
     to: '/nosotros',
   },
+  family: {
+    // Banner original de la web anterior (public/brand/familia-munavi.webp).
+    alt: 'Conoce a la familia Munavi: DefenseVit, Collagen Power, Colágeno + Magnesio, Multivitamínico, Colartrim y Propóleo',
+    to: '/tienda',
+  },
   categories: {
     eyebrow: 'Categorías',
     title: 'Encuentra lo que tu cuerpo pide',

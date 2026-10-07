@@ -33,7 +33,7 @@ const copy = homeCopy.subscribe
     border-radius: $radius-lg;
     color: $surface;
     background:
-      radial-gradient(circle at 100% 0%, rgba($rose, 0.55), transparent 50%),
+      radial-gradient(circle at 100% 0%, rgba($olive, 0.55), transparent 50%),
       linear-gradient(135deg, $accent-deep, $accent);
 
     @include from('md') {
@@ -50,7 +50,6 @@ const copy = homeCopy.subscribe
     top: -1.5rem;
     font-family: $font-display;
     font-size: clamp(6rem, 4rem + 10vw, 12rem);
-    font-style: italic;
     line-height: 1;
     color: rgba($surface, 0.08);
     pointer-events: none;
@@ -67,7 +66,7 @@ const copy = homeCopy.subscribe
 
   &__eyebrow {
     @include eyebrow;
-    color: #fbd3e6;
+    color: $sage;
   }
 
   &__title {

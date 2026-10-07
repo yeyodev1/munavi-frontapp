@@ -115,7 +115,7 @@ $side-width: 250px;
   &__brand {
     display: inline-flex;
     align-items: center;
-    font-size: 1.3rem;
+    font-size: 1.55rem;
     color: $surface;
 
     span {

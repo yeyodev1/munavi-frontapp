@@ -34,8 +34,9 @@ async function submit() {
 <template>
   <section class="login">
     <form class="login__card" @submit.prevent="submit">
-      <p class="login__eyebrow">Acceso</p>
-      <h1 class="login__title">Ingresar</h1>
+      <p class="login__brand">Munavi</p>
+      <h1 class="login__title">Panel Munavi</h1>
+      <p class="login__lead">Ingresa para administrar productos, pedidos y promociones.</p>
 
       <div class="login__field">
         <label for="email">Correo</label>
@@ -44,7 +45,13 @@ async function submit() {
 
       <div class="login__field">
         <label for="password">Contraseña</label>
-        <input id="password" v-model="password" type="password" autocomplete="current-password" required />
+        <input
+          id="password"
+          v-model="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        />
       </div>
 
       <Transition name="rise">
@@ -55,33 +62,57 @@ async function submit() {
 
       <button class="btn btn--primary login__submit" type="submit" :disabled="loading">
         <i v-if="loading" class="fa-solid fa-spinner fa-spin"></i>
-        {{ loading ? 'Ingresando…' : 'Ingresar' }}
+        {{ loading ? 'Ingresando…' : 'Ingresar al panel' }}
       </button>
     </form>
+
+    <a href="/" class="login__back"><i class="fa-solid fa-arrow-left"></i> Volver a la tienda</a>
   </section>
 </template>
 
 <style scoped lang="scss">
 .login {
-  @include container(480px);
-  @include flex(column, stretch, center);
+  @include flex(column, center, center, 1.2rem);
   flex: 1;
-  padding-block: $space-xl;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: $ink;
 
   &__card {
     @include card;
     @include flex(column, stretch, flex-start, 1rem);
-    padding: 2.2rem 2rem;
-    box-shadow: $shadow-sm;
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem 1.4rem;
+    box-shadow: $shadow-lg;
+
+    @include from('sm') {
+      padding: 2.4rem 2.2rem;
+    }
   }
 
-  &__eyebrow {
+  &__brand {
     @include eyebrow;
   }
 
   &__title {
     @include display($display-sm, 600);
+  }
+
+  &__lead {
+    font-size: $text-sm;
+    color: $ink-soft;
     margin-bottom: 0.4rem;
+  }
+
+  &__back {
+    @include flex(row, center, center, 0.4rem);
+    font-size: $text-sm;
+    color: rgba($surface, 0.7);
+
+    &:hover {
+      color: $surface;
+    }
   }
 
   &__error {

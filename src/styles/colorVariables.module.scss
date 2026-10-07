@@ -7,6 +7,12 @@ $accent: #6b2d8c;
 $accent-deep: color.adjust($accent, $lightness: -12%);
 $accent-soft: color.mix($accent, #ffffff, 14%);
 
+// Acentos de los empaques (línea infantil y promociones)
+$rose: #e2589b;
+$rose-deep: #8f2457;
+$blush: #fbe3ef;
+$whatsapp: #25d366;
+
 // Superficies
 $paper: #fdfcfa; // fondo base
 $surface: #ffffff; // superficies elevadas
@@ -17,6 +23,8 @@ $line: #e7e1d9; // bordes
 $ink: #191423; // texto principal
 $ink-soft: #4a4552; // texto secundario
 $ink-muted: #8a8590; // terciario / labels
+
+$ink-brand: #1d1226; // fondo del footer y bloques oscuros de marca
 
 $overlay: rgba(#100c14, 0.55);
 

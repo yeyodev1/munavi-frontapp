@@ -11,7 +11,7 @@ const copy = homeCopy.somos
 
 <template>
   <section class="somos">
-    <LeafDecor variant="frond" class="somos__leaf somos__leaf--a" />
+    <LeafDecor variant="palm" class="somos__leaf somos__leaf--a" />
     <LeafDecor variant="monstera" class="somos__leaf somos__leaf--b" />
 
     <div class="somos__inner">
@@ -94,11 +94,10 @@ const copy = homeCopy.somos
     z-index: 0;
 
     &--a {
-      width: clamp(120px, 20vw, 260px);
-      top: -50px;
-      right: -40px;
-      transform: rotate(-130deg);
-      opacity: 0.9;
+      width: clamp(100px, 18vw, 250px);
+      top: -60px;
+      right: -20px;
+      transform: rotate(-20deg);
     }
 
     &--b {

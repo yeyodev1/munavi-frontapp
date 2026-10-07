@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useToastStore } from '@/stores/toast'
 import type { ApiError } from '@/types'
+import MunaviLogo from '@/components/brand/MunaviLogo.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -34,7 +35,7 @@ async function submit() {
 <template>
   <section class="login">
     <form class="login__card" @submit.prevent="submit">
-      <p class="login__brand">Munavi</p>
+      <MunaviLogo class="login__brand" />
       <h1 class="login__title">Panel Munavi</h1>
       <p class="login__lead">Ingresa para administrar productos, pedidos y promociones.</p>
 
@@ -76,7 +77,7 @@ async function submit() {
   flex: 1;
   min-height: 100vh;
   padding: 2rem 1rem;
-  background: $ink;
+  background: radial-gradient(circle at 85% 10%, rgba($accent, 0.45), transparent 45%), $ink-brand;
 
   &__card {
     @include card;
@@ -92,7 +93,9 @@ async function submit() {
   }
 
   &__brand {
-    @include eyebrow;
+    align-self: flex-start;
+    font-size: 1.6rem;
+    color: $accent;
   }
 
   &__title {

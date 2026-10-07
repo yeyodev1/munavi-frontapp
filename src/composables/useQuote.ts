@@ -10,7 +10,7 @@ const DEBOUNCE_MS = 350
 /** El backend responde null cuando no hay umbral de envío gratis (los tipos dicen number). */
 export function amountToFreeShipping(quote: Quote | null): number | null {
   if (!quote) return null
-  return (quote.amountToFreeShipping as number | null) ?? null
+  return quote.amountToFreeShipping ?? null
 }
 
 /**

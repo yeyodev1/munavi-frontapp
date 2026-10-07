@@ -14,6 +14,7 @@ export const homeCopy = {
     prev: 'Banner anterior',
     next: 'Banner siguiente',
     goTo: 'Ir al banner',
+    showcaseLabel: 'Productos destacados',
   },
   categories: {
     eyebrow: 'Categorías',

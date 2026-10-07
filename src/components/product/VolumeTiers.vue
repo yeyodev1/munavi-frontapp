@@ -46,7 +46,7 @@ const first = computed(() => list.value[0])
   @include flex(row, center, flex-start, 0.35rem);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #b8336f;
+  color: $accent;
 }
 
 .tiers {
@@ -68,8 +68,8 @@ const first = computed(() => list.value[0])
     font-weight: 500;
     padding: 0.45rem 0.85rem;
     border-radius: $radius-pill;
-    background: $blush;
-    color: $rose-deep;
+    background: $sage-soft;
+    color: $accent-deep;
     @include transition;
 
     &--active {

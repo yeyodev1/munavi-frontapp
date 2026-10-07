@@ -94,7 +94,8 @@ const isAvailable = (v: Variant) => v.inStock !== false && (v.stock == null || v
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
+    background: $surface;
     margin-left: -0.45rem;
   }
 

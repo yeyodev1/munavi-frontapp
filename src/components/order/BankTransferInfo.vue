@@ -60,12 +60,12 @@ async function copyInfo() {
   @include flex(column, stretch, flex-start, 0.8rem);
   padding: 1.25rem;
   border-radius: $radius-md;
-  background: linear-gradient(160deg, rgba($accent, 0.06), rgba($rose, 0.06));
+  background: linear-gradient(160deg, rgba($accent, 0.06), rgba($sage, 0.18));
   border: 1px solid rgba($accent, 0.15);
 
   &__title {
     @include flex(row, center, flex-start, 0.55rem);
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
 
     i {
       font-size: 1rem;

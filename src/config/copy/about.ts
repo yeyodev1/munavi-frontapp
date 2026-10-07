@@ -1,7 +1,5 @@
 // Textos de /nosotros y de la página 404.
 export const aboutCopy = {
-  eyebrow: 'Nosotros',
-  title: 'Te quiero vida',
   lead: 'Munavi nace de una idea simple: cuidarte no tiene por qué ser aburrido. Queremos que disfrutes la vida, que la ames, y que tus suplementos te acompañen con alegría.',
   story: {
     title: '7 años acompañando a familias ecuatorianas',

@@ -90,7 +90,7 @@ const copy = checkoutCopy.summary
   }
 
   &__title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
   }
 
   &__items {
@@ -108,7 +108,7 @@ const copy = checkoutCopy.summary
     flex: 0 0 3.4rem;
     height: 3.4rem;
     border-radius: $radius-sm;
-    background: $blush;
+    background: $sage-soft;
     color: rgba($accent, 0.4);
 
     img {
@@ -155,7 +155,7 @@ const copy = checkoutCopy.summary
   &__off {
     font-size: 0.7rem;
     font-weight: 600;
-    color: $rose-deep;
+    color: $accent-deep;
   }
 
   &__amount {
@@ -188,7 +188,7 @@ const copy = checkoutCopy.summary
     }
 
     &--discount dd {
-      color: $rose-deep;
+      color: $accent-deep;
     }
 
     &--total {

@@ -2,6 +2,7 @@ import { useCartStore, type CartItemInput } from '@/stores/cart'
 import { useToastStore } from '@/stores/toast'
 import { trackAddToCart } from '@/composables/useTracking'
 import { productCopy } from '@/config/copy/product'
+import { hasPrice } from '@/utils/price'
 
 /**
  * Un solo camino para agregar al carrito (tarjeta, ficha, "comprar ahora"):
@@ -13,6 +14,8 @@ export function useAddToCart() {
   const toast = useToastStore()
 
   function addToCart(input: CartItemInput, quantity = 1, options: { openDrawer?: boolean } = {}) {
+    // Sin precio no se vende por la web; la UI ya ofrece WhatsApp en su lugar.
+    if (!hasPrice(input.snapshot.prices)) return
     cart.add(input, quantity)
     trackAddToCart({
       id: input.productId,

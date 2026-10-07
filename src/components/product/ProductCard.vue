@@ -159,8 +159,9 @@ function quickAdd() {
     text-transform: uppercase;
     padding: 0.28rem 0.6rem;
     border-radius: $radius-pill;
-    background: $accent;
-    color: $surface;
+    // "Más vendido" en el naranja del manual; texto oscuro para pasar AA.
+    background: $orange;
+    color: $ink-brand;
 
     &--sale {
       background: $sale;
@@ -169,6 +170,7 @@ function quickAdd() {
 
     &--muted {
       background: $ink-soft;
+      color: $surface;
     }
   }
 

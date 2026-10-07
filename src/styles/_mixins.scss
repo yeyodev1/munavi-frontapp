@@ -82,3 +82,8 @@ $breakpoints: (
     outline-offset: 3px;
   }
 }
+
+// Franja de los cuatro secundarios del manual (oliva, amarillo, naranja, rojo).
+@mixin brand-stripe {
+  background: linear-gradient(90deg, $olive 0 25%, $sun 25% 50%, $orange 50% 75%, $red 75% 100%);
+}

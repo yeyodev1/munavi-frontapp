@@ -90,14 +90,10 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
   &__tag {
     @include flex(row, center, flex-start, 0.45rem);
     font-family: $font-display;
-    font-size: 0.92rem;
+    font-size: 1rem;
     font-weight: 500;
-    white-space: nowrap;
+    line-height: 1.2;
     color: $accent-deep;
-    padding: 0.28rem 0.7rem;
-    border-radius: $radius-pill;
-    background: rgba($accent, 0.08);
-    border: 1px solid rgba($accent, 0.18);
 
     i {
       font-size: 0.8em;
@@ -105,9 +101,13 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
     }
   }
 
+  // En la ficha hay espacio para la píldora; en tarjetas angostas basta el texto.
   &--lg &__tag {
     font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
     padding: 0.45rem 1.1rem;
+    border-radius: $radius-pill;
+    background: rgba($accent, 0.08);
+    border: 1px solid rgba($accent, 0.18);
   }
 
   &--lg &__label {

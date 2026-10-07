@@ -80,7 +80,7 @@ const freeShipping = computed(() => {
   }
 
   &--1 {
-    background: $blush;
+    background: $sage-soft;
   }
 
   &--2 {
@@ -98,7 +98,7 @@ const freeShipping = computed(() => {
   }
 
   &__title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
   }
 
   &__text {

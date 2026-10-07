@@ -139,7 +139,7 @@ function quickAdd() {
     color: $surface;
 
     &--sale {
-      background: #e2589b;
+      background: $rose;
     }
 
     &--muted {

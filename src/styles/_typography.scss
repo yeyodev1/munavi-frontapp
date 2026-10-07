@@ -30,18 +30,36 @@ $ease: cubic-bezier(0.22, 1, 0.36, 1);
 @mixin eyebrow {
   font-family: $font-principal;
   font-size: $text-xs;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-weight: 700;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: $accent-deep;
 }
 
-@mixin display($size: $display-md, $weight: 500) {
+@mixin display($size: $display-md, $weight: 700) {
   font-family: $font-display;
   font-size: $size;
   font-weight: $weight;
-  font-optical-sizing: auto;
-  line-height: 1.06;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+// Firma de pincel ("Te quiero vida", "Somos"). Solo frases cortas de marca.
+@mixin script($size: $display-lg, $color: $accent) {
+  font-family: $font-script;
+  font-size: $size;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0.95;
+  letter-spacing: 0;
+  color: $color;
+}
+
+// Etiqueta de botón principal: mayúsculas con aire, como "COMPRA AHORA".
+@mixin cta-caps {
+  font-family: $font-principal;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }

@@ -110,7 +110,7 @@ watch(() => route.fullPath, () => cart.close())
   }
 
   &__title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
     @include flex(row, baseline, flex-start, 0.6rem);
   }
 
@@ -185,13 +185,13 @@ watch(() => route.fullPath, () => cart.close())
     width: 3.4rem;
     height: 3.4rem;
     border-radius: 50%;
-    background: $blush;
+    background: $sage-soft;
     color: $accent;
     font-size: 1.2rem;
   }
 
   &__empty-title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
   }
 
   &__empty-text {

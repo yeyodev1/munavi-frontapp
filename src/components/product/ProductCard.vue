@@ -118,7 +118,7 @@ function quickAdd() {
     position: relative;
     display: block;
     aspect-ratio: 1;
-    background: linear-gradient(160deg, #f6eefa, #fdf1f6);
+    background: linear-gradient(160deg, $sage-soft, $surface);
     overflow: hidden;
   }
 
@@ -163,7 +163,8 @@ function quickAdd() {
     color: $surface;
 
     &--sale {
-      background: $rose;
+      background: $sale;
+      color: $surface;
     }
 
     &--muted {
@@ -191,7 +192,7 @@ function quickAdd() {
   }
 
   &__flavors {
-    color: #b8336f;
+    color: $accent;
     text-transform: none;
     letter-spacing: 0;
   }

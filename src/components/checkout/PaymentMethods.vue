@@ -67,7 +67,7 @@ const savings = computed(() => {
 
   &__legend {
     @include flex(row, center, flex-start, 0.6rem);
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
     margin-bottom: 1rem;
 
     span {
@@ -153,8 +153,8 @@ const savings = computed(() => {
   &__badge {
     padding: 0.15rem 0.55rem;
     border-radius: $radius-pill;
-    background: $rose;
-    color: $surface;
+    background: $sun;
+    color: $ink-brand;
     font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -171,7 +171,7 @@ const savings = computed(() => {
     @include flex(row, center, flex-start, 0.35rem);
     font-size: $text-xs;
     font-weight: 600;
-    color: $rose-deep;
+    color: $accent-deep;
   }
 
   &__total {

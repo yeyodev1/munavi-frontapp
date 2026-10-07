@@ -42,7 +42,7 @@ const active = defineModel<number>({ default: 0 })
     aspect-ratio: 1;
     border-radius: $radius-lg;
     overflow: hidden;
-    background: linear-gradient(160deg, #f6eefa, #fdf1f6);
+    background: linear-gradient(160deg, $sage-soft, $surface);
     @include flex(row, center, center);
   }
 
@@ -79,7 +79,7 @@ const active = defineModel<number>({ default: 0 })
     opacity: 0.7;
     @include transition;
 
-    background: #f6eefa;
+    background: $sage-soft;
 
     img {
       width: 100%;

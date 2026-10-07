@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import SubscribeForm from '@/components/SubscribeForm.vue'
+import MunaviLogo from '@/components/brand/MunaviLogo.vue'
 import { site, whatsappLink } from '@/config/site'
 import { layoutCopy } from '@/config/copy/layout'
 import { useCategories } from '@/composables/useCatalog'
@@ -38,7 +39,7 @@ const payments = Object.values(site.paymentMethods)
 
     <div class="footer__inner">
       <div class="footer__brand">
-        <RouterLink to="/" class="footer__logo">{{ site.name.toLowerCase() }}<span>.</span></RouterLink>
+        <RouterLink to="/" class="footer__logo" :aria-label="site.name"><MunaviLogo /></RouterLink>
         <p class="footer__tagline">{{ site.brand.promise }}</p>
         <p class="footer__origin"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ site.brand.origin }}</p>
         <div v-if="socials.length" class="footer__socials" :aria-label="copy.follow">
@@ -89,6 +90,14 @@ const payments = Object.values(site.paymentMethods)
   color: rgba($paper, 0.8);
   margin-top: auto;
 
+  // Franja de los secundarios del manual de marca.
+  &::before {
+    content: '';
+    display: block;
+    height: 4px;
+    @include brand-stripe;
+  }
+
   &__sub {
     @include container;
     @include flex(column, flex-start, flex-start, 1.2rem);
@@ -109,7 +118,7 @@ const payments = Object.values(site.paymentMethods)
   }
 
   &__sub-title {
-    @include display($text-xl, 500);
+    @include display($text-xl, 700);
     color: $paper;
     margin-bottom: 0.35rem;
   }
@@ -132,16 +141,9 @@ const payments = Object.values(site.paymentMethods)
   }
 
   &__logo {
-    font-family: $font-display;
-    font-size: 2rem;
-    font-style: italic;
-    font-weight: 600;
-    color: $paper;
+    font-size: 1.9rem;
+    color: $surface;
     line-height: 1;
-
-    span {
-      color: $rose;
-    }
   }
 
   &__tagline {
@@ -152,7 +154,7 @@ const payments = Object.values(site.paymentMethods)
 
   &__origin {
     font-size: $text-xs;
-    color: #f4b8d4;
+    color: $sage;
   }
 
   &__socials {
@@ -182,7 +184,7 @@ const payments = Object.values(site.paymentMethods)
       @include transition(color);
 
       &:hover {
-        color: #f4b8d4;
+        color: $sage;
       }
     }
 
@@ -194,7 +196,7 @@ const payments = Object.values(site.paymentMethods)
 
   &__heading {
     @include eyebrow;
-    color: #f4b8d4;
+    color: $sage;
     margin-bottom: 0.3rem;
   }
 

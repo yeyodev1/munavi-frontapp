@@ -67,7 +67,7 @@ const progress = computed(() => (threshold.value ? Math.min(100, (props.amount /
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, $accent, $rose);
+    background: linear-gradient(90deg, $accent, $olive);
     transition: width 0.5s $ease;
   }
 

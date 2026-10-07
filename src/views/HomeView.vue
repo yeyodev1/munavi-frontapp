@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HomeHero from '@/components/home/HomeHero.vue'
+import SomosBlock from '@/components/home/SomosBlock.vue'
 import HomeTrust from '@/components/home/HomeTrust.vue'
 import HomeCategories from '@/components/home/HomeCategories.vue'
 import HomeProducts from '@/components/home/HomeProducts.vue'
@@ -15,6 +16,7 @@ const { featured, bestSellers } = homeCopy
 <template>
   <div class="home">
     <HomeHero />
+    <SomosBlock />
     <HomeTrust />
     <HomeProducts
       :eyebrow="featured.eyebrow"

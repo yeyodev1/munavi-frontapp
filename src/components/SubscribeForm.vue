@@ -136,7 +136,7 @@ const inputId = `subscribe-${props.source}`
   }
 
   &--dark &__error {
-    color: #ffb3c8;
+    color: $sage;
   }
 }
 </style>

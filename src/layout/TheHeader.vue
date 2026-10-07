@@ -135,7 +135,8 @@ function toggleSearch() {
   }
 
   &__logo {
-    font-size: 1.55rem;
+    display: inline-flex;
+    font-size: 1.85rem;
     color: $accent;
     line-height: 1;
 

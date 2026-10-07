@@ -33,8 +33,8 @@ const copy = homeCopy.flavors
 .flavors {
   margin-top: $space-section;
   background:
-    radial-gradient(circle at 0% 0%, rgba($rose, 0.14), transparent 40%),
-    linear-gradient(180deg, #f6eefa, #fdf7fa);
+    radial-gradient(circle at 0% 0%, rgba($sage, 0.42), transparent 40%),
+    linear-gradient(180deg, $sage-soft, $paper);
   padding-block: $space-xl;
 
   &__inner {
@@ -61,11 +61,11 @@ const copy = homeCopy.flavors
 
   &__detail {
     @include eyebrow;
-    color: #b8336f;
+    color: $accent;
   }
 
   &__name {
-    @include display($display-sm, 500);
+    @include display($display-sm, 700);
     color: $accent-deep;
   }
 
@@ -79,8 +79,8 @@ const copy = homeCopy.flavors
       font-weight: 600;
       padding: 0.35rem 0.75rem;
       border-radius: $radius-pill;
-      background: $blush;
-      color: $rose-deep;
+      background: $sage-soft;
+      color: $accent-deep;
     }
   }
 

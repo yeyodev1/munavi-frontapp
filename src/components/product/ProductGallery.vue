@@ -49,7 +49,9 @@ const active = defineModel<number>({ default: 0 })
   &__img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 7%;
+    filter: drop-shadow(0 18px 22px rgba($ink, 0.12));
   }
 
   &__placeholder {
@@ -77,10 +79,13 @@ const active = defineModel<number>({ default: 0 })
     opacity: 0.7;
     @include transition;
 
+    background: #f6eefa;
+
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      padding: 0.25rem;
     }
 
     &--active,

@@ -24,6 +24,16 @@ const form = defineModel<ProductInput>({ required: true })
       label="Más vendido"
       hint="Muestra la etiqueta de más vendido"
     />
+    <ToggleSwitch
+      v-model="form.isNewArrival"
+      label="Novedad del mes"
+      hint="Sale en Novedades del mes del inicio y lleva la etiqueta Novedad"
+    />
+    <ToggleSwitch
+      v-model="form.inVolumePromo"
+      label="Participa en Compra más, ahorra más"
+      hint="Cuenta para el descuento por llevar varios productos (si la promo está activa en Ajustes)"
+    />
     <AdminField
       label="Orden"
       for="p-order"

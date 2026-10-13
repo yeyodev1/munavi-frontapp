@@ -1,24 +1,22 @@
 <script setup lang="ts">
+// Orden de la "Arquitectura Comercial – Propuesta 03" aprobada por la clienta.
 import HomeHero from '@/components/home/HomeHero.vue'
-import SomosBlock from '@/components/home/SomosBlock.vue'
-import HomeTrust from '@/components/home/HomeTrust.vue'
 import HomeCategories from '@/components/home/HomeCategories.vue'
-import HomeFamily from '@/components/home/HomeFamily.vue'
 import HomeProducts from '@/components/home/HomeProducts.vue'
-import HomePromos from '@/components/home/HomePromos.vue'
+import HomeVolumePromo from '@/components/home/HomeVolumePromo.vue'
+import HomeTrust from '@/components/home/HomeTrust.vue'
 import HomeFlavors from '@/components/home/HomeFlavors.vue'
-import HomeSubscribe from '@/components/home/HomeSubscribe.vue'
+import HomeCommunity from '@/components/home/HomeCommunity.vue'
 import HomeHelp from '@/components/home/HomeHelp.vue'
 import { homeCopy } from '@/config/copy/home'
 
-const { featured, bestSellers } = homeCopy
+const { featured, newArrivals } = homeCopy
 </script>
 
 <template>
   <div class="home">
     <HomeHero />
-    <SomosBlock />
-    <HomeTrust />
+    <HomeCategories />
     <HomeProducts
       :eyebrow="featured.eyebrow"
       :title="featured.title"
@@ -26,17 +24,17 @@ const { featured, bestSellers } = homeCopy
       :query="{ featured: true }"
       primary
     />
-    <HomeCategories />
-    <HomeFamily />
-    <HomePromos />
+    <HomeVolumePromo />
+    <HomeTrust />
+    <!-- Sin productos marcados como novedad, la sección no aparece. -->
     <HomeProducts
-      :eyebrow="bestSellers.eyebrow"
-      :title="bestSellers.title"
-      :link-label="bestSellers.link"
-      :query="{ bestSeller: true }"
+      :eyebrow="newArrivals.eyebrow"
+      :title="newArrivals.title"
+      :link-label="newArrivals.link"
+      :query="{ newArrival: true }"
     />
     <HomeFlavors />
-    <HomeSubscribe />
+    <HomeCommunity />
     <HomeHelp />
   </div>
 </template>

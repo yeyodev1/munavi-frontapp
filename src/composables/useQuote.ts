@@ -13,6 +13,11 @@ export function amountToFreeShipping(quote: Quote | null): number | null {
   return quote.amountToFreeShipping ?? null
 }
 
+/** La línea cotizada de un producto del carrito, para pintar su total real. */
+export function quotedLine(quote: Quote | null, productId: string, variantSlug: string) {
+  return quote?.items.find((i) => i.productId === productId && i.variantSlug === variantSlug) ?? null
+}
+
 /**
  * Cotización real del carrito contra POST /orders/quote. Se cotizan los métodos
  * en paralelo para mostrar el total de cada uno sin esperar al cambiar de método.

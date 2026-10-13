@@ -19,7 +19,14 @@ function move(index: number, delta: number) {
 function add() {
   slides.value = [
     ...slides.value,
-    { title: '', subtitle: '', image: null, ctaLabel: 'Comprar ahora', ctaTo: '/tienda' },
+    {
+      title: '',
+      subtitle: '',
+      image: null,
+      mobileImage: null,
+      ctaLabel: 'Comprar ahora',
+      ctaTo: '/tienda',
+    },
   ]
 }
 
@@ -65,14 +72,19 @@ function field(event: Event): string {
       </header>
 
       <ImageUploader
-        label="Imagen del banner"
+        label="Imagen para computador (1920 × 800)"
         :model-value="slide.image"
         @update:model-value="patch(index, { image: $event as ImageRef | null })"
+      />
+      <ImageUploader
+        label="Imagen para celular (1080 × 1620, opcional)"
+        :model-value="slide.mobileImage ?? null"
+        @update:model-value="patch(index, { mobileImage: $event as ImageRef | null })"
       />
 
       <div class="slides__fields">
         <div class="slides__field slides__field--wide">
-          <label :for="`slide-title-${index}`">Título</label>
+          <label :for="`slide-title-${index}`">Título (vacío si la imagen ya trae el texto)</label>
           <input
             :id="`slide-title-${index}`"
             :value="slide.title"

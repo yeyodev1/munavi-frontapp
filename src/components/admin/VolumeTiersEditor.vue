@@ -3,6 +3,12 @@ import type { VolumeDiscount } from '@/types'
 
 /** Tramos "desde N unidades, X% menos". El backend aplica el de mayor cantidad alcanzada. */
 const tiers = defineModel<VolumeDiscount[]>({ required: true })
+// El mismo editor sirve para el descuento de un producto y para la promo de todo el pedido.
+withDefaults(defineProps<{ unit?: string; emptyText?: string; addLabel?: string }>(), {
+  unit: 'unidades',
+  emptyText: 'Sin descuentos por cantidad.',
+  addLabel: 'Agregar descuento por cantidad',
+})
 
 function update(index: number, key: keyof VolumeDiscount, raw: string) {
   const value = Number(raw)
@@ -24,7 +30,7 @@ function remove(index: number) {
 
 <template>
   <div class="tiers">
-    <p v-if="!tiers.length" class="tiers__empty">Sin descuentos por cantidad.</p>
+    <p v-if="!tiers.length" class="tiers__empty">{{ emptyText }}</p>
     <div v-for="(tier, index) in tiers" :key="index" class="tiers__row">
       <span class="tiers__text">Desde</span>
       <input
@@ -36,7 +42,7 @@ function remove(index: number) {
         :aria-label="`Cantidad mínima del tramo ${index + 1}`"
         @input="update(index, 'minQty', ($event.target as HTMLInputElement).value)"
       />
-      <span class="tiers__text">unidades,</span>
+      <span class="tiers__text">{{ unit }},</span>
       <input
         class="tiers__num"
         type="number"
@@ -53,7 +59,7 @@ function remove(index: number) {
       </button>
     </div>
     <button class="tiers__add" type="button" @click="add">
-      <i class="fa-solid fa-plus"></i> Agregar descuento por cantidad
+      <i class="fa-solid fa-plus"></i> {{ addLabel }}
     </button>
   </div>
 </template>

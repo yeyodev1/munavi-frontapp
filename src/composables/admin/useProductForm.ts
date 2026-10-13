@@ -25,6 +25,9 @@ function emptyDraft(): ProductInput {
     volumeDiscounts: [],
     isFeatured: false,
     isBestSeller: false,
+    isNewArrival: false,
+    // La promo por cantidad está pensada para todo el catálogo: se excluye a mano.
+    inVolumePromo: true,
     isPublished: false,
     order: 0,
   }

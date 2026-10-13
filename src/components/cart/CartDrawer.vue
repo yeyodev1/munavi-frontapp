@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, toRef, watch } from 'vue'
+import { onMounted, onUnmounted, toRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import CartLineItem from '@/components/cart/CartLineItem.vue'
-import FreeShippingBar from '@/components/cart/FreeShippingBar.vue'
+import CartDrawerContent from '@/components/cart/CartDrawerContent.vue'
 import { useCartStore } from '@/stores/cart'
 import { useSettingsStore } from '@/stores/settings'
 import { useBodyScroll } from '@/composables/useBodyScroll'
-import { money } from '@/utils/price'
 import { cartCopy as copy } from '@/config/copy/checkout'
 
 const cart = useCartStore()
@@ -14,8 +12,6 @@ const settings = useSettingsStore()
 const route = useRoute()
 
 useBodyScroll(toRef(cart, 'drawerOpen'))
-
-const estimate = computed(() => cart.estimate('card'))
 
 function onKey(event: KeyboardEvent) {
   if (event.key === 'Escape' && cart.drawerOpen) cart.close()
@@ -53,32 +49,7 @@ watch(() => route.fullPath, () => cart.close())
             <RouterLink to="/tienda" class="btn btn--primary">{{ copy.toShop }}</RouterLink>
           </div>
 
-          <template v-else>
-            <div class="drawer__body">
-              <FreeShippingBar :amount="estimate" />
-              <CartLineItem
-                v-for="item in cart.items"
-                :key="`${item.productId}-${item.variantSlug}`"
-                :item="item"
-                compact
-              />
-            </div>
-
-            <footer class="drawer__foot">
-              <div class="drawer__subtotal">
-                <span>{{ copy.subtotal }}</span>
-                <strong>{{ money(estimate) }}</strong>
-              </div>
-              <p class="drawer__note">{{ copy.cardNote }}</p>
-              <div class="drawer__actions">
-                <RouterLink to="/carrito" class="btn btn--ghost">{{ copy.viewCart }}</RouterLink>
-                <RouterLink to="/checkout" class="btn btn--primary">
-                  {{ copy.checkout }}
-                  <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                </RouterLink>
-              </div>
-            </footer>
-          </template>
+          <CartDrawerContent v-else />
         </aside>
       </div>
     </Transition>
@@ -131,45 +102,6 @@ watch(() => route.fullPath, () => cart.close())
 
     &:hover {
       background: rgba($accent, 0.08);
-    }
-  }
-
-  &__body {
-    flex: 1;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 1rem 1.25rem 0;
-  }
-
-  &__foot {
-    @include flex(column, stretch, flex-start, 0.4rem);
-    padding: 1rem 1.25rem 1.25rem;
-    border-top: 1px solid $line;
-    background: $surface;
-  }
-
-  &__subtotal {
-    @include flex(row, baseline, space-between);
-    font-weight: 600;
-
-    strong {
-      font-size: $text-lg;
-    }
-  }
-
-  &__note {
-    font-size: $text-xs;
-    color: $ink-muted;
-  }
-
-  &__actions {
-    @include flex(row, stretch, flex-start, 0.6rem);
-    margin-top: 0.6rem;
-
-    .btn {
-      flex: 1;
-      padding-inline: 0.8rem;
-      white-space: nowrap;
     }
   }
 

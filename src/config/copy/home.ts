@@ -18,11 +18,6 @@ export const homeCopy = {
     cta: 'Conócenos más',
     to: '/nosotros',
   },
-  family: {
-    // Banner original de la web anterior (public/brand/familia-munavi.webp).
-    alt: 'Conoce a la familia Munavi: DefenseVit, Collagen Power, Colágeno + Magnesio, Multivitamínico, Colartrim y Propóleo',
-    to: '/tienda',
-  },
   categories: {
     eyebrow: 'Categorías',
     title: 'Encuentra lo que tu cuerpo pide',
@@ -34,54 +29,98 @@ export const homeCopy = {
     title: 'Los favoritos de la casa',
     link: 'Ver toda la tienda',
   },
-  bestSellers: {
-    eyebrow: 'Más vendidos',
-    title: 'Lo que más se llevan',
-    link: 'Ver más',
-  },
   emptyProducts: {
     title: 'Estamos preparando el catálogo',
     text: 'Muy pronto encontrarás aquí nuestros colágenos, vitaminas y más. Mientras tanto, escríbenos y te asesoramos.',
     cta: 'Preguntar por WhatsApp',
   },
-  promos: {
-    eyebrow: 'Promociones',
-    title: 'Más vida, mejor precio',
+  // Solo aparece con la promo activa y niveles cargados en ajustes: no se
+  // promete un descuento que el checkout no aplica.
+  volumePromo: {
+    icon: 'fa-solid fa-cart-shopping',
+    title: 'Compra más,',
+    highlight: 'ahorra más',
+    text: 'Combina tus productos favoritos y obtén descuentos por cantidad en todo tu pedido.',
+    cta: 'Ver productos',
+    to: '/tienda',
+    base: { qty: '1 producto', label: 'Precio normal', icon: 'fa-solid fa-bag-shopping' },
+    tierIcons: ['fa-solid fa-cart-plus', 'fa-solid fa-boxes-stacked', 'fa-solid fa-gift'],
+    qty: (n: number) => `${n} productos`,
+    lastQty: (n: number) => `${n} o más`,
+    save: (percent: number) => `Ahorra ${percent} %`,
+  },
+  // Solo hechos confirmados por la clienta: nada de certificaciones ni cifras extra.
+  trust: {
+    eyebrow: 'Por qué elegirnos',
+    title: 'Confianza en Munavi',
     items: [
       {
-        icon: 'fa-solid fa-credit-card',
-        title: 'El mejor precio con tarjeta',
-        text: 'Paga con tarjeta de crédito o débito y obtén el precio más bajo de cada producto.',
-        cta: 'Comprar ahora',
-        to: '/tienda',
+        icon: 'fa-solid fa-flask',
+        title: 'Hecho en Ecuador',
+        text: 'Formulamos y producimos aquí, con materias primas importadas.',
       },
       {
-        icon: 'fa-solid fa-layer-group',
-        title: 'Lleva más, ahorra más',
-        text: 'Descuentos por volumen en productos seleccionados. Mientras más llevas, menos pagas.',
-        cta: 'Ver productos',
-        to: '/tienda',
+        icon: 'fa-solid fa-heart',
+        title: '7 años contigo',
+        text: 'Llevamos 7 años cuidando a las familias ecuatorianas.',
       },
       {
-        icon: 'fa-solid fa-gift',
-        title: '20% en tu primera compra',
-        text: 'Suscríbete y recibe al instante un cupón para tu primer pedido.',
-        cta: 'Quiero mi cupón',
-        to: '/#suscribete',
+        icon: 'fa-solid fa-lock',
+        title: 'Pago seguro',
+        text: 'Paga con tarjeta a través de Payphone o por transferencia.',
+      },
+      {
+        icon: 'fa-solid fa-truck-fast',
+        title: 'Envíos a todo Ecuador',
+        text: 'Tu pedido llega a cualquier ciudad con Servientrega.',
+      },
+      {
+        icon: 'fa-brands fa-whatsapp',
+        title: 'Asesoría personalizada',
+        text: 'Te ayudamos a elegir tu suplemento por WhatsApp.',
       },
     ],
-    freeShipping: 'Envío gratis desde',
+  },
+  newArrivals: {
+    eyebrow: 'Recién llegados',
+    title: 'Novedades del mes',
+    link: 'Ver toda la tienda',
   },
   flavors: {
-    eyebrow: 'Variedad de sabores',
-    title: 'Cuidarte también sabe rico',
-    text: 'Elige tu sabor favorito y conviértelo en tu ritual de cada día.',
+    eyebrow: 'Sabores y líneas especiales',
+    title: 'Deliciosos sabores para tu rutina diaria',
+    text: 'Elige tu sabor favorito y encuentra los productos que lo tienen.',
+    // image: ruta en /brand/sabores/<slug>.webp cuando la diseñadora entregue
+    // los archivos. Mientras sea null se pinta el círculo de color, sin 404.
     items: [
-      { name: 'Colágenos', detail: 'En muchos sabores', tags: ['Fresa', 'Vainilla', 'Frutos rojos', 'Y más'], q: 'colágeno' },
-      { name: 'Calostro infantil', detail: '4 sabores para los peques', tags: ['Para niños', '4 sabores'], q: 'calostro' },
-      { name: 'Creatina', detail: '3 opciones', tags: ['Sin sabor', 'Blueberry', 'Fruit punch'], q: 'creatina' },
+      { name: 'Vainilla', slug: 'vainilla', color: '#f4e4b8', ink: '#6b5313', image: null },
+      { name: 'Chocolate', slug: 'chocolate', color: '#7a4a2f', ink: '#ffffff', image: null },
+      { name: 'Frutos rojos', slug: 'frutos-rojos', color: '#b4324b', ink: '#ffffff', image: null },
+      { name: 'Guanábana', slug: 'guanabana', color: '#d6e8bf', ink: '#3d5a1f', image: null },
+      { name: 'Fresa', slug: 'fresa', color: '#f6c2c9', ink: '#a32a3d', image: null },
+      { name: 'Piña', slug: 'pina', color: '#fbd76a', ink: '#6e5200', image: null },
+      { name: 'Coco', slug: 'coco', color: '#efe8dc', ink: '#5e4b35', image: null },
+      { name: 'Blueberry', slug: 'blueberry', color: '#4c5199', ink: '#ffffff', image: null },
+    ] as { name: string; slug: string; color: string; ink: string; image: string | null }[],
+    linesTitle: 'Líneas especiales',
+    // La tienda filtra por categoría en la ruta: /tienda/<slug>.
+    lines: [
+      { name: 'Niños', slug: 'ninos', icon: 'fa-solid fa-children', text: 'Nutrición pensada para los peques.' },
+      { name: 'Deporte', slug: 'deporte', icon: 'fa-solid fa-dumbbell', text: 'Para acompañar tus entrenamientos.' },
+      { name: 'Salud hormonal', slug: 'salud-hormonal', icon: 'fa-solid fa-spa', text: 'Bienestar en cada etapa de tu vida.' },
     ],
-    cta: 'Ver sabores',
+  },
+  community: {
+    eyebrow: 'Somos familia',
+    title: 'Comunidad Munavi',
+    text: 'Así se cuidan quienes ya forman parte de la familia Munavi.',
+    follow: 'Síguenos y entérate primero de lanzamientos, sabores nuevos y promociones.',
+    photoAlt: 'Foto de la comunidad Munavi',
+    social: [
+      { key: 'instagram', label: 'Instagram', icon: 'fa-brands fa-instagram' },
+      { key: 'facebook', label: 'Facebook', icon: 'fa-brands fa-facebook-f' },
+      { key: 'tiktok', label: 'TikTok', icon: 'fa-brands fa-tiktok' },
+    ] as { key: 'instagram' | 'facebook' | 'tiktok'; label: string; icon: string }[],
   },
   subscribe: {
     eyebrow: 'Únete a la familia Munavi',

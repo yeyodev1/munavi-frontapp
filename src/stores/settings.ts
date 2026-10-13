@@ -16,6 +16,8 @@ export const useSettingsStore = defineStore('settings', {
     whatsapp: (state) => state.settings?.whatsapp || site.whatsapp,
     announcement: (state) => state.settings?.announcement || '',
     heroSlides: (state) => state.settings?.heroSlides ?? [],
+    volumePromo: (state) => state.settings?.volumePromo ?? { isActive: false, tiers: [] },
+    communityPhotos: (state) => state.settings?.communityPhotos ?? [],
     shipping: (state) => state.settings?.shipping ?? null,
     social: (state) => ({
       instagram: state.settings?.instagram || site.social.instagram,

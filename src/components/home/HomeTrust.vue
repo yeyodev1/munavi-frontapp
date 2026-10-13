@@ -1,56 +1,83 @@
 <script setup lang="ts">
-import { site } from '@/config/site'
+import SectionHead from './SectionHead.vue'
+import { homeCopy } from '@/config/copy/home'
+
+const copy = homeCopy.trust
 </script>
 
 <template>
-  <section class="trust" :aria-label="site.brand.origin">
-    <article v-for="pillar in site.brand.pillars" :key="pillar.title" class="trust__item">
-      <span class="trust__icon"><i :class="pillar.icon" aria-hidden="true"></i></span>
-      <div>
-        <h3 class="trust__title">{{ pillar.title }}</h3>
-        <p class="trust__text">{{ pillar.text }}</p>
-      </div>
-    </article>
+  <section class="trust">
+    <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" />
+
+    <ul class="trust__list">
+      <li v-for="item in copy.items" :key="item.title" class="trust__item">
+        <span class="trust__icon"><i :class="item.icon" aria-hidden="true"></i></span>
+        <div>
+          <h3 class="trust__title">{{ item.title }}</h3>
+          <p class="trust__text">{{ item.text }}</p>
+        </div>
+      </li>
+    </ul>
   </section>
 </template>
 
 <style scoped lang="scss">
 .trust {
   @include container;
-  @include flex-cards(260px, 1rem);
-  padding-block: $space-lg 0;
+  padding-top: $space-section;
+
+  &__list {
+    list-style: none;
+    @include flex-cards(260px, 1rem);
+
+    @include from('lg') {
+      @include flex-cards(180px, 1rem);
+    }
+  }
 
   &__item {
     @include flex(row, flex-start, flex-start, 0.9rem);
     padding: 1.1rem 1.2rem;
     border-radius: $radius-md;
     background: $surface;
-    border: 1px solid rgba($line, 0.7);
+    border: 1px solid rgba($line, 0.8);
+
+    @include from('lg') {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1.4rem 1.2rem;
+    }
   }
 
   &__icon {
     @include flex(row, center, center);
     flex: 0 0 2.6rem;
+    width: 2.6rem;
     height: 2.6rem;
     border-radius: 50%;
-    background: rgba($accent, 0.09);
+    background: rgba($accent, 0.1);
     color: $accent;
   }
 
-  // Cada pilar toma un secundario del manual, siempre en tinte suave.
+  // Cada punto toma un secundario del manual, siempre en tinte suave.
   &__item:nth-child(2) &__icon {
+    background: rgba($red, 0.12);
+    color: $sale;
+  }
+
+  &__item:nth-child(3) &__icon {
     background: rgba($olive, 0.16);
     color: darken($olive, 14%);
   }
 
-  &__item:nth-child(3) &__icon {
+  &__item:nth-child(4) &__icon {
     background: rgba($orange, 0.14);
     color: darken($orange, 14%);
   }
 
-  &__item:nth-child(4) &__icon {
-    background: rgba($red, 0.12);
-    color: $sale;
+  &__item:nth-child(5) &__icon {
+    background: rgba($whatsapp, 0.14);
+    color: #128c4a;
   }
 
   &__title {

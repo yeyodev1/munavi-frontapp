@@ -83,6 +83,7 @@ const submitLabel = computed(() => {
             :items="quote.items"
             :subtotal="quote.subtotal"
             :volume-discount="quote.volumeDiscount"
+            :volume-promo="quote.volumePromo"
             :coupon-discount="quote.couponDiscount"
             :coupon-code="quote.coupon?.code"
             :shipping="quote.shipping"

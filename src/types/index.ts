@@ -91,6 +91,10 @@ export interface Product {
   volumeDiscounts: VolumeDiscount[]
   isFeatured: boolean
   isBestSeller: boolean
+  /** Sale en "Novedades del mes" del inicio. */
+  isNewArrival: boolean
+  /** Cuenta para "Compra más, ahorra más". */
+  inVolumePromo: boolean
   isPublished: boolean
   order: number
   createdAt?: string
@@ -111,6 +115,8 @@ export interface ProductCard {
   volumeDiscounts: VolumeDiscount[]
   isFeatured: boolean
   isBestSeller: boolean
+  isNewArrival: boolean
+  inVolumePromo: boolean
 }
 
 export interface HeroSlide {
@@ -122,6 +128,17 @@ export interface HeroSlide {
   ctaTo: string
 }
 
+/** "Compra más, ahorra más": niveles por unidades de todo el pedido, combinando productos. */
+export interface VolumePromo {
+  isActive: boolean
+  tiers: VolumeDiscount[]
+}
+
+export interface CommunityPhoto {
+  image: ImageRef | null
+  link: string
+}
+
 export interface PublicSettings {
   shipping: { flatRate: number; freeShippingThreshold: number | null; note: string }
   whatsapp: string
@@ -131,6 +148,8 @@ export interface PublicSettings {
   announcement: string
   bankTransferInfo: string
   heroSlides: HeroSlide[]
+  volumePromo: VolumePromo
+  communityPhotos: CommunityPhoto[]
 }
 
 export interface AdminSettings extends PublicSettings {
@@ -158,8 +177,19 @@ export interface QuoteItem {
   lineTotal: number
 }
 
+export interface VolumePromoStatus {
+  isActive: boolean
+  /** Unidades del pedido que cuentan para la promo. */
+  units: number
+  /** Porcentaje alcanzado (0 si aún no llega al primer nivel). */
+  percent: number
+  /** Siguiente nivel y unidades que faltan; null si ya está en el más alto o la promo está apagada. */
+  next: { minQty: number; percent: number; unitsMissing: number } | null
+}
+
 export interface Quote {
   items: QuoteItem[]
+  volumePromo: VolumePromoStatus
   subtotal: number
   volumeDiscount: number
   couponDiscount: number

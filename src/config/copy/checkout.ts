@@ -18,6 +18,17 @@ export const cartCopy = {
   pageEyebrow: 'Carrito',
 }
 
+// "Compra más, ahorra más": mensajes que cambian con las unidades del pedido.
+const productos = (n: number) => (n === 1 ? '1 producto' : `${n} productos`)
+
+export const volumePromoCopy = {
+  missing: (units: number, percent: number) =>
+    `Agrega ${productos(units)} más y ahorra ${percent}\u00a0% en todo tu pedido`,
+  reached: (percent: number, units: number) =>
+    `¡Estás ahorrando ${percent}\u00a0% por llevar ${productos(units)}!`,
+  nextUp: (units: number, percent: number) => `Suma ${units} más y sube a ${percent}\u00a0%`,
+}
+
 export const checkoutCopy = {
   eyebrow: 'Finalizar compra',
   title: 'Tus datos y el pago',
@@ -66,6 +77,7 @@ export const checkoutCopy = {
     title: 'Resumen del pedido',
     subtotal: 'Subtotal',
     volume: 'Descuento por volumen',
+    volumePromo: 'Compra más, ahorra más',
     coupon: (code: string) => `Cupón ${code}`,
     shipping: 'Envío',
     free: 'Gratis',

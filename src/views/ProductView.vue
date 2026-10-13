@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import ProductGallery from '@/components/product/ProductGallery.vue'
 import PriceBlock from '@/components/product/PriceBlock.vue'
 import VolumeTiers from '@/components/product/VolumeTiers.vue'
+import VolumePromoTiers from '@/components/product/VolumePromoTiers.vue'
 import FlavorPicker from '@/components/product/FlavorPicker.vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import ProductDetails from '@/components/product/ProductDetails.vue'
@@ -73,6 +74,7 @@ const askPriceLink = computed(() =>
 
           <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" size="lg" />
           <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" :quantity="quantity" />
+          <VolumePromoTiers v-if="priced" :participates="product.inVolumePromo !== false" />
 
           <FlavorPicker v-if="hasFlavors" v-model="variantSlug" :variants="variants" />
 

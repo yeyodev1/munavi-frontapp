@@ -28,14 +28,38 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
         :key="slide.image!.url"
         class="hero__slide"
       >
-        <img
-          :src="slide.image!.url"
-          :alt="slide.title"
-          class="hero__bg"
-          :fetchpriority="i === 0 ? 'high' : 'low'"
-        />
-        <div class="hero__shade"></div>
-        <div class="hero__content">
+        <picture>
+          <source
+            v-if="slide.mobileImage?.url"
+            media="(max-width: 767px)"
+            :srcset="slide.mobileImage.url"
+          />
+          <img
+            :src="slide.image!.url"
+            :alt="slide.title || slide.ctaLabel || 'Munavi'"
+            class="hero__bg"
+            :fetchpriority="i === 0 ? 'high' : 'low'"
+          />
+        </picture>
+        <!-- Sin título: el banner trae el texto diseñado y todo el slide es el enlace -->
+        <template v-if="!slide.title">
+          <a
+            v-if="slide.ctaTo && isExternal(slide.ctaTo)"
+            :href="slide.ctaTo"
+            class="hero__hit"
+            target="_blank"
+            rel="noopener"
+            :aria-label="slide.ctaLabel || copy.goTo"
+          ></a>
+          <RouterLink
+            v-else-if="slide.ctaTo"
+            :to="slide.ctaTo"
+            class="hero__hit"
+            :aria-label="slide.ctaLabel || copy.goTo"
+          />
+        </template>
+        <div v-if="slide.title" class="hero__shade"></div>
+        <div v-if="slide.title" class="hero__content">
           <component :is="i === 0 ? 'h1' : 'h2'" class="hero__title">{{ slide.title }}</component>
           <p v-if="slide.subtitle" class="hero__text">{{ slide.subtitle }}</p>
           <template v-if="slide.ctaLabel && slide.ctaTo">
@@ -109,6 +133,12 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  &__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   &__shade {

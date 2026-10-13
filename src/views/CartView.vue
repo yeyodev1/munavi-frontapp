@@ -3,10 +3,11 @@ import { computed, onMounted, ref } from 'vue'
 import type { PaymentMethod } from '@/types'
 import CartLineItem from '@/components/cart/CartLineItem.vue'
 import FreeShippingBar from '@/components/cart/FreeShippingBar.vue'
+import VolumePromoBar from '@/components/cart/VolumePromoBar.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useCartStore } from '@/stores/cart'
 import { useSettingsStore } from '@/stores/settings'
-import { useQuote } from '@/composables/useQuote'
+import { quotedLine, useQuote } from '@/composables/useQuote'
 import { money } from '@/utils/price'
 import { cartCopy as copy, checkoutCopy } from '@/config/copy/checkout'
 
@@ -18,6 +19,11 @@ const { quote, loading, refresh } = useQuote(method, ['card'])
 // Mientras llega la cotización se muestra el estimado local.
 const progressBase = computed(() =>
   quote.value ? quote.value.subtotal - quote.value.volumeDiscount : cart.estimate('card'),
+)
+
+// Con un nivel alcanzado el descuento sale de la promo; si no, es el propio de cada producto.
+const volumeLabel = computed(() =>
+  quote.value?.volumePromo?.percent ? checkoutCopy.summary.volumePromo : checkoutCopy.summary.volume,
 )
 
 onMounted(() => {
@@ -39,8 +45,14 @@ onMounted(() => {
 
     <div v-else class="cart__layout">
       <div class="cart__lines">
+        <VolumePromoBar class="cart__promo" :status="quote?.volumePromo" />
         <FreeShippingBar :amount="progressBase" />
-        <CartLineItem v-for="item in cart.items" :key="`${item.productId}-${item.variantSlug}`" :item="item" />
+        <CartLineItem
+          v-for="item in cart.items"
+          :key="`${item.productId}-${item.variantSlug}`"
+          :item="item"
+          :quoted="quotedLine(quote, item.productId, item.variantSlug)"
+        />
         <RouterLink to="/tienda" class="cart__continue">
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
           {{ copy.continue }}
@@ -55,7 +67,7 @@ onMounted(() => {
             <dd>{{ money(quote?.subtotal ?? cart.estimate('card')) }}</dd>
           </div>
           <div v-if="quote?.volumeDiscount" class="cart__discount">
-            <dt>{{ checkoutCopy.summary.volume }}</dt>
+            <dt>{{ volumeLabel }}</dt>
             <dd>-{{ money(quote.volumeDiscount) }}</dd>
           </div>
           <div v-if="quote">
@@ -108,6 +120,10 @@ onMounted(() => {
     @include flex(column, stretch, flex-start);
     flex: 1;
     min-width: 0;
+  }
+
+  &__promo {
+    margin-bottom: 0.6rem;
   }
 
   &__continue {

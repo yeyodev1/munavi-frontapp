@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { QuoteItem } from '@/types'
+import { computed } from 'vue'
+import VolumePromoBar from '@/components/cart/VolumePromoBar.vue'
+import type { QuoteItem, VolumePromoStatus } from '@/types'
 import { money } from '@/utils/price'
 import { checkoutCopy } from '@/config/copy/checkout'
 
@@ -9,7 +11,7 @@ type SummaryItem = Pick<
 >
 
 /** Pinta una cotización o un pedido tal como los calculó el servidor. */
-withDefaults(
+const props = withDefaults(
   defineProps<{
     items: SummaryItem[]
     subtotal: number
@@ -20,11 +22,16 @@ withDefaults(
     total: number
     loading?: boolean
     title?: string
+    /** Solo la cotización lo trae; un pedido ya hecho no muestra la barra. */
+    volumePromo?: VolumePromoStatus | null
   }>(),
-  { couponCode: null, loading: false, title: checkoutCopy.summary.title },
+  { couponCode: null, loading: false, title: checkoutCopy.summary.title, volumePromo: null },
 )
 
 const copy = checkoutCopy.summary
+
+// Con un nivel alcanzado el descuento sale de la promo; si no, es el propio de cada producto.
+const volumeLabel = computed(() => (props.volumePromo?.percent ? copy.volumePromo : copy.volume))
 </script>
 
 <template>
@@ -52,13 +59,15 @@ const copy = checkoutCopy.summary
       </li>
     </ul>
 
+    <VolumePromoBar :status="volumePromo" />
+
     <dl class="summary__totals">
       <div class="summary__row">
         <dt>{{ copy.subtotal }}</dt>
         <dd>{{ money(subtotal) }}</dd>
       </div>
       <div v-if="volumeDiscount" class="summary__row summary__row--discount">
-        <dt>{{ copy.volume }}</dt>
+        <dt>{{ volumeLabel }}</dt>
         <dd>-{{ money(volumeDiscount) }}</dd>
       </div>
       <div v-if="couponDiscount" class="summary__row summary__row--discount">

@@ -62,6 +62,7 @@ function quickAdd() {
       <span class="pcard__badges">
         <span v-if="soldOut" class="pcard__badge pcard__badge--muted">{{ copy.outOfStock }}</span>
         <span v-else-if="savings" class="pcard__badge pcard__badge--sale">-{{ savings }}%</span>
+        <span v-if="product.isNewArrival" class="pcard__badge pcard__badge--new">{{ copy.newArrival }}</span>
         <span v-if="product.isBestSeller" class="pcard__badge">{{ copy.bestSeller }}</span>
       </span>
     </RouterLink>
@@ -165,6 +166,11 @@ function quickAdd() {
 
     &--sale {
       background: $sale;
+      color: $surface;
+    }
+
+    &--new {
+      background: $accent;
       color: $surface;
     }
 

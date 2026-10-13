@@ -17,7 +17,8 @@ const props = withDefaults(
     linkLabel?: string
     query: ProductQuery
     // Si el filtro no trae nada se muestran los más recientes y, si tampoco
-    // hay, un estado vacío. Si es false, la sección simplemente no aparece.
+    // hay, un estado vacío. Si es false, la sección solo aparece cuando llegan
+    // productos (sin esqueleto previo, para no dejar un hueco que luego se cierra).
     primary?: boolean
   }>(),
   { link: '/tienda', linkLabel: '', primary: false },
@@ -37,7 +38,7 @@ watch(loading, (isLoading) => {
 </script>
 
 <template>
-  <section v-if="loading || items.length || primary" class="hprod">
+  <section v-if="primary || items.length" class="hprod">
     <SectionHead :eyebrow="eyebrow" :title="title" :link="link" :link-label="items.length ? linkLabel : ''" />
 
     <EmptyState v-if="!loading && !items.length" :title="empty.title" :text="empty.text" icon="fa-solid fa-seedling">

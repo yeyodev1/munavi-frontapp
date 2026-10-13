@@ -5,6 +5,7 @@ export interface ProductQuery {
   category?: string
   featured?: boolean
   bestSeller?: boolean
+  newArrival?: boolean
   q?: string
   page?: number
   limit?: number
@@ -21,6 +22,7 @@ class CatalogService extends APIBase {
     if (query.category) params.category = query.category
     if (query.featured) params.featured = 1
     if (query.bestSeller) params.bestSeller = 1
+    if (query.newArrival) params.newArrival = 'true'
     if (query.q) params.q = query.q
     if (query.page) params.page = query.page
     if (query.limit) params.limit = query.limit

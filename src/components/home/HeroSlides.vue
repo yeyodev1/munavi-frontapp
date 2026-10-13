@@ -119,8 +119,10 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     inset: 0;
   }
 
+  // Como el mockup de Nathalie: texto centrado sobre la foto clara. En celular
+  // va arriba y en computador al centro; la diseñadora deja esas zonas libres.
   &__slide {
-    @include flex(row, flex-end, flex-start);
+    @include flex(row, flex-start, center);
 
     @include from('md') {
       align-items: center;
@@ -144,34 +146,34 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
   &__shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba($ink-brand, 0.75), transparent 65%);
+    background: radial-gradient(ellipse 60% 45% at 50% 22%, rgba($surface, 0.7), transparent 70%);
 
     @include from('md') {
-      background: linear-gradient(90deg, rgba($ink-brand, 0.65), transparent 70%);
+      background: radial-gradient(ellipse 34% 55% at 50% 50%, rgba($surface, 0.6), transparent 75%);
     }
   }
 
   &__content {
     position: relative;
     z-index: 1;
-    @include flex(column, flex-start, center, 1.1rem);
+    @include flex(column, center, flex-start, 0.9rem);
     padding: $space-xl 1.5rem 4.5rem;
     max-width: 760px;
-
-    @include from('md') {
-      padding-left: $space-xl;
-    }
+    text-align: center;
   }
 
   &__title {
-    @include display($display-lg);
-    color: $surface;
+    font-family: $font-script;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 1.8rem + 4vw, 4.6rem);
+    line-height: 1.05;
+    color: $accent-deep;
   }
 
   &__text {
     font-size: $text-lg;
-    color: rgba($surface, 0.9);
-    max-width: 48ch;
+    color: $ink;
+    max-width: 36ch;
   }
 
   &__controls {
@@ -187,8 +189,9 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 50%;
-    background: rgba($surface, 0.2);
-    color: $surface;
+    background: rgba($surface, 0.85);
+    color: $accent-deep;
+    box-shadow: $shadow-sm;
     font-size: 0.75rem;
   }
 
@@ -196,12 +199,12 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     width: 0.55rem;
     height: 0.55rem;
     border-radius: $radius-pill;
-    background: rgba($surface, 0.5);
+    background: rgba($accent, 0.35);
     @include transition;
 
     &--active {
       width: 1.6rem;
-      background: $surface;
+      background: $accent;
     }
   }
 }

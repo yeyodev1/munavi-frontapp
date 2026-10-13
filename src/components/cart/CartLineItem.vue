@@ -3,10 +3,15 @@ import { computed } from 'vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import { MAX_QTY, useCartStore, type CartItem } from '@/stores/cart'
 import { hasPrice, money, tierFor } from '@/utils/price'
-import { cartCopy as copy } from '@/config/copy/checkout'
+import type { QuoteItem } from '@/types'
+import { cartCopy as copy, checkoutCopy } from '@/config/copy/checkout'
 import { productCopy } from '@/config/copy/product'
 
-const props = withDefaults(defineProps<{ item: CartItem; compact?: boolean }>(), { compact: false })
+/** `quoted`: la línea ya cotizada por el servidor; manda sobre el estimado local. */
+const props = withDefaults(
+  defineProps<{ item: CartItem; compact?: boolean; quoted?: QuoteItem | null }>(),
+  { compact: false, quoted: null },
+)
 const emit = defineEmits<{ navigate: [] }>()
 
 const cart = useCartStore()
@@ -19,9 +24,22 @@ const qty = computed({
 const tier = computed(() => tierFor(props.item.snapshot.volumeDiscounts, props.item.quantity))
 const showVariant = computed(() => props.item.variantSlug !== 'unico' && !!props.item.snapshot.variantName)
 // Estimado con tarjeta para pintar; el total real lo da la cotización del servidor.
+// Mientras llega la nueva cotización la vieja no sirve: trae otra cantidad.
+const fresh = computed(() =>
+  props.quoted && props.quoted.quantity === props.item.quantity ? props.quoted : null,
+)
 const lineTotal = computed(() => {
+  if (fresh.value) return fresh.value.lineTotal
   const subtotal = props.item.snapshot.prices.card * props.item.quantity
   return subtotal - (tier.value ? Math.round((subtotal * tier.value.percent) / 100) : 0)
+})
+// La cotización ya trae el mayor entre el descuento del producto y el del pedido.
+const tierText = computed(() => {
+  if (fresh.value) {
+    const p = fresh.value.volumeDiscountPercent
+    return p ? checkoutCopy.summary.volumeOff(p) : ''
+  }
+  return tier.value ? productCopy.tier(tier.value.minQty, tier.value.percent) : ''
 })
 </script>
 
@@ -54,7 +72,7 @@ const lineTotal = computed(() => {
         <QuantityStepper v-model="qty" :max="MAX_QTY" class="line__qty" />
         <div class="line__price">
           <strong>{{ hasPrice(item.snapshot.prices) ? money(lineTotal) : productCopy.noPrice }}</strong>
-          <span v-if="tier" class="line__tier">{{ productCopy.tier(tier.minQty, tier.percent) }}</span>
+          <span v-if="tierText" class="line__tier">{{ tierText }}</span>
         </div>
       </div>
     </div>

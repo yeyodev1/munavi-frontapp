@@ -117,6 +117,7 @@ export interface HeroSlide {
   title: string
   subtitle: string
   image: ImageRef | null
+  mobileImage?: ImageRef | null
   ctaLabel: string
   ctaTo: string
 }

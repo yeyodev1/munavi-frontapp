@@ -5,6 +5,9 @@ import AdminCard from '@/components/admin/AdminCard.vue'
 import AdminField from '@/components/admin/AdminField.vue'
 import MoneyInput from '@/components/admin/MoneyInput.vue'
 import HeroSlidesEditor from '@/components/admin/HeroSlidesEditor.vue'
+import CommunityPhotosEditor from '@/components/admin/CommunityPhotosEditor.vue'
+import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
+import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
 import { useAdminSettings } from '@/composables/admin/useAdminSettings'
 import { money } from '@/composables/admin/money'
 
@@ -152,6 +155,36 @@ const shippingSummary = computed(() => {
         <HeroSlidesEditor v-model="form.heroSlides" />
       </AdminCard>
 
+      <AdminCard
+        title="Compra más, ahorra más"
+        icon="fa-solid fa-layer-group"
+        description="Descuento por la cantidad total del pedido, combinando productos distintos. Si un producto ya tiene su propio descuento, se aplica el mayor."
+      >
+        <ToggleSwitch
+          v-model="form.volumePromo.isActive"
+          label="Promo activa"
+          hint="Para activarla necesitas al menos un nivel"
+        />
+        <VolumeTiersEditor
+          v-model="form.volumePromo.tiers"
+          unit="productos"
+          empty-text="Sin niveles todavía. Ej. desde 2 productos, 10 %."
+          add-label="Agregar nivel"
+        />
+        <p class="settings__note">
+          <i class="fa-solid fa-circle-info"></i>
+          Los productos participantes se eligen en cada producto.
+        </p>
+      </AdminCard>
+
+      <AdminCard
+        title="Comunidad Munavi"
+        icon="fa-solid fa-camera-retro"
+        description="Fotos de clientas que se muestran en el inicio, en este orden. Máximo 12."
+      >
+        <CommunityPhotosEditor v-model="form.communityPhotos" />
+      </AdminCard>
+
       <div class="settings__bar">
         <button class="btn btn--primary" type="submit" :disabled="saving">
           <i :class="saving ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"></i>
@@ -178,6 +211,12 @@ const shippingSummary = computed(() => {
   &__row {
     @include flex(row, flex-start, flex-start, 1rem);
     flex-wrap: wrap;
+  }
+
+  &__note {
+    @include flex(row, baseline, flex-start, 0.4rem);
+    font-size: $text-sm;
+    color: $ink-soft;
   }
 
   &__upper {

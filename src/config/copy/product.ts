@@ -6,11 +6,17 @@ export const productCopy = {
   save: 'Ahorras',
   bestSeller: 'Más vendido',
   featured: 'Destacado',
+  newArrival: 'Novedad',
   outOfStock: 'Agotado',
   flavors: (n: number) => (n === 1 ? '1 sabor' : `${n} sabores`),
   tier: (qty: number, percent: number) => `Lleva ${qty} y ahorra ${percent}%`,
   tiersTitle: 'Ahorra llevando más',
   tierActive: 'Aplicado',
+  // "Compra más, ahorra más": descuento por todo el pedido, combinando productos.
+  promoTitle: 'Compra más, ahorra más',
+  promoHint: 'Combina productos',
+  promoTier: (qty: number, percent: number, last: boolean) =>
+    `${last ? `${qty} o más` : qty} productos −${percent}\u00a0%`,
   add: 'Agregar',
   chooseFlavor: 'Elegir sabor',
   added: 'Agregado al carrito',

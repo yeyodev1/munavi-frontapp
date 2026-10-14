@@ -15,6 +15,7 @@ function emptySettings(): AdminSettings {
     heroSlides: [],
     volumePromo: { isActive: false, tiers: [] },
     communityPhotos: [],
+    tracking: { metaPixelId: '', ga4Id: '', googleAdsId: '', googleAdsPurchaseLabel: '' },
     subscribeCouponCode: '',
     notifyEmail: '',
   }
@@ -36,6 +37,12 @@ function pick(s: AdminSettings): AdminSettings {
       tiers: (s.volumePromo?.tiers ?? []).map((t) => ({ ...t })),
     },
     communityPhotos: (s.communityPhotos ?? []).map((p) => ({ ...p })),
+    tracking: {
+      metaPixelId: s.tracking?.metaPixelId ?? '',
+      ga4Id: s.tracking?.ga4Id ?? '',
+      googleAdsId: s.tracking?.googleAdsId ?? '',
+      googleAdsPurchaseLabel: s.tracking?.googleAdsPurchaseLabel ?? '',
+    },
     subscribeCouponCode: s.subscribeCouponCode,
     notifyEmail: s.notifyEmail,
   }
@@ -75,6 +82,13 @@ export function useAdminSettings() {
       payload.communityPhotos = payload.communityPhotos
         .filter((p) => p.image)
         .map((p) => ({ ...p, link: p.link.trim() }))
+      // Se pegan desde Meta y Google con espacios o en minúsculas; el API valida el formato.
+      payload.tracking = {
+        metaPixelId: payload.tracking.metaPixelId.replace(/\s/g, ''),
+        ga4Id: payload.tracking.ga4Id.trim().toUpperCase(),
+        googleAdsId: payload.tracking.googleAdsId.trim().toUpperCase(),
+        googleAdsPurchaseLabel: payload.tracking.googleAdsPurchaseLabel.trim(),
+      }
       form.value = pick(await adminSettingsService.save(payload))
       toast.success('Ajustes guardados. La tienda ya muestra los cambios')
     } catch (e) {

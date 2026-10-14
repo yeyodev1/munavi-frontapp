@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { PublicSettings } from '@/types'
 import { site } from '@/config/site'
 import { settingsService } from '@/services/settings.service'
+import { configureTracking } from '@/composables/useTracking'
 
 // Una sola petición por carga, aunque la pidan header, footer y home a la vez.
 let pending: Promise<void> | null = null
@@ -39,6 +40,8 @@ export const useSettingsStore = defineStore('settings', {
             // Sin ajustes se usa lo de site.ts; la tienda sigue vendiendo.
           })
           .finally(() => {
+            // Con o sin ajustes: libera los eventos en cola (sin IDs del panel usa los de .env).
+            configureTracking(this.settings?.tracking)
             this.loaded = true
             pending = null
           })

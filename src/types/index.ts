@@ -139,6 +139,14 @@ export interface CommunityPhoto {
   link: string
 }
 
+/** IDs públicos de medición, editables desde el panel. Vacío = no se carga esa herramienta. */
+export interface TrackingIds {
+  metaPixelId: string
+  ga4Id: string
+  googleAdsId: string
+  googleAdsPurchaseLabel: string
+}
+
 export interface PublicSettings {
   shipping: { flatRate: number; freeShippingThreshold: number | null; note: string }
   whatsapp: string
@@ -150,6 +158,7 @@ export interface PublicSettings {
   heroSlides: HeroSlide[]
   volumePromo: VolumePromo
   communityPhotos: CommunityPhoto[]
+  tracking: TrackingIds
 }
 
 export interface AdminSettings extends PublicSettings {

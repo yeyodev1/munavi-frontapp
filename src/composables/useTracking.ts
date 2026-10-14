@@ -1,10 +1,22 @@
 /**
- * Meta Pixel y GA4. Con VITE_META_PIXEL_ID / VITE_GA_ID vacíos no se carga
- * ningún script y cada función es un no-op: en desarrollo no se ensucian datos.
+ * Meta Pixel, GA4 y conversiones de Google Ads. Los IDs se cargan desde el panel
+ * (ajustes → tracking) para que Munavi los cambie sin redeploy; VITE_META_PIXEL_ID
+ * y VITE_GA_ID quedan como respaldo. Sin IDs no se carga ningún script y cada
+ * función es un no-op: en desarrollo no se ensucian datos.
+ *
+ * Los eventos que llegan antes de que respondan los ajustes se encolan y se
+ * mandan al configurar; así la primera vista de página no se pierde.
  * Los montos llegan en centavos y se envían en dólares.
  */
+import type { TrackingIds } from '@/types'
 
-type Fbq = ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean; version?: string; callMethod?: (...a: unknown[]) => void; push?: unknown }
+type Fbq = ((...args: unknown[]) => void) & {
+  queue?: unknown[]
+  loaded?: boolean
+  version?: string
+  callMethod?: (...a: unknown[]) => void
+  push?: unknown
+}
 type Gtag = (...args: unknown[]) => void
 
 declare global {
@@ -25,9 +37,30 @@ export interface TrackItem {
   quantity: number
 }
 
-const pixelId = (import.meta.env.VITE_META_PIXEL_ID as string) || ''
-const gaId = (import.meta.env.VITE_GA_ID as string) || ''
+let pixelId = ''
+let gaId = ''
+let adsId = ''
+let adsPurchaseLabel = ''
 let started = false
+let configured = false
+const queue: Array<() => void> = []
+
+/** Lo llama el store de ajustes al cargar (o al fallar, con null). Solo cuenta la primera vez. */
+export function configureTracking(ids: Partial<TrackingIds> | null | undefined) {
+  if (configured) return
+  configured = true
+  pixelId = ids?.metaPixelId || (import.meta.env.VITE_META_PIXEL_ID as string) || ''
+  gaId = ids?.ga4Id || (import.meta.env.VITE_GA_ID as string) || ''
+  adsId = ids?.googleAdsId || ''
+  adsPurchaseLabel = ids?.googleAdsPurchaseLabel || ''
+  init()
+  queue.splice(0).forEach((run) => run())
+}
+
+function whenReady(run: () => void) {
+  if (configured) run()
+  else queue.push(run)
+}
 
 function injectScript(src: string) {
   const script = document.createElement('script')
@@ -56,17 +89,20 @@ function init() {
     window.fbq('init', pixelId)
   }
 
-  if (gaId) {
+  // GA4 y Google Ads comparten gtag.js: un solo script, un config por cuenta.
+  const tagId = gaId || adsId
+  if (tagId) {
     window.dataLayer = window.dataLayer || []
     window.gtag = function gtag() {
       // gtag exige el objeto arguments, no un array
       // eslint-disable-next-line prefer-rest-params
       window.dataLayer!.push(arguments)
     }
-    injectScript(`https://www.googletagmanager.com/gtag/js?id=${gaId}`)
+    injectScript(`https://www.googletagmanager.com/gtag/js?id=${tagId}`)
     window.gtag('js', new Date())
     // Las vistas de página las mandamos a mano en cada cambio de ruta.
-    window.gtag('config', gaId, { send_page_view: false })
+    if (gaId) window.gtag('config', gaId, { send_page_view: false })
+    if (adsId) window.gtag('config', adsId)
   }
 }
 
@@ -77,8 +113,9 @@ function fb(event: string, data?: Record<string, unknown>) {
   if (pixelId && window.fbq) window.fbq('track', event, data)
 }
 
+// Sin GA4 los eventos de comercio igual alimentan el remarketing de Google Ads.
 function ga(event: string, data?: Record<string, unknown>) {
-  if (gaId && window.gtag) window.gtag('event', event, data)
+  if ((gaId || adsId) && window.gtag) window.gtag('event', event, data)
 }
 
 function gaItems(items: TrackItem[]) {
@@ -103,39 +140,54 @@ function fbPayload(items: TrackItem[], value: number) {
 }
 
 export function trackPageView(path = window.location.pathname) {
-  init()
-  fb('PageView')
-  ga('page_view', { page_path: path, page_location: window.location.href, page_title: document.title })
+  // Se leen ahora: si el evento espera en la cola, la URL ya podría ser otra.
+  const page = { page_path: path, page_location: window.location.href, page_title: document.title }
+  whenReady(() => {
+    fb('PageView')
+    ga('page_view', page)
+  })
 }
 
 export function trackViewContent(item: TrackItem) {
-  init()
-  const value = dollars(item.price)
-  fb('ViewContent', { ...fbPayload([item], value), content_name: item.name })
-  ga('view_item', { currency: 'USD', value, items: gaItems([item]) })
+  whenReady(() => {
+    const value = dollars(item.price)
+    fb('ViewContent', { ...fbPayload([item], value), content_name: item.name })
+    ga('view_item', { currency: 'USD', value, items: gaItems([item]) })
+  })
 }
 
 export function trackAddToCart(item: TrackItem) {
-  init()
-  const value = valueOf([item])
-  fb('AddToCart', { ...fbPayload([item], value), content_name: item.name })
-  ga('add_to_cart', { currency: 'USD', value, items: gaItems([item]) })
+  whenReady(() => {
+    const value = valueOf([item])
+    fb('AddToCart', { ...fbPayload([item], value), content_name: item.name })
+    ga('add_to_cart', { currency: 'USD', value, items: gaItems([item]) })
+  })
 }
 
 /** `total` en centavos; si no viene se calcula con los ítems. */
 export function trackInitiateCheckout(items: TrackItem[], total?: number) {
-  init()
-  const value = total != null ? dollars(total) : valueOf(items)
-  fb('InitiateCheckout', fbPayload(items, value))
-  ga('begin_checkout', { currency: 'USD', value, items: gaItems(items) })
+  whenReady(() => {
+    const value = total != null ? dollars(total) : valueOf(items)
+    fb('InitiateCheckout', fbPayload(items, value))
+    ga('begin_checkout', { currency: 'USD', value, items: gaItems(items) })
+  })
 }
 
 /** `total` en centavos. Llamar una sola vez por pedido (el que llama controla la idempotencia). */
 export function trackPurchase(orderNumber: string, total: number, items: TrackItem[]) {
-  init()
-  const value = dollars(total)
-  fb('Purchase', fbPayload(items, value))
-  ga('purchase', { transaction_id: orderNumber, currency: 'USD', value, items: gaItems(items) })
+  whenReady(() => {
+    const value = dollars(total)
+    fb('Purchase', fbPayload(items, value))
+    ga('purchase', { transaction_id: orderNumber, currency: 'USD', value, items: gaItems(items) })
+    if (adsId && adsPurchaseLabel && window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: `${adsId}/${adsPurchaseLabel}`,
+        value,
+        currency: 'USD',
+        transaction_id: orderNumber,
+      })
+    }
+  })
 }
 
 export function useTracking() {

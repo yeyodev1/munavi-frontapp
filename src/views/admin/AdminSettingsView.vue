@@ -8,6 +8,7 @@ import HeroSlidesEditor from '@/components/admin/HeroSlidesEditor.vue'
 import CommunityPhotosEditor from '@/components/admin/CommunityPhotosEditor.vue'
 import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
 import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
+import TrackingEditor from '@/components/admin/TrackingEditor.vue'
 import { useAdminSettings } from '@/composables/admin/useAdminSettings'
 import { money } from '@/composables/admin/money'
 
@@ -183,6 +184,14 @@ const shippingSummary = computed(() => {
         description="Fotos de clientas que se muestran en el inicio, en este orden. Máximo 12."
       >
         <CommunityPhotosEditor v-model="form.communityPhotos" />
+      </AdminCard>
+
+      <AdminCard
+        title="Medición de campañas"
+        icon="fa-solid fa-chart-line"
+        description="Conecta Meta Pixel, Google Analytics y Google Ads. Se aplica al guardar, sin tocar código."
+      >
+        <TrackingEditor v-model="form.tracking" />
       </AdminCard>
 
       <div class="settings__bar">

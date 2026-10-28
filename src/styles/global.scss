@@ -1,6 +1,26 @@
 // index.scss llega inyectado por Vite (additionalData) — no repetir @use aquí.
 // Este archivo se importa UNA sola vez desde main.ts: acá va todo lo que emite CSS.
 
+// Gotcha: la manuscrita del catálogo 2026 para "Te quiero vida". No está en
+// Google Fonts; el archivo lo entregó Munavi.
+@font-face {
+  font-family: 'Gotcha';
+  src: url('/fonts/gotcha-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Bochan Serif: la serif de la diseñadora para los títulos. No está en Google
+// Fonts; el archivo lo entregó Munavi (Drive "WEB MUNAVI" → tipografías).
+@font-face {
+  font-family: 'Bochan Serif';
+  src: url('/fonts/bochan-serif.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -37,7 +57,6 @@ body {
   font-size: $text-base;
   font-weight: 400;
   line-height: 1.65;
-  // Raleway trae números antiguos por defecto: en precios se ven saltados.
   font-variant-numeric: lining-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -50,7 +69,8 @@ h2,
 h3,
 h4 {
   font-family: $font-display;
-  font-weight: 700;
+  // Bochan Serif tiene un solo peso: con 700 el navegador inventa una negrita fea.
+  font-weight: 400;
   line-height: 1.12;
   text-wrap: balance;
 }

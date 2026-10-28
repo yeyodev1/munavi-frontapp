@@ -1,138 +1,119 @@
 <script setup lang="ts">
+// "Encuentra lo que tu cuerpo pide": las nueve necesidades con los íconos de
+// la diseñadora (un solo color, como pidió Nathalie el 27 oct 2026).
 import SectionHead from './SectionHead.vue'
-import { useCategories } from '@/composables/useCatalog'
+import { needs } from '@/config/needs'
 import { homeCopy } from '@/config/copy/home'
 
 const copy = homeCopy.categories
-const { categories, loading } = useCategories()
-
-// Sin foto, cada categoría toma un tono de la paleta para no verse vacía.
-const tones = ['#e8f2e2', '#fdf3d6', '#f2efd6', '#fde8d4', '#f3faf0']
-const icons: Record<string, string> = {
-  colagenos: 'fa-solid fa-spa',
-  vitaminas: 'fa-solid fa-capsules',
-  digestivos: 'fa-solid fa-leaf',
-  ninos: 'fa-solid fa-children',
-  'salud-hormonal': 'fa-solid fa-venus',
-}
 </script>
 
 <template>
-  <section v-if="loading || categories.length" class="cats">
+  <section class="needs">
     <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" link="/tienda" :link-label="copy.all" />
 
-    <div class="cats__list">
-      <template v-if="loading">
-        <span v-for="n in 5" :key="n" class="cats__item cats__item--loading" aria-hidden="true"></span>
-      </template>
-      <RouterLink
-        v-for="(cat, i) in categories"
-        v-else
-        :key="cat._id"
-        :to="`/tienda/${cat.slug}`"
-        class="cats__item"
-        :style="{ background: tones[i % tones.length] }"
-      >
-        <img v-if="cat.image" :src="cat.image.url" :alt="cat.name" loading="lazy" class="cats__img" />
-        <i v-else :class="icons[cat.slug] || 'fa-solid fa-heart'" class="cats__icon" aria-hidden="true"></i>
-        <span class="cats__name">{{ cat.name }}</span>
-      </RouterLink>
-    </div>
+    <ul class="needs__list">
+      <li v-for="need in needs" :key="need.slug" class="needs__item">
+        <RouterLink :to="{ path: '/tienda', query: { necesidad: need.slug } }" class="need">
+          <span class="need__disc">
+            <span class="need__icon" :style="{ '--icon': `url(${need.icon})` }" aria-hidden="true"></span>
+          </span>
+          <span class="need__name">{{ need.name }}</span>
+        </RouterLink>
+      </li>
+    </ul>
   </section>
 </template>
 
 <style scoped lang="scss">
-.cats {
+// Verde oliva de las piezas de la diseñadora (íconos y "Confianza en Munavi").
+$olive-brand: #7d895b;
+
+.needs {
   @include container;
   padding-top: $space-section;
 
+  // Fila con scroll en celular; en computador entran las nueve en una línea.
   &__list {
-    @include flex(row, stretch, flex-start, 0.75rem);
+    list-style: none;
+    @include flex(row, flex-start, flex-start, 0.9rem);
     overflow-x: auto;
-    margin-inline: -1.25rem;
-    padding: 0 1.25rem 0.5rem;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    margin-inline: -1.25rem;
+    padding: 0.4rem 1.25rem 0.8rem;
     scrollbar-width: none;
 
     @include from('md') {
-      @include flex-cards(150px, 1rem);
-      margin-inline: 0;
-      padding: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem 0.5rem;
       overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    @include from('lg') {
+      flex-wrap: nowrap;
+      justify-content: space-between;
     }
   }
 
   &__item {
-    position: relative;
-    flex: 0 0 42%;
-    aspect-ratio: 4 / 5;
+    flex: 0 0 6.2rem;
+    scroll-snap-align: start;
 
-    // Cuatro por fila con ancho fijo: así la última fila no se estira a lo ancho.
     @include from('md') {
-      flex: 0 0 calc(25% - 0.75rem);
-      aspect-ratio: 1;
+      flex: 0 0 7.2rem;
     }
 
     @include from('lg') {
-      aspect-ratio: 5 / 4;
+      flex: 1 1 0;
+      min-width: 0;
     }
-    border-radius: $radius-md;
-    overflow: hidden;
-    scroll-snap-align: start;
-    @include flex(column, center, center, 0.8rem);
-    @include transition;
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: $shadow-md;
-    }
-
-    &--loading {
-      background: linear-gradient(90deg, $sand 25%, $sage-soft 50%, $sand 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.6s linear infinite;
-    }
-  }
-
-  // Las fotos son envases sin fondo: se contienen sobre el tono para no recortarlos.
-  &__img {
-    position: absolute;
-    top: 0.9rem;
-    left: 0.9rem;
-    width: calc(100% - 1.8rem);
-    height: calc(100% - 4.4rem);
-    object-fit: contain;
-    filter: drop-shadow(0 10px 14px rgba($ink, 0.14));
-    transition: transform 0.5s $ease;
-  }
-
-  &__item:hover &__img {
-    transform: scale(1.05) translateY(-2px);
-  }
-
-  &__img + &__name {
-    position: absolute;
-    bottom: 0.7rem;
-    left: 0.7rem;
-    right: 0.7rem;
-    background: rgba($surface, 0.92);
-    padding: 0.5rem;
-    border-radius: $radius-pill;
-  }
-
-  &__icon {
-    font-size: 2rem;
-    color: $accent;
-  }
-
-  &__name {
-    font-family: $font-display;
-    font-size: $text-lg;
-    font-weight: 500;
-    text-align: center;
-    color: $ink;
-    padding-inline: 0.6rem;
   }
 }
 
+.need {
+  @include flex(column, center, flex-start, 0.7rem);
+  text-align: center;
+
+  &__disc {
+    @include flex(row, center, center);
+    width: 4.6rem;
+    height: 4.6rem;
+    border-radius: 50%;
+    background: $olive-brand;
+    box-shadow: $shadow-sm;
+    @include transition;
+
+    @include from('md') {
+      width: 5.4rem;
+      height: 5.4rem;
+    }
+  }
+
+  // El SVG entra como máscara: el color del ícono lo decide el CSS, no el archivo.
+  &__icon {
+    display: block;
+    width: 62%;
+    height: 62%;
+    background: $surface;
+    mask: var(--icon) center / contain no-repeat;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+  }
+
+  &:hover &__disc {
+    background: $accent;
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+  }
+
+  &__name {
+    font-size: $text-sm;
+    font-weight: 500;
+    line-height: 1.25;
+    color: $ink-soft;
+  }
+}
 </style>

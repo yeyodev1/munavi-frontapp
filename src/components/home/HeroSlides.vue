@@ -4,8 +4,11 @@ import { computed } from 'vue'
 import { useSettingsStore } from '@/stores/settings'
 import { useCarousel } from '@/composables/useCarousel'
 import { homeCopy } from '@/config/copy/home'
+import { site } from '@/config/site'
 
 const copy = homeCopy.hero
+// Solo la firma "Te quiero vida" va en manuscrita; cualquier otro título, en la serif.
+const isTagline = (title: string) => title.trim().toLowerCase() === site.tagline.toLowerCase()
 const settings = useSettingsStore()
 const slides = computed(() => settings.heroSlides.filter((s) => s.image?.url))
 const { index, go, next, prev, start, stop } = useCarousel(computed(() => slides.value.length))
@@ -60,7 +63,12 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
         </template>
         <div v-if="slide.title" class="hero__shade"></div>
         <div v-if="slide.title" class="hero__content">
-          <component :is="i === 0 ? 'h1' : 'h2'" class="hero__title">{{ slide.title }}</component>
+          <component
+            :is="i === 0 ? 'h1' : 'h2'"
+            class="hero__title"
+            :class="{ 'hero__title--script': isTagline(slide.title) }"
+            >{{ slide.title }}</component
+          >
           <p v-if="slide.subtitle" class="hero__text">{{ slide.subtitle }}</p>
           <template v-if="slide.ctaLabel && slide.ctaTo">
             <a
@@ -106,11 +114,16 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
   overflow: hidden;
   margin: 0.75rem;
   border-radius: $radius-lg;
-  min-height: min(72vh, 600px);
   background: $ink-brand;
+  // Proporción de las piezas de la diseñadora: 1080×1620 en celular y
+  // 1920×800 en computador. Así el banner se ve completo, sin recortes.
+  aspect-ratio: 2 / 3;
+  max-height: 86vh;
 
   @include from('md') {
     margin: 1rem 1.5rem 0;
+    aspect-ratio: 12 / 5;
+    max-height: none;
   }
 
   &__track,
@@ -119,14 +132,10 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     inset: 0;
   }
 
-  // Como el mockup de Nathalie: texto centrado sobre la foto clara. En celular
-  // va arriba y en computador al centro; la diseñadora deja esas zonas libres.
+  // Los banners vienen sin texto y con la parte superior libre (en celular la
+  // mitad de arriba, en computador la franja alta): el texto va siempre arriba.
   &__slide {
     @include flex(row, flex-start, center);
-
-    @include from('md') {
-      align-items: center;
-    }
   }
 
   &__bg {
@@ -149,7 +158,7 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     background: radial-gradient(ellipse 60% 45% at 50% 22%, rgba($surface, 0.7), transparent 70%);
 
     @include from('md') {
-      background: radial-gradient(ellipse 34% 55% at 50% 50%, rgba($surface, 0.6), transparent 75%);
+      background: radial-gradient(ellipse 36% 60% at 50% 18%, rgba($surface, 0.62), transparent 75%);
     }
   }
 
@@ -157,17 +166,23 @@ const isExternal = (to: string) => /^https?:\/\//.test(to)
     position: relative;
     z-index: 1;
     @include flex(column, center, flex-start, 0.9rem);
-    padding: $space-xl 1.5rem 4.5rem;
+    padding: $space-lg 1.5rem 4.5rem;
     max-width: 760px;
     text-align: center;
+
+    @include from('md') {
+      padding-top: clamp(1.5rem, 4vw, 3.5rem);
+      gap: 0.7rem;
+    }
   }
 
   &__title {
-    font-family: $font-script;
-    font-weight: 400;
-    font-size: clamp(2.6rem, 1.8rem + 4vw, 4.6rem);
-    line-height: 1.05;
+    @include display(clamp(2rem, 1.4rem + 3vw, 3.6rem));
     color: $accent-deep;
+
+    &--script {
+      @include script(clamp(2.6rem, 1.8rem + 4vw, 4.6rem), $accent-deep);
+    }
   }
 
   &__text {

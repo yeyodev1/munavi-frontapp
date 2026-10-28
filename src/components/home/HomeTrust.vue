@@ -7,17 +7,27 @@ const copy = homeCopy.trust
 
 <template>
   <section class="trust">
-    <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" />
+    <div class="trust__band">
+      <!-- Fondo "Confianza Munavi" de la diseñadora: 1920×800 y 1080×1620 -->
+      <picture class="trust__bg" aria-hidden="true">
+        <source media="(max-width: 767px)" srcset="/brand/confianza-mobile.webp" />
+        <img src="/brand/confianza-desktop.webp" alt="" loading="lazy" />
+      </picture>
 
-    <ul class="trust__list">
-      <li v-for="item in copy.items" :key="item.title" class="trust__item">
-        <span class="trust__icon"><i :class="item.icon" aria-hidden="true"></i></span>
-        <div>
-          <h3 class="trust__title">{{ item.title }}</h3>
-          <p class="trust__text">{{ item.text }}</p>
-        </div>
-      </li>
-    </ul>
+      <div class="trust__inner">
+        <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" />
+
+        <ul class="trust__list">
+          <li v-for="item in copy.items" :key="item.title" class="trust__item">
+            <span class="trust__icon"><i :class="item.icon" aria-hidden="true"></i></span>
+            <div>
+              <h3 class="trust__title">{{ item.title }}</h3>
+              <p class="trust__text">{{ item.text }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -25,6 +35,34 @@ const copy = homeCopy.trust
 .trust {
   @include container;
   padding-top: $space-section;
+
+  &__band {
+    position: relative;
+    overflow: hidden;
+    border-radius: $radius-lg;
+    background: #f4efe4;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    padding: $space-lg 1.25rem;
+
+    @include from('md') {
+      padding: $space-xl 2.5rem;
+    }
+  }
 
   &__list {
     list-style: none;
@@ -39,8 +77,9 @@ const copy = homeCopy.trust
     @include flex(row, flex-start, flex-start, 0.9rem);
     padding: 1.1rem 1.2rem;
     border-radius: $radius-md;
-    background: $surface;
-    border: 1px solid rgba($line, 0.8);
+    background: rgba($surface, 0.86);
+    border: 1px solid rgba($surface, 0.9);
+    backdrop-filter: blur(6px);
 
     @include from('lg') {
       flex-direction: column;

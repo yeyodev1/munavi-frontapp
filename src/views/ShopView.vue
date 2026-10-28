@@ -8,12 +8,12 @@ import { useShop } from '@/composables/useShop'
 import { shopCopy as copy } from '@/config/copy/product'
 
 const {
-  categories, category, current, q, page, pages, items, total, loading, error,
+  categories, category, current, need, q, page, pages, items, total, loading, error,
   reload, search, clearSearch, goToPage, categoryLink,
 } = useShop()
 
-const title = computed(() => current.value?.name ?? copy.title)
-const text = computed(() => current.value?.description || copy.text)
+const title = computed(() => need.value?.name ?? current.value?.name ?? copy.title)
+const text = computed(() => need.value?.description || current.value?.description || copy.text)
 const emptyTitle = computed(() => (category.value && !q.value ? copy.emptyCategoryTitle : copy.emptyTitle))
 const emptyText = computed(() => (category.value && !q.value ? copy.emptyCategoryText : copy.emptyText))
 </script>
@@ -54,7 +54,7 @@ const emptyText = computed(() => (category.value && !q.value ? copy.emptyCategor
       class="shop__state"
     >
       <button v-if="q" class="btn btn--ghost" @click="clearSearch">{{ copy.clearSearch }}</button>
-      <RouterLink v-if="category" to="/tienda" class="btn btn--primary">{{ copy.seeAll }}</RouterLink>
+      <RouterLink v-if="category || need" to="/tienda" class="btn btn--primary">{{ copy.seeAll }}</RouterLink>
     </EmptyState>
 
     <template v-else>

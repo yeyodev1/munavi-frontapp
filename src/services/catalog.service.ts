@@ -3,6 +3,8 @@ import type { Category, Paginated, Product, ProductCard } from '@/types'
 
 export interface ProductQuery {
   category?: string
+  /** Lista fija de productos (las "necesidades" del inicio). */
+  slugs?: string[]
   featured?: boolean
   bestSeller?: boolean
   newArrival?: boolean
@@ -20,6 +22,7 @@ class CatalogService extends APIBase {
   async getProducts(query: ProductQuery = {}): Promise<Paginated<ProductCard>> {
     const params: Record<string, string | number> = {}
     if (query.category) params.category = query.category
+    if (query.slugs?.length) params.slugs = query.slugs.join(',')
     if (query.featured) params.featured = 1
     if (query.bestSeller) params.bestSeller = 1
     if (query.newArrival) params.newArrival = 'true'

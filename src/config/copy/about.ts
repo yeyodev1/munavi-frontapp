@@ -8,6 +8,7 @@ export const aboutCopy = {
       'Lo que nos diferencia es la variedad: colágenos en muchos sabores, calostro infantil en cuatro sabores que los peques disfrutan y creatina sin sabor, blueberry o fruit punch.',
       'Colágenos, vitaminas, digestivos, salud hormonal y una línea para niños: todo pensado para que cuidarte sea parte de tu día.',
     ],
+    photoAlt: 'Laboratorio de Munavi: materias primas en proceso de formulación',
   },
   stats: [
     { value: '7', label: 'años de experiencia' },

@@ -10,8 +10,8 @@ export const site = {
     'Suplementos Munavi: colágenos, vitaminas y bienestar para toda la familia. Hechos en Ecuador con materias primas importadas. Envíos a todo el país.',
   url: 'https://munavi.ec',
   email: 'hola@munavi.ec',
-  // Solo dígitos con código de país. Provisional: confirmar con Nathalie el número de ventas.
-  whatsapp: '593992658166',
+  // Solo dígitos con código de país. Respaldo si Ajustes no trae número (Nathalie, 15 oct 2026).
+  whatsapp: '593998859352',
   social: {
     instagram: '',
     facebook: '',

@@ -18,12 +18,20 @@ const settings = useSettingsStore()
           <h2 class="about__h2">{{ copy.story.title }}</h2>
           <p v-for="p in copy.story.paragraphs" :key="p">{{ p }}</p>
         </div>
-        <ul class="about__stats">
-          <li v-for="stat in copy.stats" :key="stat.label">
-            <strong>{{ stat.value }}</strong>
-            <span>{{ stat.label }}</span>
-          </li>
-        </ul>
+        <div class="about__story-side">
+          <img
+            src="/brand/laboratorio.webp"
+            :alt="copy.story.photoAlt"
+            class="about__photo"
+            loading="lazy"
+          />
+          <ul class="about__stats">
+            <li v-for="stat in copy.stats" :key="stat.label">
+              <strong>{{ stat.value }}</strong>
+              <span>{{ stat.label }}</span>
+            </li>
+          </ul>
+        </div>
       </section>
 
       <section class="about__pillars">
@@ -95,8 +103,20 @@ const settings = useSettingsStore()
     }
   }
 
-  &__stats {
+  &__story-side {
     flex: 1 1 45%;
+    @include flex(column, stretch, flex-start, 0.75rem);
+  }
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
+  }
+
+  &__stats {
     list-style: none;
     @include flex-cards(140px, 0.75rem);
 

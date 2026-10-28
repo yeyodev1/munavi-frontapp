@@ -204,4 +204,13 @@ const visible = computed(() => settings.volumePromo.isActive && tiers.value.leng
     }
   }
 }
+
+// Fondo verde con hojas que entregó la diseñadora para esta franja (1920×800).
+.vpromo__band {
+  @include from('md') {
+    background-image: url('/brand/fondo-verde.webp');
+    background-size: cover;
+    background-position: center;
+  }
+}
 </style>

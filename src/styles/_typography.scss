@@ -36,7 +36,7 @@ $ease: cubic-bezier(0.22, 1, 0.36, 1);
   color: $accent-deep;
 }
 
-// Bochan Serif viene en un solo peso: el parámetro se conserva por compatibilidad,
+// Mathilga viene en un solo peso: el parámetro se conserva por compatibilidad,
 // pero los títulos siempre van en 400 para que el navegador no simule negrita.
 @mixin display($size: $display-md, $weight: 400) {
   font-family: $font-display;

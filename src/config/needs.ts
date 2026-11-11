@@ -6,6 +6,8 @@
  */
 export interface Need {
   slug: string
+  /** Fondo del círculo: propuesta 3 de la diseñadora (colores de la marca). */
+  color: string
   name: string
   description: string
   icon: string
@@ -17,6 +19,7 @@ const icon = (name: string) => `/brand/necesidades/${name}.svg`
 export const needs: Need[] = [
   {
     slug: 'belleza',
+    color: '#3e593a',
     name: 'Belleza',
     description: 'Colágenos para una piel firme, cabello sano y uñas fuertes.',
     icon: icon('belleza'),
@@ -24,13 +27,21 @@ export const needs: Need[] = [
   },
   {
     slug: 'inmunidad',
+    color: '#7d895b',
     name: 'Inmunidad',
     description: 'Calostro, propóleo y vitaminas para reforzar tus defensas.',
     icon: icon('inmunidad'),
-    products: ['calostrovit-advanced', 'calostrovit-polvo', 'defensevit', 'propoleo', 'multivitaminico'],
+    products: [
+      'calostrovit-advanced',
+      'calostrovit-polvo',
+      'defensevit',
+      'propoleo',
+      'multivitaminico',
+    ],
   },
   {
     slug: 'salud-femenina',
+    color: '#8b9445',
     name: 'Salud femenina',
     description: 'Apoyo para el equilibrio hormonal y el ciclo menstrual.',
     icon: icon('salud-femenina'),
@@ -38,6 +49,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'huesos',
+    color: '#c3bca0',
     name: 'Huesos',
     description: 'Calcio bien dirigido: vitamina D3 + K2, magnesio y colágeno.',
     icon: icon('huesos'),
@@ -51,6 +63,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'manejo-del-estres',
+    color: '#e5bd5c',
     name: 'Manejo del estrés',
     description: 'Magnesio y vitaminas del complejo B para descansar y rendir mejor.',
     icon: icon('manejo-del-estres'),
@@ -58,6 +71,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'digestion',
+    color: '#eaad32',
     name: 'Digestión',
     description: 'Fibra y superalimentos para una digestión ligera.',
     icon: icon('digestion'),
@@ -65,6 +79,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'rendimiento-deportivo',
+    color: '#a3754f',
     name: 'Rendimiento deportivo',
     description: 'Energía, fuerza y recuperación para tus entrenamientos.',
     icon: icon('rendimiento-deportivo'),
@@ -72,6 +87,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'higado',
+    color: '#d7662a',
     name: 'Hígado',
     description: 'Cardo mariano, colina y coenzima Q10 para cuidar tu hígado.',
     icon: icon('higado'),
@@ -79,6 +95,7 @@ export const needs: Need[] = [
   },
   {
     slug: 'respiracion',
+    color: '#813c15',
     name: 'Respiración',
     description: 'Propóleo y vitamina C para las vías respiratorias.',
     icon: icon('respiracion'),

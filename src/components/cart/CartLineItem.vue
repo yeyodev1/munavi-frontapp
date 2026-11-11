@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import { MAX_QTY, useCartStore, type CartItem } from '@/stores/cart'
-import { hasPrice, money, tierFor } from '@/utils/price'
+import { bundleFor, bundleLineTotal, hasPrice, money } from '@/utils/price'
 import type { QuoteItem } from '@/types'
 import { cartCopy as copy, checkoutCopy } from '@/config/copy/checkout'
 import { productCopy } from '@/config/copy/product'
@@ -21,8 +21,12 @@ const qty = computed({
   set: (value: number) => cart.setQty(props.item.productId, props.item.variantSlug, value),
 })
 
-const tier = computed(() => tierFor(props.item.snapshot.volumeDiscounts, props.item.quantity))
-const showVariant = computed(() => props.item.variantSlug !== 'unico' && !!props.item.snapshot.variantName)
+const bundle = computed(() =>
+  bundleFor(props.item.snapshot.bundlePrices ?? [], cart.unitsOf(props.item.productId)),
+)
+const showVariant = computed(
+  () => props.item.variantSlug !== 'unico' && !!props.item.snapshot.variantName,
+)
 // Estimado con tarjeta para pintar; el total real lo da la cotización del servidor.
 // Mientras llega la nueva cotización la vieja no sirve: trae otra cantidad.
 const fresh = computed(() =>
@@ -31,7 +35,9 @@ const fresh = computed(() =>
 const lineTotal = computed(() => {
   if (fresh.value) return fresh.value.lineTotal
   const subtotal = props.item.snapshot.prices.card * props.item.quantity
-  return subtotal - (tier.value ? Math.round((subtotal * tier.value.percent) / 100) : 0)
+  return bundle.value
+    ? Math.min(subtotal, bundleLineTotal(bundle.value, props.item.quantity))
+    : subtotal
 })
 // La cotización ya trae el mayor entre el descuento del producto y el del pedido.
 const tierText = computed(() => {
@@ -39,14 +45,19 @@ const tierText = computed(() => {
     const p = fresh.value.volumeDiscountPercent
     return p ? checkoutCopy.summary.volumeOff(p) : ''
   }
-  return tier.value ? productCopy.tier(tier.value.minQty, tier.value.percent) : ''
+  return bundle.value ? productCopy.bundleApplied(bundle.value.qty) : ''
 })
 </script>
 
 <template>
   <article class="line" :class="{ 'line--compact': compact }">
     <RouterLink :to="`/producto/${item.slug}`" class="line__media" @click="emit('navigate')">
-      <img v-if="item.snapshot.image" :src="item.snapshot.image" :alt="item.snapshot.name" loading="lazy" />
+      <img
+        v-if="item.snapshot.image"
+        :src="item.snapshot.image"
+        :alt="item.snapshot.name"
+        loading="lazy"
+      />
       <i v-else class="fa-solid fa-image" aria-hidden="true"></i>
     </RouterLink>
 
@@ -71,7 +82,9 @@ const tierText = computed(() => {
       <div class="line__foot">
         <QuantityStepper v-model="qty" :max="MAX_QTY" class="line__qty" />
         <div class="line__price">
-          <strong>{{ hasPrice(item.snapshot.prices) ? money(lineTotal) : productCopy.noPrice }}</strong>
+          <strong>{{
+            hasPrice(item.snapshot.prices) ? money(lineTotal) : productCopy.noPrice
+          }}</strong>
           <span v-if="tierText" class="line__tier">{{ tierText }}</span>
         </div>
       </div>

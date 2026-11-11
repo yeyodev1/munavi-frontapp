@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ProductGallery from '@/components/product/ProductGallery.vue'
 import PriceBlock from '@/components/product/PriceBlock.vue'
-import VolumeTiers from '@/components/product/VolumeTiers.vue'
+import BundleOffers from '@/components/product/BundleOffers.vue'
 import VolumePromoTiers from '@/components/product/VolumePromoTiers.vue'
 import FlavorPicker from '@/components/product/FlavorPicker.vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
@@ -20,13 +20,34 @@ const settings = useSettingsStore()
 const slug = computed(() => String(route.params.slug ?? ''))
 
 const {
-  product, loading, error, variants, variant, variantSlug, hasFlavors, inStock, priced, maxQty,
-  quantity, images, activeImage, categorySlug, categoryName, load, add, buyNow,
+  product,
+  loading,
+  error,
+  variants,
+  variant,
+  variantSlug,
+  hasFlavors,
+  inStock,
+  priced,
+  maxQty,
+  quantity,
+  images,
+  activeImage,
+  categorySlug,
+  categoryName,
+  load,
+  add,
+  buyNow,
 } = useProductDetail(slug)
 
-const askLink = computed(() => whatsappLink(copy.askMessage(product.value?.name ?? ''), settings.whatsapp))
+const askLink = computed(() =>
+  whatsappLink(copy.askMessage(product.value?.name ?? ''), settings.whatsapp),
+)
 const askPriceLink = computed(() =>
-  whatsappLink(productCopy.askPriceMessage(product.value?.name ?? '', variant.value?.name), settings.whatsapp),
+  whatsappLink(
+    productCopy.askPriceMessage(product.value?.name ?? '', variant.value?.name),
+    settings.whatsapp,
+  ),
 )
 </script>
 
@@ -50,7 +71,13 @@ const askPriceLink = computed(() =>
       <RouterLink to="/tienda" class="btn btn--primary">{{ copy.toShop }}</RouterLink>
     </EmptyState>
 
-    <EmptyState v-else-if="error || !product" tone="error" icon="fa-solid fa-plug-circle-xmark" :title="copy.errorTitle" :text="error?.message">
+    <EmptyState
+      v-else-if="error || !product"
+      tone="error"
+      icon="fa-solid fa-plug-circle-xmark"
+      :title="copy.errorTitle"
+      :text="error?.message"
+    >
       <button class="btn btn--primary" @click="load">{{ copy.retry }}</button>
     </EmptyState>
 
@@ -64,7 +91,12 @@ const askPriceLink = computed(() =>
       </nav>
 
       <div class="pdp__top">
-        <ProductGallery v-model="activeImage" :images="images" :alt="product.name" class="pdp__gallery" />
+        <ProductGallery
+          v-model="activeImage"
+          :images="images"
+          :alt="product.name"
+          class="pdp__gallery"
+        />
 
         <div class="pdp__info">
           <p v-if="categoryName" class="pdp__eyebrow">{{ categoryName }}</p>
@@ -72,13 +104,29 @@ const askPriceLink = computed(() =>
           <p v-if="product.presentation" class="pdp__presentation">{{ product.presentation }}</p>
           <p v-if="product.shortDescription" class="pdp__short">{{ product.shortDescription }}</p>
 
-          <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" size="lg" />
-          <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" :quantity="quantity" />
+          <PriceBlock
+            :prices="product.prices"
+            :compare-at-price="product.compareAtPrice"
+            size="lg"
+          />
+          <BundleOffers
+            v-if="priced"
+            :bundles="product.bundlePrices"
+            :unit-price="product.prices.card"
+            :quantity="quantity"
+            @select="quantity = Math.min($event, maxQty)"
+          />
           <VolumePromoTiers v-if="priced" :participates="product.inVolumePromo !== false" />
 
           <FlavorPicker v-if="hasFlavors" v-model="variantSlug" :variants="variants" />
 
-          <a v-if="!priced" :href="askPriceLink" target="_blank" rel="noopener" class="btn btn--whatsapp pdp__now">
+          <a
+            v-if="!priced"
+            :href="askPriceLink"
+            target="_blank"
+            rel="noopener"
+            class="btn btn--whatsapp pdp__now"
+          >
             <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
             {{ productCopy.askPrice }}
           </a>
@@ -111,7 +159,12 @@ const askPriceLink = computed(() =>
 
       <ProductDetails :product="product" class="pdp__details" />
 
-      <ProductRelated v-if="categorySlug" :key="product._id" :category="categorySlug" :exclude-id="product._id" />
+      <ProductRelated
+        v-if="categorySlug"
+        :key="product._id"
+        :category="categorySlug"
+        :exclude-id="product._id"
+      />
     </template>
   </div>
 </template>
@@ -269,5 +322,4 @@ const askPriceLink = computed(() =>
     }
   }
 }
-
 </style>

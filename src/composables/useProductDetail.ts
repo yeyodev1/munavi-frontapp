@@ -56,7 +56,8 @@ export function useProductDetail(slug: Ref<string>) {
       const data = await catalogService.getProduct(slug.value)
       product.value = data
       const active = data.variants.filter((v) => v.isActive)
-      const first = active.find((v) => v.inStock !== false && (v.stock == null || v.stock > 0)) ?? active[0]
+      const first =
+        active.find((v) => v.inStock !== false && (v.stock == null || v.stock > 0)) ?? active[0]
       variantSlug.value = first?.slug ?? ''
       quantity.value = 1
       activeImage.value = 0
@@ -86,7 +87,7 @@ export function useProductDetail(slug: Ref<string>) {
           variantName: v.name,
           image: v.image?.url || p.images[0]?.url || '',
           prices: p.prices,
-          volumeDiscounts: p.volumeDiscounts,
+          bundlePrices: p.bundlePrices,
         },
       },
       quantity.value,

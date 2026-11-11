@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// "Encuentra lo que tu cuerpo pide": las nueve necesidades con los íconos de
-// la diseñadora (un solo color, como pidió Nathalie el 27 oct 2026).
+// "Encuentra lo que tu cuerpo pide": las nueve necesidades con los íconos de la
+// diseñadora, grandes y con los fondos de su propuesta 3 (pedido del 5 nov 2026).
 import SectionHead from './SectionHead.vue'
 import { needs } from '@/config/needs'
 import { homeCopy } from '@/config/copy/home'
@@ -10,13 +10,22 @@ const copy = homeCopy.categories
 
 <template>
   <section class="needs">
-    <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" link="/tienda" :link-label="copy.all" />
+    <SectionHead
+      :eyebrow="copy.eyebrow"
+      :title="copy.title"
+      link="/tienda"
+      :link-label="copy.all"
+    />
 
     <ul class="needs__list">
       <li v-for="need in needs" :key="need.slug" class="needs__item">
         <RouterLink :to="{ path: '/tienda', query: { necesidad: need.slug } }" class="need">
-          <span class="need__disc">
-            <span class="need__icon" :style="{ '--icon': `url(${need.icon})` }" aria-hidden="true"></span>
+          <span class="need__disc" :style="{ background: need.color }">
+            <span
+              class="need__icon"
+              :style="{ '--icon': `url(${need.icon})` }"
+              aria-hidden="true"
+            ></span>
           </span>
           <span class="need__name">{{ need.name }}</span>
         </RouterLink>
@@ -26,31 +35,19 @@ const copy = homeCopy.categories
 </template>
 
 <style scoped lang="scss">
-// Verde oliva de las piezas de la diseñadora (íconos y "Confianza en Munavi").
-$olive-brand: #7d895b;
-
 .needs {
   @include container;
   padding-top: $space-section;
 
-  // Fila con scroll en celular; en computador entran las nueve en una línea.
+  // Las nueve a la vista: 3×3 en celular, y en computador en una sola línea.
   &__list {
     list-style: none;
-    @include flex(row, flex-start, flex-start, 0.9rem);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1.25rem;
-    margin-inline: -1.25rem;
-    padding: 0.4rem 1.25rem 0.8rem;
-    scrollbar-width: none;
+    @include flex(row, flex-start, center, 1.4rem 0.5rem);
+    flex-wrap: wrap;
+    padding-block: 0.4rem 0.8rem;
 
     @include from('md') {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.2rem 0.5rem;
-      overflow: visible;
-      margin-inline: 0;
-      padding-inline: 0;
+      gap: 1.6rem 0.5rem;
     }
 
     @include from('lg') {
@@ -60,11 +57,10 @@ $olive-brand: #7d895b;
   }
 
   &__item {
-    flex: 0 0 6.2rem;
-    scroll-snap-align: start;
+    flex: 0 0 calc(33.333% - 0.34rem);
 
     @include from('md') {
-      flex: 0 0 7.2rem;
+      flex: 0 0 8.5rem;
     }
 
     @include from('lg') {
@@ -80,40 +76,47 @@ $olive-brand: #7d895b;
 
   &__disc {
     @include flex(row, center, center);
-    width: 4.6rem;
-    height: 4.6rem;
+    width: 6rem;
+    height: 6rem;
     border-radius: 50%;
-    background: $olive-brand;
     box-shadow: $shadow-sm;
     @include transition;
 
     @include from('md') {
-      width: 5.4rem;
-      height: 5.4rem;
+      width: 7.5rem;
+      height: 7.5rem;
+    }
+
+    @include from('xl') {
+      width: 8.25rem;
+      height: 8.25rem;
     }
   }
 
   // El SVG entra como máscara: el color del ícono lo decide el CSS, no el archivo.
   &__icon {
     display: block;
-    width: 62%;
-    height: 62%;
+    width: 64%;
+    height: 64%;
     background: $surface;
     mask: var(--icon) center / contain no-repeat;
     -webkit-mask: var(--icon) center / contain no-repeat;
   }
 
   &:hover &__disc {
-    background: $accent;
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.03);
     box-shadow: $shadow-md;
   }
 
   &__name {
     font-size: $text-sm;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.25;
-    color: $ink-soft;
+    color: $ink;
+
+    @include from('md') {
+      font-size: $text-base;
+    }
   }
 }
 </style>

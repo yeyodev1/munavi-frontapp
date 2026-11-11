@@ -65,13 +65,23 @@ function toggleSearch() {
         </nav>
 
         <div class="header__actions">
-          <button class="header__icon" :aria-label="searchOpen ? copy.closeSearch : copy.openSearch" @click="toggleSearch">
+          <button
+            class="header__icon"
+            :aria-label="searchOpen ? copy.closeSearch : copy.openSearch"
+            @click="toggleSearch"
+          >
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
           </button>
-          <button class="header__icon header__cart" :aria-label="`${copy.cart} (${cart.count})`" @click="cart.open()">
+          <button
+            class="header__icon header__cart"
+            :aria-label="`${copy.cart} (${cart.count})`"
+            @click="cart.open()"
+          >
             <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
             <Transition name="fade">
-              <span v-if="cart.count" :key="cart.count" class="header__count">{{ cart.count }}</span>
+              <span v-if="cart.count" :key="cart.count" class="header__count">{{
+                cart.count
+              }}</span>
             </Transition>
           </button>
         </div>
@@ -87,7 +97,12 @@ function toggleSearch() {
           </RouterLink>
           <div class="header__mhelp">
             <p>{{ copy.menuHelp }}</p>
-            <a :href="whatsappLink(undefined, settings.whatsapp)" target="_blank" rel="noopener" class="btn btn--primary">
+            <a
+              :href="whatsappLink(undefined, settings.whatsapp)"
+              target="_blank"
+              rel="noopener"
+              class="btn btn--primary"
+            >
               <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> {{ copy.menuWhatsapp }}
             </a>
           </div>
@@ -131,14 +146,23 @@ function toggleSearch() {
   &__inner {
     @include container;
     @include flex(row, center, space-between, 0.5rem);
-    min-height: 4rem;
+    min-height: 4.5rem;
+
+    @include from('md') {
+      min-height: 5.75rem;
+    }
   }
 
+  // Más presencia de marca (pedido del 5 nov 2026): el logo manda en la cabecera.
   &__logo {
     display: inline-flex;
-    font-size: 1.85rem;
+    font-size: 2.3rem;
     color: $accent;
     line-height: 1;
+
+    @include from('md') {
+      font-size: 3rem;
+    }
 
     @include until('md') {
       position: absolute;
@@ -151,15 +175,15 @@ function toggleSearch() {
     display: none;
 
     @include from('md') {
-      @include flex(row, center, center, 2rem);
+      @include flex(row, center, center, 2.5rem);
       flex: 1;
     }
   }
 
   &__link {
-    font-size: $text-sm;
-    font-weight: 500;
-    color: $ink-soft;
+    font-size: $text-base;
+    font-weight: 600;
+    color: $ink;
     padding-block: 0.4rem;
     border-bottom: 2px solid transparent;
     @include transition;
@@ -178,10 +202,10 @@ function toggleSearch() {
   &__icon {
     position: relative;
     @include flex(row, center, center);
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.9rem;
+    height: 2.9rem;
     border-radius: 50%;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: $ink;
     @include transition(background);
 

@@ -5,9 +5,11 @@ import AdminCard from '@/components/admin/AdminCard.vue'
 import AdminField from '@/components/admin/AdminField.vue'
 import AdminEmpty from '@/components/admin/AdminEmpty.vue'
 import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
+import MoneyInput from '@/components/admin/MoneyInput.vue'
 import BaseModal from '@/components/ui/BaseModal.vue'
 import { useAdminCoupons } from '@/composables/admin/useAdminCoupons'
 import { formatDate } from '@/utils/format'
+import { money } from '@/composables/admin/money'
 import type { Coupon } from '@/types'
 
 const { items, subscribeCode, draft, loading, busy, create, toggle, remove, isExpired } =
@@ -54,6 +56,16 @@ async function confirmDelete() {
         <AdminField label="Vence el (opcional)" for="c-expires" hint="Vacío = no vence">
           <input id="c-expires" v-model="draft.expiresAt" type="date" />
         </AdminField>
+        <AdminField label="Compra mínima (opcional)" for="c-min" hint="Vacío = sin mínimo">
+          <MoneyInput id="c-min" v-model="draft.minSubtotal" nullable placeholder="Sin mínimo" />
+        </AdminField>
+        <div class="coupons__toggles">
+          <ToggleSwitch v-model="draft.firstPurchaseOnly" label="Solo primera compra" />
+          <ToggleSwitch
+            v-model="draft.regularPriceOnly"
+            label="Solo productos a precio regular (no se acumula con packs)"
+          />
+        </div>
         <div class="coupons__submit">
           <button class="btn btn--primary" type="submit" :disabled="busy">
             <i class="fa-solid fa-plus"></i> Crear cupón
@@ -85,6 +97,16 @@ async function confirmDelete() {
                 ? `${isExpired(coupon) ? 'Venció' : 'Vence'} el ${formatDate(coupon.expiresAt)}`
                 : 'Sin vencimiento'
             }}
+          </p>
+          <p
+            v-if="coupon.firstPurchaseOnly || coupon.regularPriceOnly || coupon.minSubtotal"
+            class="coupons__chips"
+          >
+            <span v-if="coupon.firstPurchaseOnly" class="coupons__chip">Solo primera compra</span>
+            <span v-if="coupon.regularPriceOnly" class="coupons__chip">Sin packs</span>
+            <span v-if="coupon.minSubtotal" class="coupons__chip">
+              Mínimo {{ money(coupon.minSubtotal) }}
+            </span>
           </p>
           <p v-if="coupon.code === subscribeCode" class="coupons__tag">
             <i class="fa-solid fa-envelope"></i> Se regala a quien se suscribe
@@ -136,6 +158,11 @@ async function confirmDelete() {
     text-transform: uppercase;
   }
 
+  &__toggles {
+    @include flex(column, stretch, flex-start, 0.6rem);
+    flex: 1 1 100%;
+  }
+
   &__submit {
     @include flex(row, flex-end, flex-start);
     flex: 1 1 100%;
@@ -179,6 +206,21 @@ async function confirmDelete() {
   &__meta {
     font-size: $text-xs;
     color: $ink-muted;
+  }
+
+  &__chips {
+    @include flex(row, center, flex-start, 0.3rem);
+    flex-wrap: wrap;
+    margin-top: 0.3rem;
+  }
+
+  &__chip {
+    padding: 0.1rem 0.5rem;
+    border-radius: $radius-pill;
+    background: $sand;
+    color: $ink-soft;
+    font-size: $text-xs;
+    font-weight: 600;
   }
 
   &__tag {

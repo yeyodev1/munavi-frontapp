@@ -1,5 +1,11 @@
 // Textos del carrito, checkout, pago con Payphone y consulta de pedidos.
 export const cartCopy = {
+  // 12 o más unidades surtidas: precio de emprendedor o distribuidor por WhatsApp.
+  wholesaleTitle: '¿Compras para tu negocio?',
+  wholesaleText: 'Desde 12 unidades surtidas tenemos precios para emprendedores y distribuidores.',
+  wholesaleCta: 'Pedir precio por WhatsApp',
+  wholesaleMessage: (units: number) =>
+    `Hola Munavi, quiero comprar ${units} unidades surtidas. ¿Me pueden dar el precio para emprendedores o distribuidores?`,
   title: 'Tu carrito',
   close: 'Cerrar carrito',
   remove: 'Quitar',
@@ -83,7 +89,7 @@ export const checkoutCopy = {
     free: 'Gratis',
     total: 'Total',
     qty: (n: number) => `Cantidad: ${n}`,
-    volumeOff: (p: number) => `-${p}% por volumen`,
+    volumeOff: (p: number) => `Compra más, ahorra más: -${p.toLocaleString('es-EC')}\u00a0%`,
   },
   pay: (amount: string) => `Pagar ${amount}`,
   confirm: 'Confirmar pedido',
@@ -111,7 +117,8 @@ export const payphoneCopy = {
 
 export const paymentResultCopy = {
   missingTitle: 'Faltan los datos del pago',
-  missingText: 'Este enlace no trae la información de la transacción. Si ya pagaste, consulta tu pedido con tu número y correo.',
+  missingText:
+    'Este enlace no trae la información de la transacción. Si ya pagaste, consulta tu pedido con tu número y correo.',
   lookup: 'Consultar mi pedido',
   confirmingTitle: 'Confirmando tu pago',
   confirmingText: 'No cierres esta página, tarda solo unos segundos.',
@@ -119,14 +126,18 @@ export const paymentResultCopy = {
   approvedText: 'Te enviamos un correo con el detalle de tu pedido.',
   orderNumber: 'Número de pedido',
   failedTitle: 'Tu pago no se completó',
-  failedText: 'El pago fue rechazado o cancelado. No se hizo ningún cobro. Puedes intentarlo de nuevo.',
+  failedText:
+    'El pago fue rechazado o cancelado. No se hizo ningún cobro. Puedes intentarlo de nuevo.',
   retryPay: 'Reintentar el pago',
   whatsapp: 'Pagar con ayuda por WhatsApp',
-  whatsappMessage: (orderNumber: string) => `Hola Munavi, mi pago del pedido ${orderNumber} no se completó. ¿Me ayudan?`,
+  whatsappMessage: (orderNumber: string) =>
+    `Hola Munavi, mi pago del pedido ${orderNumber} no se completó. ¿Me ayudan?`,
   pendingTitle: 'Tu pago está en revisión',
-  pendingText: 'Payphone todavía no confirma la transacción. Revisa el estado de tu pedido en unos minutos.',
+  pendingText:
+    'Payphone todavía no confirma la transacción. Revisa el estado de tu pedido en unos minutos.',
   networkTitle: 'No pudimos confirmar tu pago',
-  networkText: 'Hubo un problema de conexión. Tu pago no se pierde: vuelve a intentar la confirmación.',
+  networkText:
+    'Hubo un problema de conexión. Tu pago no se pierde: vuelve a intentar la confirmación.',
   retryConfirm: 'Reintentar confirmación',
   viewOrder: 'Ver mi pedido',
   toShop: 'Seguir comprando',
@@ -154,8 +165,10 @@ export const orderCopy = {
   failed: 'El pago con tarjeta no se completó.',
   retryPay: 'Reintentar el pago',
   instructions: {
-    transfer: 'Transfiere el total a esta cuenta y envíanos el comprobante por WhatsApp. Despachamos cuando lo validamos.',
-    cash_on_delivery: 'Pagas en efectivo al recibir tu pedido. Te contactaremos para coordinar la entrega.',
+    transfer:
+      'Transfiere el total a esta cuenta y envíanos el comprobante por WhatsApp. Despachamos cuando lo validamos.',
+    cash_on_delivery:
+      'Pagas en efectivo al recibir tu pedido. Te contactaremos para coordinar la entrega.',
     card: 'Tu pago con tarjeta fue procesado por Payphone.',
     cardPending: 'Tu pago con tarjeta aún no se completa.',
   },
@@ -163,11 +176,14 @@ export const orderCopy = {
   bankMissing: 'Escríbenos por WhatsApp y te enviamos los datos de la cuenta.',
   copy: 'Copiar datos',
   copied: 'Datos copiados',
-  clipboard: (info: string, amount: string, orderNumber: string) => `${info}\nMonto: ${amount}\nPedido: ${orderNumber}`,
+  clipboard: (info: string, amount: string, orderNumber: string) =>
+    `${info}\nMonto: ${amount}\nPedido: ${orderNumber}`,
   copyError: 'No se pudo copiar. Selecciona el texto y cópialo a mano.',
   sendProof: 'Enviar comprobante',
-  proofMessage: (orderNumber: string) => `Hola Munavi, envío el comprobante de transferencia de mi pedido ${orderNumber}`,
-  helpMessage: (orderNumber: string) => `Hola Munavi, tengo una consulta sobre mi pedido ${orderNumber}`,
+  proofMessage: (orderNumber: string) =>
+    `Hola Munavi, envío el comprobante de transferencia de mi pedido ${orderNumber}`,
+  helpMessage: (orderNumber: string) =>
+    `Hola Munavi, tengo una consulta sobre mi pedido ${orderNumber}`,
   help: 'Ayuda con mi pedido',
   thanks: '¡Gracias por tu compra!',
   emailSent: 'Te enviamos un correo con el detalle.',

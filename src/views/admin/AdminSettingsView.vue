@@ -9,6 +9,7 @@ import CommunityPhotosEditor from '@/components/admin/CommunityPhotosEditor.vue'
 import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
 import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
 import TrackingEditor from '@/components/admin/TrackingEditor.vue'
+import ShippingSurchargesEditor from '@/components/admin/ShippingSurchargesEditor.vue'
 import { useAdminSettings } from '@/composables/admin/useAdminSettings'
 import { money } from '@/composables/admin/money'
 
@@ -69,6 +70,7 @@ const shippingSummary = computed(() => {
         >
           <input id="s-note" v-model="form.shipping.note" />
         </AdminField>
+        <ShippingSurchargesEditor v-model="form.shipping.surcharges" />
       </AdminCard>
 
       <AdminCard title="Anuncio y suscripción" icon="fa-solid fa-bullhorn">

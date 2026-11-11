@@ -34,45 +34,34 @@ export const homeCopy = {
     text: 'Muy pronto encontrarás aquí nuestros colágenos, vitaminas y más. Mientras tanto, escríbenos y te asesoramos.',
     cta: 'Preguntar por WhatsApp',
   },
-  // Solo aparece con la promo activa y niveles cargados en ajustes: no se
-  // promete un descuento que el checkout no aplica.
+  // Banner de la diseñadora + los packs de cada producto. Solo aparece si hay
+  // productos con packs cargados: no se promete un descuento que el checkout no aplica.
   volumePromo: {
-    icon: 'fa-solid fa-cart-shopping',
-    title: 'Compra más,',
-    highlight: 'ahorra más',
-    text: 'Combina tus productos favoritos y obtén descuentos por cantidad en todo tu pedido.',
-    cta: 'Ver productos',
-    to: '/tienda',
-    base: { qty: '1 producto', label: 'Precio normal', icon: 'fa-solid fa-bag-shopping' },
-    tierIcons: ['fa-solid fa-cart-plus', 'fa-solid fa-boxes-stacked', 'fa-solid fa-gift'],
-    qty: (n: number) => `${n} productos`,
-    lastQty: (n: number) => `${n} o más`,
-    save: (percent: number) => `Ahorra ${percent} %`,
+    bannerAlt: 'Compra más, ahorra más: más unidades de tu favorito, mejor precio. Ver descuentos',
+    title: 'Elige tu producto y ahorra por cantidad',
+    text: 'Lleva de 2 a 6 unidades del mismo producto (puedes combinar sabores). IVA incluido y envío gratis.',
+    units: (n: number) => `${n} unidades`,
+    unit: (price: string) => `${price} c/u`,
+    save: (percent: number) => `Ahorra hasta ${Math.round(percent)}\u00a0%`,
+    see: 'Ver precios',
   },
   // Solo hechos confirmados por la clienta: nada de certificaciones ni cifras extra.
+  // El banner de la diseñadora ya dice trayectoria, elaboración ecuatoriana y
+  // notificación sanitaria; las tarjetas suman solo lo que el banner no dice.
   trust: {
-    eyebrow: 'Por qué elegirnos',
-    title: 'Confianza en Munavi',
+    bannerAlt:
+      'Confianza en Munavi. Tu bienestar merece confianza: desde 2019 acompañamos tu cuidado diario. Trayectoria desde 2019, elaboración ecuatoriana con materias primas importadas y productos con notificación sanitaria. Conoce nuestra historia',
+    to: '/nosotros',
     items: [
-      {
-        icon: 'fa-solid fa-flask',
-        title: 'Hecho en Ecuador',
-        text: 'Formulamos y producimos aquí, con materias primas importadas.',
-      },
-      {
-        icon: 'fa-solid fa-heart',
-        title: '7 años contigo',
-        text: 'Llevamos 7 años cuidando a las familias ecuatorianas.',
-      },
       {
         icon: 'fa-solid fa-lock',
         title: 'Pago seguro',
-        text: 'Paga con tarjeta a través de Payphone o por transferencia.',
+        text: 'Tarjeta de crédito o débito con Payphone, o transferencia bancaria.',
       },
       {
         icon: 'fa-solid fa-truck-fast',
-        title: 'Envíos a todo Ecuador',
-        text: 'Tu pedido llega a cualquier ciudad con Servientrega.',
+        title: 'Envío gratis a todo Ecuador',
+        text: 'Tu pedido llega en hasta 48 horas.',
       },
       {
         icon: 'fa-brands fa-whatsapp',
@@ -105,9 +94,24 @@ export const homeCopy = {
     linesTitle: 'Líneas especiales',
     // La tienda filtra por categoría en la ruta: /tienda/<slug>.
     lines: [
-      { name: 'Niños', slug: 'ninos', icon: 'fa-solid fa-children', text: 'Nutrición pensada para los peques.' },
-      { name: 'Deporte', slug: 'deporte', icon: 'fa-solid fa-dumbbell', text: 'Para acompañar tus entrenamientos.' },
-      { name: 'Salud hormonal', slug: 'salud-hormonal', icon: 'fa-solid fa-spa', text: 'Bienestar en cada etapa de tu vida.' },
+      {
+        name: 'Niños',
+        slug: 'ninos',
+        icon: 'fa-solid fa-children',
+        text: 'Nutrición pensada para los peques.',
+      },
+      {
+        name: 'Deporte',
+        slug: 'deporte',
+        icon: 'fa-solid fa-dumbbell',
+        text: 'Para acompañar tus entrenamientos.',
+      },
+      {
+        name: 'Salud hormonal',
+        slug: 'salud-hormonal',
+        icon: 'fa-solid fa-spa',
+        text: 'Bienestar en cada etapa de tu vida.',
+      },
     ],
   },
   community: {

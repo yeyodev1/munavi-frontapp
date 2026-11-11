@@ -46,6 +46,14 @@ export const site = {
       },
     ],
   },
+  // Tarjetas que acepta Payphone en Ecuador: logos de confianza en el pie de página.
+  cardBrands: [
+    { label: 'Visa', icon: 'fa-brands fa-cc-visa', color: '#1a1f71' },
+    { label: 'Mastercard', icon: 'fa-brands fa-cc-mastercard', color: '#eb001b' },
+    { label: 'American Express', icon: 'fa-brands fa-cc-amex', color: '#2e77bc' },
+    { label: 'Diners Club', icon: 'fa-brands fa-cc-diners-club', color: '#004a97' },
+    { label: 'Discover', icon: 'fa-brands fa-cc-discover', color: '#e55c20' },
+  ],
   paymentMethods: {
     card: {
       label: 'Tarjeta de crédito o débito',
@@ -74,14 +82,37 @@ export const site = {
     payment_failed: 'Pago rechazado',
   },
   provinces: [
-    'Azuay', 'Bolívar', 'Cañar', 'Carchi', 'Chimborazo', 'Cotopaxi', 'El Oro', 'Esmeraldas',
-    'Galápagos', 'Guayas', 'Imbabura', 'Loja', 'Los Ríos', 'Manabí', 'Morona Santiago', 'Napo',
-    'Orellana', 'Pastaza', 'Pichincha', 'Santa Elena', 'Santo Domingo de los Tsáchilas',
-    'Sucumbíos', 'Tungurahua', 'Zamora Chinchipe',
+    'Azuay',
+    'Bolívar',
+    'Cañar',
+    'Carchi',
+    'Chimborazo',
+    'Cotopaxi',
+    'El Oro',
+    'Esmeraldas',
+    'Galápagos',
+    'Guayas',
+    'Imbabura',
+    'Loja',
+    'Los Ríos',
+    'Manabí',
+    'Morona Santiago',
+    'Napo',
+    'Orellana',
+    'Pastaza',
+    'Pichincha',
+    'Santa Elena',
+    'Santo Domingo de los Tsáchilas',
+    'Sucumbíos',
+    'Tungurahua',
+    'Zamora Chinchipe',
   ],
 } as const
 
-export function whatsappLink(message = 'Hola Munavi, quiero más información', phone: string = site.whatsapp): string {
+export function whatsappLink(
+  message = 'Hola Munavi, quiero más información',
+  phone: string = site.whatsapp,
+): string {
   if (!phone) return '#'
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 }

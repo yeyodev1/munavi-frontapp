@@ -15,7 +15,9 @@ export function amountToFreeShipping(quote: Quote | null): number | null {
 
 /** La línea cotizada de un producto del carrito, para pintar su total real. */
 export function quotedLine(quote: Quote | null, productId: string, variantSlug: string) {
-  return quote?.items.find((i) => i.productId === productId && i.variantSlug === variantSlug) ?? null
+  return (
+    quote?.items.find((i) => i.productId === productId && i.variantSlug === variantSlug) ?? null
+  )
 }
 
 /**
@@ -23,7 +25,11 @@ export function quotedLine(quote: Quote | null, productId: string, variantSlug: 
  * en paralelo para mostrar el total de cada uno sin esperar al cambiar de método.
  * El cliente nunca calcula totales: solo pinta lo que responde el servidor.
  */
-export function useQuote(method: Ref<PaymentMethod>, methods: PaymentMethod[] = PAYMENT_METHODS) {
+export function useQuote(
+  method: Ref<PaymentMethod>,
+  methods: PaymentMethod[] = PAYMENT_METHODS,
+  province?: Ref<string>,
+) {
   const cart = useCartStore()
   const quotes = ref<Partial<Record<PaymentMethod, Quote>>>({})
   const couponCode = ref('')
@@ -53,7 +59,14 @@ export function useQuote(method: Ref<PaymentMethod>, methods: PaymentMethod[] = 
 
     try {
       const results = await Promise.all(
-        methods.map((paymentMethod) => orderService.quote({ items, paymentMethod, couponCode: code })),
+        methods.map((paymentMethod) =>
+          orderService.quote({
+            items,
+            paymentMethod,
+            couponCode: code,
+            province: province?.value || undefined,
+          }),
+        ),
       )
       if (id !== seq) return
       quotes.value = Object.fromEntries(methods.map((m, i) => [m, results[i]]))
@@ -93,11 +106,22 @@ export function useQuote(method: Ref<PaymentMethod>, methods: PaymentMethod[] = 
 
   // Cantidades y líneas cambian desde el stepper: se espera a que el cliente termine.
   watch(() => JSON.stringify(cart.lines), schedule)
+  if (province) watch(province, schedule)
 
   onUnmounted(() => {
     if (timer) clearTimeout(timer)
     seq++
   })
 
-  return { quotes, quote, couponCode, couponError, loading, error, refresh, applyCoupon, removeCoupon }
+  return {
+    quotes,
+    quote,
+    couponCode,
+    couponError,
+    loading,
+    error,
+    refresh,
+    applyCoupon,
+    removeCoupon,
+  }
 }

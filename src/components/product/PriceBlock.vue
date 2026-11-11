@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { Prices } from '@/types'
 import { hasPrice, money, savingsPercent } from '@/utils/price'
+import { useSettingsStore } from '@/stores/settings'
 import { productCopy as copy } from '@/config/copy/product'
 
 const props = withDefaults(
@@ -15,6 +16,14 @@ const props = withDefaults(
 
 const priced = computed(() => hasPrice(props.prices))
 const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices.card))
+// Munavi cobra el mismo P.V.P. con cualquier método; solo si difieren se muestran los otros.
+const samePrice = computed(
+  () =>
+    props.prices.transfer === props.prices.card &&
+    props.prices.cashOnDelivery === props.prices.card,
+)
+const settings = useSettingsStore()
+const freeShipping = computed(() => settings.shipping?.flatRate === 0)
 </script>
 
 <template>
@@ -27,7 +36,7 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
   </div>
 
   <div v-else class="price" :class="`price--${size}`">
-    <span class="price__label">{{ copy.cardPrice }}</span>
+    <span v-if="!samePrice" class="price__label">{{ copy.cardPrice }}</span>
     <div class="price__main">
       <strong class="price__card">{{ money(prices.card) }}</strong>
       <template v-if="savings">
@@ -35,7 +44,16 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
         <span class="price__save">-{{ savings }}%</span>
       </template>
     </div>
-    <p class="price__others">
+    <p class="price__legal">
+      <span>{{ copy.taxIncluded }}</span>
+      <template v-if="freeShipping">
+        <span aria-hidden="true">|</span>
+        <span class="price__free"
+          ><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> {{ copy.freeShipping }}</span
+        >
+      </template>
+    </p>
+    <p v-if="!samePrice" class="price__others">
       {{ copy.transfer }} {{ money(prices.transfer) }}
       <span aria-hidden="true">·</span>
       {{ copy.cashOnDelivery }} {{ money(prices.cashOnDelivery) }}
@@ -79,6 +97,22 @@ const savings = computed(() => savingsPercent(props.compareAtPrice, props.prices
     background: $sale;
     padding: 0.15rem 0.45rem;
     border-radius: $radius-pill;
+  }
+
+  &__legal {
+    @include flex(row, center, flex-start, 0.4rem);
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: $ink-soft;
+  }
+
+  &__free {
+    color: $accent;
+  }
+
+  &--lg &__legal {
+    font-size: $text-sm;
   }
 
   &__others {

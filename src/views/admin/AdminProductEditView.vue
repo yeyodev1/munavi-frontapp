@@ -7,7 +7,7 @@ import AdminEmpty from '@/components/admin/AdminEmpty.vue'
 import GalleryEditor from '@/components/admin/GalleryEditor.vue'
 import VariantsEditor from '@/components/admin/VariantsEditor.vue'
 import PricesEditor from '@/components/admin/PricesEditor.vue'
-import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
+import BundlePricesEditor from '@/components/admin/BundlePricesEditor.vue'
 import ProductBasicsSection from '@/components/admin/ProductBasicsSection.vue'
 import ProductSheetSection from '@/components/admin/ProductSheetSection.vue'
 import ProductVisibilitySection from '@/components/admin/ProductVisibilitySection.vue'
@@ -103,11 +103,11 @@ async function onDelete() {
         </AdminCard>
 
         <AdminCard
-          title="Descuento por cantidad"
+          title="Compra más, ahorra más"
           icon="fa-solid fa-layer-group"
-          description="Se aplica solo al llevar varias unidades de este producto."
+          description="Precio final del pack, IVA incluido. Se aplica al llevar esa cantidad del producto (sumando sabores)."
         >
-          <VolumeTiersEditor v-model="form.volumeDiscounts" />
+          <BundlePricesEditor v-model="form.bundlePrices" :unit-price="form.prices.card" />
         </AdminCard>
 
         <ProductVisibilitySection v-model="form" />

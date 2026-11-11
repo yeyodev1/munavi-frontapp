@@ -62,6 +62,12 @@ export interface VolumeDiscount {
   percent: number
 }
 
+/** "Compra más, ahorra más": precio final (centavos) de un pack de N unidades del producto. */
+export interface BundlePrice {
+  qty: number
+  total: number
+}
+
 export interface Variant {
   name: string
   slug: string
@@ -88,7 +94,7 @@ export interface Product {
   variants: Variant[]
   prices: Prices
   compareAtPrice: number | null
-  volumeDiscounts: VolumeDiscount[]
+  bundlePrices: BundlePrice[]
   isFeatured: boolean
   isBestSeller: boolean
   /** Sale en "Novedades del mes" del inicio. */
@@ -112,7 +118,7 @@ export interface ProductCard {
   variants: Array<Pick<Variant, 'name' | 'slug' | 'image' | 'isActive'> & { inStock: boolean }>
   prices: Prices
   compareAtPrice: number | null
-  volumeDiscounts: VolumeDiscount[]
+  bundlePrices: BundlePrice[]
   isFeatured: boolean
   isBestSeller: boolean
   isNewArrival: boolean
@@ -148,7 +154,13 @@ export interface TrackingIds {
 }
 
 export interface PublicSettings {
-  shipping: { flatRate: number; freeShippingThreshold: number | null; note: string }
+  shipping: {
+    flatRate: number
+    freeShippingThreshold: number | null
+    note: string
+    /** Excepciones logísticas: recargo fijo (centavos) por provincia. */
+    surcharges: Array<{ province: string; amount: number }>
+  }
   whatsapp: string
   instagram: string
   facebook: string
@@ -202,7 +214,7 @@ export interface Quote {
   subtotal: number
   volumeDiscount: number
   couponDiscount: number
-  coupon: { code: string; percent: number } | null
+  coupon: { code: string; percent: number; firstPurchaseOnly: boolean } | null
   shipping: number
   total: number
   freeShippingThreshold: number | null
@@ -282,6 +294,12 @@ export interface Coupon {
   isActive: boolean
   usageCount: number
   expiresAt: string | null
+  /** Solo la primera compra de cada correo (BIENVENIDO20). */
+  firstPurchaseOnly: boolean
+  /** No se acumula: descuenta solo productos sin pack. */
+  regularPriceOnly: boolean
+  /** Compra mínima en centavos; null = sin mínimo. */
+  minSubtotal: number | null
 }
 
 export interface Subscriber {

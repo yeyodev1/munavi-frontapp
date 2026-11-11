@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import type { PaymentMethod } from '@/types'
 import CartLineItem from '@/components/cart/CartLineItem.vue'
 import FreeShippingBar from '@/components/cart/FreeShippingBar.vue'
+import WholesaleNote from '@/components/cart/WholesaleNote.vue'
 import VolumePromoBar from '@/components/cart/VolumePromoBar.vue'
 import { useCartStore } from '@/stores/cart'
 import { quotedLine, useQuote } from '@/composables/useQuote'
@@ -32,6 +33,7 @@ onMounted(refresh)
   <div class="drawer-body">
     <VolumePromoBar class="drawer-body__bar" :status="quote?.volumePromo" />
     <FreeShippingBar :amount="subtotal" />
+    <WholesaleNote />
     <CartLineItem
       v-for="item in cart.items"
       :key="`${item.productId}-${item.variantSlug}`"

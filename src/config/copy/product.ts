@@ -9,9 +9,22 @@ export const productCopy = {
   newArrival: 'Novedad',
   outOfStock: 'Agotado',
   flavors: (n: number) => (n === 1 ? '1 sabor' : `${n} sabores`),
-  tier: (qty: number, percent: number) => `Lleva ${qty} y ahorra ${percent}%`,
-  tiersTitle: 'Ahorra llevando más',
-  tierActive: 'Aplicado',
+  taxIncluded: 'IVA incluido',
+  freeShipping: 'Envío gratis',
+  // "Compra más, ahorra más" por producto: packs de 2 a 6 unidades.
+  bundlesTitle: 'Compra más, ahorra más',
+  bundlesHint: 'Elige cuántas unidades llevas. Puedes combinar sabores.',
+  bundleUnits: (qty: number) => (qty === 1 ? '1 unidad' : `${qty} unidades`),
+  bundleNormal: 'Precio normal',
+  bundlePromo: 'Precio promocional',
+  bundleSave: (save: string, percent: number) =>
+    `Ahorras ${save} (${percent.toLocaleString('es-EC')} %)`,
+  bundleUnit: (unit: string) => `${unit} c/u`,
+  bundleRegular: 'Precio regular',
+  bundleActive: 'Elegido',
+  bundleFrom: (unit: string, percent: number) =>
+    `Desde ${unit} c/u · ahorra hasta ${Math.round(percent)} %`,
+  bundleApplied: (qty: number) => `Precio de pack x${qty}`,
   // "Compra más, ahorra más": descuento por todo el pedido, combinando productos.
   promoTitle: 'Compra más, ahorra más',
   promoHint: 'Combina productos',
@@ -40,7 +53,7 @@ export const productDetailCopy = {
   unavailable: 'Sin stock en este sabor',
   gallery: 'Ver imagen',
   perks: [
-    { icon: 'fa-solid fa-truck-fast', text: 'Envíos a todo Ecuador' },
+    { icon: 'fa-solid fa-truck-fast', text: 'Envío gratis a todo Ecuador' },
     { icon: 'fa-solid fa-lock', text: 'Pago seguro con tarjeta, transferencia o contra entrega' },
     { icon: 'fa-solid fa-flask', text: 'Hecho en Ecuador con materia prima importada' },
   ],
@@ -76,7 +89,8 @@ export const shopCopy = {
   emptyTitle: 'No encontramos productos',
   emptyText: 'Prueba con otra búsqueda o explora todas las categorías.',
   emptyCategoryTitle: 'Esta categoría está por llenarse',
-  emptyCategoryText: 'Muy pronto tendremos productos aquí. Mira el resto de la tienda mientras tanto.',
+  emptyCategoryText:
+    'Muy pronto tendremos productos aquí. Mira el resto de la tienda mientras tanto.',
   seeAll: 'Ver todos los productos',
   errorTitle: 'No pudimos cargar la tienda',
   retry: 'Reintentar',

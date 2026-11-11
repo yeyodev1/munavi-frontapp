@@ -5,7 +5,7 @@ import type { AdminSettings, ApiError } from '@/types'
 
 function emptySettings(): AdminSettings {
   return {
-    shipping: { flatRate: 0, freeShippingThreshold: null, note: '' },
+    shipping: { flatRate: 0, freeShippingThreshold: null, note: '', surcharges: [] },
     whatsapp: '',
     instagram: '',
     facebook: '',
@@ -24,7 +24,10 @@ function emptySettings(): AdminSettings {
 /** Solo lo editable: el documento del API trae _id, key y fechas que no se mandan de vuelta. */
 function pick(s: AdminSettings): AdminSettings {
   return {
-    shipping: { ...s.shipping },
+    shipping: {
+      ...s.shipping,
+      surcharges: (s.shipping.surcharges ?? []).map((row) => ({ ...row })),
+    },
     whatsapp: s.whatsapp,
     instagram: s.instagram,
     facebook: s.facebook,
@@ -79,6 +82,10 @@ export function useAdminSettings() {
         toast.error('Agrega al menos un nivel para activar Compra más, ahorra más')
         return
       }
+      // Filas sin provincia o en $0 no son un recargo: no se mandan.
+      payload.shipping.surcharges = payload.shipping.surcharges.filter(
+        (row) => row.province && row.amount > 0,
+      )
       payload.communityPhotos = payload.communityPhotos
         .filter((p) => p.image)
         .map((p) => ({ ...p, link: p.link.trim() }))

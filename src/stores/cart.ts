@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import type { CartLine, PaymentMethod, Prices, VolumeDiscount } from '@/types'
-import { tierFor } from '@/utils/price'
+import type { BundlePrice, CartLine, PaymentMethod, Prices } from '@/types'
+import { bundleFor, bundleLineTotal } from '@/utils/price'
 
 const STORAGE_KEY = 'munavi_cart'
 export const MAX_QTY = 50
@@ -11,7 +11,7 @@ export interface CartSnapshot {
   variantName: string
   image: string
   prices: Prices
-  volumeDiscounts: VolumeDiscount[]
+  bundlePrices: BundlePrice[]
 }
 
 export interface CartItem extends CartLine {
@@ -41,7 +41,10 @@ function load(): CartItem[] {
     if (!Array.isArray(parsed)) return []
     return parsed.filter(
       (item): item is CartItem =>
-        !!item && typeof item.productId === 'string' && typeof item.variantSlug === 'string' && !!item.snapshot,
+        !!item &&
+        typeof item.productId === 'string' &&
+        typeof item.variantSlug === 'string' &&
+        !!item.snapshot,
     )
   } catch {
     return []
@@ -66,12 +69,22 @@ export const useCartStore = defineStore('cart', {
   }),
 
   getters: {
+    /** Unidades de un producto sumando sus sabores: así cuenta el pack. */
+    unitsOf: (state) => (productId: string) =>
+      state.items.reduce(
+        (sum, item) => sum + (item.productId === productId ? item.quantity : 0),
+        0,
+      ),
     /** Unidades totales (lo que muestra el contador del header). */
     count: (state) => state.items.reduce((sum, item) => sum + item.quantity, 0),
     isEmpty: (state) => state.items.length === 0,
     /** Lo que esperan POST /orders/quote y POST /orders. */
     lines: (state): CartLine[] =>
-      state.items.map(({ productId, variantSlug, quantity }) => ({ productId, variantSlug, quantity })),
+      state.items.map(({ productId, variantSlug, quantity }) => ({
+        productId,
+        variantSlug,
+        quantity,
+      })),
   },
 
   actions: {
@@ -123,8 +136,11 @@ export const useCartStore = defineStore('cart', {
     estimate(method: PaymentMethod = 'card'): number {
       return this.items.reduce((sum, item) => {
         const subtotal = item.snapshot.prices[priceKey[method]] * item.quantity
-        const tier = tierFor(item.snapshot.volumeDiscounts, item.quantity)
-        return sum + subtotal - (tier ? Math.round((subtotal * tier.percent) / 100) : 0)
+        // Un carrito guardado antes de los packs no trae bundlePrices.
+        const bundle = bundleFor(item.snapshot.bundlePrices ?? [], this.unitsOf(item.productId))
+        return (
+          sum + (bundle ? Math.min(subtotal, bundleLineTotal(bundle, item.quantity)) : subtotal)
+        )
       }, 0)
     },
   },

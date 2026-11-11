@@ -22,8 +22,12 @@ export function useCheckout() {
   const toast = useToastStore()
 
   const method = ref<PaymentMethod>('card')
-  const quoting = useQuote(method)
   const checkoutForm = useCheckoutForm()
+  const quoting = useQuote(
+    method,
+    undefined,
+    computed(() => checkoutForm.form.province),
+  )
 
   const submitting = ref(false)
   const renewing = ref(false)
@@ -31,7 +35,8 @@ export function useCheckout() {
   const payment = ref<CardPayment | null>(null)
 
   const canSubmit = computed(
-    () => !!quoting.quote.value && !quoting.loading.value && !submitting.value && !quoting.error.value,
+    () =>
+      !!quoting.quote.value && !quoting.loading.value && !submitting.value && !quoting.error.value,
   )
 
   onMounted(() => {
@@ -80,7 +85,11 @@ export function useCheckout() {
 
       trackPurchaseOnce(res.order)
       cart.clear()
-      router.push({ name: 'Order', params: { orderNumber: res.order.orderNumber }, query: { email: res.order.customer.email } })
+      router.push({
+        name: 'Order',
+        params: { orderNumber: res.order.orderNumber },
+        query: { email: res.order.customer.email },
+      })
     } catch (err) {
       const apiError = err as ApiError
       if (apiError.status === 503 && method.value === 'card') {

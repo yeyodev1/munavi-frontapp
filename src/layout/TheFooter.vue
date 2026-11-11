@@ -41,9 +41,18 @@ const payments = Object.values(site.paymentMethods)
       <div class="footer__brand">
         <RouterLink to="/" class="footer__logo" :aria-label="site.name"><MunaviLogo /></RouterLink>
         <p class="footer__tagline">{{ site.brand.promise }}</p>
-        <p class="footer__origin"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ site.brand.origin }}</p>
+        <p class="footer__origin">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ site.brand.origin }}
+        </p>
         <div v-if="socials.length" class="footer__socials" :aria-label="copy.follow">
-          <a v-for="s in socials" :key="s.key" :href="s.url" target="_blank" rel="noopener" :aria-label="s.key">
+          <a
+            v-for="s in socials"
+            :key="s.key"
+            :href="s.url"
+            target="_blank"
+            rel="noopener"
+            :aria-label="s.key"
+          >
             <i :class="s.icon" aria-hidden="true"></i>
           </a>
         </div>
@@ -51,7 +60,9 @@ const payments = Object.values(site.paymentMethods)
 
       <div v-if="categories.length" class="footer__col">
         <h3 class="footer__heading">{{ copy.categories }}</h3>
-        <RouterLink v-for="cat in categories" :key="cat._id" :to="`/tienda/${cat.slug}`">{{ cat.name }}</RouterLink>
+        <RouterLink v-for="cat in categories" :key="cat._id" :to="`/tienda/${cat.slug}`">{{
+          cat.name
+        }}</RouterLink>
       </div>
 
       <div class="footer__col">
@@ -62,7 +73,9 @@ const payments = Object.values(site.paymentMethods)
         <a :href="whatsappLink(undefined, settings.whatsapp)" target="_blank" rel="noopener">
           <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> {{ copy.whatsapp }}
         </a>
-        <a :href="`mailto:${site.email}`"><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ site.email }}</a>
+        <a :href="`mailto:${site.email}`"
+          ><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ site.email }}</a
+        >
       </div>
 
       <div class="footer__col">
@@ -70,7 +83,19 @@ const payments = Object.values(site.paymentMethods)
         <p v-for="method in payments" :key="method.label" class="footer__pay">
           <i :class="method.icon" aria-hidden="true"></i> {{ method.label }}
         </p>
-        <p class="footer__note"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.paymentsNote }}</p>
+        <ul class="footer__brands" :aria-label="copy.cardsAccepted">
+          <li v-for="brand in site.cardBrands" :key="brand.label" :title="brand.label">
+            <i :class="brand.icon" :style="{ color: brand.color }" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ brand.label }}</span>
+          </li>
+          <li>Payphone</li>
+          <li>
+            <i class="fa-solid fa-building-columns" aria-hidden="true"></i> {{ copy.transferShort }}
+          </li>
+        </ul>
+        <p class="footer__note">
+          <i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.paymentsNote }}
+        </p>
       </div>
     </div>
 
@@ -78,7 +103,10 @@ const payments = Object.values(site.paymentMethods)
       <span>© {{ year }} {{ site.name }} · {{ site.tagline }}</span>
       <span class="footer__bar-links">
         <RouterLink to="/admin/login" class="footer__admin">{{ copy.admin }}</RouterLink>
-        <span>{{ copy.credit }} <a href="https://bakano.ec" target="_blank" rel="noopener">Bakano</a></span>
+        <span
+          >{{ copy.credit }}
+          <a href="https://bakano.ec" target="_blank" rel="noopener">Bakano</a></span
+        >
       </span>
     </div>
   </footer>
@@ -203,6 +231,29 @@ const payments = Object.values(site.paymentMethods)
 
   &__pay {
     color: rgba($paper, 0.75);
+  }
+
+  &__brands {
+    list-style: none;
+    @include flex(row, center, flex-start, 0.4rem);
+    flex-wrap: wrap;
+    margin-block: 0.4rem 0.2rem;
+
+    li {
+      @include flex(row, center, center, 0.3rem);
+      height: 2rem;
+      min-width: 3rem;
+      padding-inline: 0.5rem;
+      border-radius: 6px;
+      background: $surface;
+      font-size: $text-xs;
+      font-weight: 800;
+      color: $ink;
+    }
+
+    .fa-brands {
+      font-size: 1.6rem;
+    }
   }
 
   &__note {

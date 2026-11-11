@@ -22,7 +22,7 @@ function emptyDraft(): ProductInput {
     variants: [],
     prices: { card: 0, transfer: 0, cashOnDelivery: 0 },
     compareAtPrice: null,
-    volumeDiscounts: [],
+    bundlePrices: [],
     isFeatured: false,
     isBestSeller: false,
     isNewArrival: false,
@@ -43,7 +43,7 @@ function fromProduct(product: Product): ProductInput {
     benefits: [...(product.benefits ?? [])],
     images: [...(product.images ?? [])],
     variants: (product.variants ?? []).map((v) => ({ ...v })),
-    volumeDiscounts: (product.volumeDiscounts ?? []).map((t) => ({ ...t })),
+    bundlePrices: (product.bundlePrices ?? []).map((b) => ({ ...b })),
   }
 }
 
@@ -57,7 +57,7 @@ function clean(draft: ProductInput): ProductInput {
     ...picked,
     benefits: draft.benefits.map((b) => b.trim()).filter(Boolean),
     variants: draft.variants.filter((v) => v.name.trim() || v.image),
-    volumeDiscounts: draft.volumeDiscounts.filter((t) => t.minQty > 0 && t.percent > 0),
+    bundlePrices: draft.bundlePrices.filter((b) => b.qty >= 2 && b.total > 0),
   }
 }
 

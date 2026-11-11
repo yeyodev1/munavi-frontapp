@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { ProductCard } from '@/types'
 import PriceBlock from './PriceBlock.vue'
-import VolumeTiers from './VolumeTiers.vue'
+import BundleOffers from './BundleOffers.vue'
 import { hasPrice, savingsPercent } from '@/utils/price'
 import { useAddToCart } from '@/composables/useAddToCart'
 import { useSettingsStore } from '@/stores/settings'
@@ -44,7 +44,7 @@ function quickAdd() {
       variantName: variant.name,
       image: variant.image?.url || p.image,
       prices: p.prices,
-      volumeDiscounts: p.volumeDiscounts,
+      bundlePrices: p.bundlePrices,
     },
   })
 }
@@ -62,7 +62,9 @@ function quickAdd() {
       <span class="pcard__badges">
         <span v-if="soldOut" class="pcard__badge pcard__badge--muted">{{ copy.outOfStock }}</span>
         <span v-else-if="savings" class="pcard__badge pcard__badge--sale">-{{ savings }}%</span>
-        <span v-if="product.isNewArrival" class="pcard__badge pcard__badge--new">{{ copy.newArrival }}</span>
+        <span v-if="product.isNewArrival" class="pcard__badge pcard__badge--new">{{
+          copy.newArrival
+        }}</span>
         <span v-if="product.isBestSeller" class="pcard__badge">{{ copy.bestSeller }}</span>
       </span>
     </RouterLink>
@@ -70,13 +72,20 @@ function quickAdd() {
     <div class="pcard__body">
       <p class="pcard__meta">
         <span>{{ product.category?.name }}</span>
-        <span v-if="hasFlavors" class="pcard__flavors">{{ copy.flavors(activeVariants.length) }}</span>
+        <span v-if="hasFlavors" class="pcard__flavors">{{
+          copy.flavors(activeVariants.length)
+        }}</span>
       </p>
       <RouterLink :to="to" class="pcard__name">{{ product.name }}</RouterLink>
       <p v-if="product.presentation" class="pcard__presentation">{{ product.presentation }}</p>
 
       <PriceBlock :prices="product.prices" :compare-at-price="product.compareAtPrice" />
-      <VolumeTiers v-if="priced" :tiers="product.volumeDiscounts" compact />
+      <BundleOffers
+        v-if="priced"
+        :bundles="product.bundlePrices"
+        :unit-price="product.prices.card"
+        compact
+      />
 
       <a
         v-if="!priced"

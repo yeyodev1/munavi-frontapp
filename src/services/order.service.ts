@@ -1,10 +1,21 @@
 import APIBase from './httpBase'
-import type { CartLine, CreateOrderResponse, Customer, Order, PaymentMethod, PayphoneBox, Quote, ShippingAddress } from '@/types'
+import type {
+  CartLine,
+  CreateOrderResponse,
+  Customer,
+  Order,
+  PaymentMethod,
+  PayphoneBox,
+  Quote,
+  ShippingAddress,
+} from '@/types'
 
 export interface QuoteInput {
   items: CartLine[]
   paymentMethod: PaymentMethod
   couponCode?: string
+  /** Suma el recargo de envío de esa provincia, si tiene. */
+  province?: string
 }
 
 export interface CreateOrderInput extends QuoteInput {
@@ -32,15 +43,22 @@ class OrderService extends APIBase {
   }
 
   async confirm(id: number, clientTransactionId: string): Promise<{ order: Order }> {
-    const { data } = await this.post<{ order: Order }>('orders/confirm', { id, clientTransactionId }, publicHeaders, {
-      // Payphone puede tardar en contestar al backend.
-      timeout: 30000,
-    })
+    const { data } = await this.post<{ order: Order }>(
+      'orders/confirm',
+      { id, clientTransactionId },
+      publicHeaders,
+      {
+        // Payphone puede tardar en contestar al backend.
+        timeout: 30000,
+      },
+    )
     return data
   }
 
   async lookup(orderNumber: string, email: string): Promise<Order> {
-    const { data } = await this.get<Order>('orders/lookup', publicHeaders, { params: { orderNumber, email } })
+    const { data } = await this.get<Order>('orders/lookup', publicHeaders, {
+      params: { orderNumber, email },
+    })
     return data
   }
 

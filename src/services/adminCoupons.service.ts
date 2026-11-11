@@ -1,7 +1,16 @@
 import APIBase from './httpBase'
 import type { Coupon, Paginated } from '@/types'
 
-export type CouponInput = Pick<Coupon, 'code' | 'percent' | 'isActive' | 'expiresAt'>
+export type CouponInput = Pick<
+  Coupon,
+  | 'code'
+  | 'percent'
+  | 'isActive'
+  | 'expiresAt'
+  | 'firstPurchaseOnly'
+  | 'regularPriceOnly'
+  | 'minSubtotal'
+>
 
 class AdminCouponsService extends APIBase {
   async list(): Promise<Coupon[]> {

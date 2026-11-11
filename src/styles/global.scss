@@ -11,11 +11,11 @@
   font-display: swap;
 }
 
-// Bochan Serif: la serif de la diseñadora para los títulos. No está en Google
-// Fonts; el archivo lo entregó Munavi (Drive "WEB MUNAVI" → tipografías).
+// Mathilga: la serif de los títulos en las piezas de la diseñadora. No está en
+// Google Fonts; el archivo lo entregó Munavi (Drive "WEB MUNAVI" → tipografías).
 @font-face {
-  font-family: 'Bochan Serif';
-  src: url('/fonts/bochan-serif.ttf') format('truetype');
+  font-family: 'Mathilga';
+  src: url('/fonts/mathilga.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -69,7 +69,7 @@ h2,
 h3,
 h4 {
   font-family: $font-display;
-  // Bochan Serif tiene un solo peso: con 700 el navegador inventa una negrita fea.
+  // Mathilga tiene un solo peso: con 700 el navegador inventa una negrita fea.
   font-weight: 400;
   line-height: 1.12;
   text-wrap: balance;

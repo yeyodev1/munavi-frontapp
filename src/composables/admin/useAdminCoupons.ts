@@ -5,7 +5,15 @@ import { useToastStore } from '@/stores/toast'
 import type { ApiError, Coupon } from '@/types'
 
 function emptyDraft(): CouponInput {
-  return { code: '', percent: 10, isActive: true, expiresAt: null }
+  return {
+    code: '',
+    percent: 10,
+    isActive: true,
+    expiresAt: null,
+    firstPurchaseOnly: false,
+    regularPriceOnly: false,
+    minSubtotal: null,
+  }
 }
 
 export function useAdminCoupons() {
@@ -35,9 +43,10 @@ export function useAdminCoupons() {
   async function create() {
     busy.value = true
     try {
-      const { code, percent, isActive, expiresAt } = draft.value
+      const { code, percent, isActive, expiresAt, ...restrictions } = draft.value
       // La fecha del input es "AAAA-MM-DD": vence al final de ese día en Ecuador.
       await adminCouponsService.create({
+        ...restrictions,
         code: code.trim().toUpperCase(),
         percent: Number(percent),
         isActive,

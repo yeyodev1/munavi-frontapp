@@ -13,11 +13,14 @@ export const layoutCopy = {
   },
   footer: {
     subscribeTitle: '20% de descuento en tu primera compra',
-    subscribeText: 'Suscríbete y recibe tu cupón al instante. Solo novedades y promociones, nada de spam.',
+    subscribeText:
+      'Suscríbete y recibe tu cupón al instante. Solo novedades y promociones, nada de spam.',
     categories: 'Categorías',
     help: 'Ayuda',
     payments: 'Pagos seguros',
     paymentsNote: 'Tarjetas procesadas con Payphone.',
+    cardsAccepted: 'Tarjetas y medios de pago aceptados',
+    transferShort: 'Transferencia',
     follow: 'Síguenos',
     links: [
       { label: 'Consultar mi pedido', to: '/mi-pedido', icon: 'fa-solid fa-box' },

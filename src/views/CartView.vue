@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import type { PaymentMethod } from '@/types'
 import CartLineItem from '@/components/cart/CartLineItem.vue'
 import FreeShippingBar from '@/components/cart/FreeShippingBar.vue'
+import WholesaleNote from '@/components/cart/WholesaleNote.vue'
 import VolumePromoBar from '@/components/cart/VolumePromoBar.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useCartStore } from '@/stores/cart'
@@ -23,7 +24,9 @@ const progressBase = computed(() =>
 
 // Con un nivel alcanzado el descuento sale de la promo; si no, es el propio de cada producto.
 const volumeLabel = computed(() =>
-  quote.value?.volumePromo?.percent ? checkoutCopy.summary.volumePromo : checkoutCopy.summary.volume,
+  quote.value?.volumePromo?.percent
+    ? checkoutCopy.summary.volumePromo
+    : checkoutCopy.summary.volume,
 )
 
 onMounted(() => {
@@ -39,7 +42,12 @@ onMounted(() => {
       <h1 class="cart__title">{{ copy.title }}</h1>
     </header>
 
-    <EmptyState v-if="cart.isEmpty" icon="fa-solid fa-bag-shopping" :title="copy.emptyTitle" :text="copy.emptyText">
+    <EmptyState
+      v-if="cart.isEmpty"
+      icon="fa-solid fa-bag-shopping"
+      :title="copy.emptyTitle"
+      :text="copy.emptyText"
+    >
       <RouterLink to="/tienda" class="btn btn--primary">{{ copy.toShop }}</RouterLink>
     </EmptyState>
 
@@ -47,6 +55,7 @@ onMounted(() => {
       <div class="cart__lines">
         <VolumePromoBar class="cart__promo" :status="quote?.volumePromo" />
         <FreeShippingBar :amount="progressBase" />
+        <WholesaleNote />
         <CartLineItem
           v-for="item in cart.items"
           :key="`${item.productId}-${item.variantSlug}`"

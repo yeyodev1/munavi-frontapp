@@ -1,9 +1,9 @@
 // Solo variables. Las fuentes se cargan con <link> en index.html: este archivo
 // se inyecta en cada SFC vía vite.config.ts, así que no debe emitir CSS.
 
-// Títulos: Bochan Serif, la serif que usa la diseñadora de Munavi en las piezas
-// de la web (Drive "WEB MUNAVI" → tipografías). Un solo peso: nunca en negrita.
-$font-display: 'Bochan Serif', Georgia, 'Times New Roman', serif;
+// Títulos: Mathilga, la serif de los títulos de las piezas de la diseñadora
+// (Drive "WEB MUNAVI" → tipografías). Un solo peso: nunca en negrita.
+$font-display: 'Mathilga', Georgia, 'Times New Roman', serif;
 // Subtítulos, textos y UI: Montserrat, la sans de las mismas piezas.
 $font-principal: 'Montserrat', system-ui, sans-serif;
 // Manuscrita del catálogo (Gotcha, archivo propio en public/fonts): solo para

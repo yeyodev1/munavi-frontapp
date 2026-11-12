@@ -160,6 +160,9 @@ export interface PublicSettings {
     note: string
     /** Excepciones logísticas: recargo fijo (centavos) por provincia. */
     surcharges: Array<{ province: string; amount: number }>
+    /** Pedidos grandes: desde estas unidades se suma bulkAmount; null = sin recargo. */
+    bulkMinUnits: number | null
+    bulkAmount: number
   }
   whatsapp: string
   instagram: string
@@ -174,6 +177,8 @@ export interface PublicSettings {
   packShowcase: PackShowcaseItem[]
   /** El cupón del banner del inicio, solo si está vigente. */
   promoCoupon: PromoCoupon | null
+  /** Interruptor general de los packs "Compra más, ahorra más". */
+  bundlesActive: boolean
   tracking: TrackingIds
 }
 
@@ -192,6 +197,8 @@ export interface PromoCoupon {
 export interface AdminSettings extends Omit<PublicSettings, 'promoCoupon'> {
   /** Código del cupón que anuncia el banner del inicio (MUNAVI20). */
   promoCouponCode: string
+  /** Payphone: el token nunca llega completo, solo si existe y sus últimos 4 caracteres. */
+  payphone: { storeId: string; hasToken: boolean; tokenEnd: string }
   subscribeCouponCode: string
   notifyEmail: string
 }

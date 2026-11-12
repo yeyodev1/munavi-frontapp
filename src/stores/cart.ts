@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { BundlePrice, CartLine, PaymentMethod, Prices } from '@/types'
 import { bundleFor, bundleLineTotal } from '@/utils/price'
+import { useSettingsStore } from '@/stores/settings'
 
 const STORAGE_KEY = 'munavi_cart'
 export const MAX_QTY = 50
@@ -137,7 +138,9 @@ export const useCartStore = defineStore('cart', {
       return this.items.reduce((sum, item) => {
         const subtotal = item.snapshot.prices[priceKey[method]] * item.quantity
         // Un carrito guardado antes de los packs no trae bundlePrices.
-        const bundle = bundleFor(item.snapshot.bundlePrices ?? [], this.unitsOf(item.productId))
+        const bundle = useSettingsStore().bundlesActive
+          ? bundleFor(item.snapshot.bundlePrices ?? [], this.unitsOf(item.productId))
+          : null
         return (
           sum + (bundle ? Math.min(subtotal, bundleLineTotal(bundle, item.quantity)) : subtotal)
         )

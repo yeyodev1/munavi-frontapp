@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import MoneyInput from './MoneyInput.vue'
+import AdminField from './AdminField.vue'
 import { site } from '@/config/site'
 
 type Surcharge = { province: string; amount: number }
 
 /** Recargo fijo por provincia (Galápagos y similares), en centavos. */
 const surcharges = defineModel<Surcharge[]>({ required: true })
+/** Pedidos grandes: desde N unidades se suma bulkAmount (centavos). null = sin recargo. */
+const bulkMinUnits = defineModel<number | null>('bulkMinUnits', { required: true })
+const bulkAmount = defineModel<number>('bulkAmount', { required: true })
+
+function setBulkMin(event: Event) {
+  const value = parseInt((event.target as HTMLInputElement).value, 10)
+  bulkMinUnits.value = value > 0 ? value : null
+}
 
 function update(index: number, patch: Partial<Surcharge>) {
   surcharges.value = surcharges.value.map((s, i) => (i === index ? { ...s, ...patch } : s))
@@ -56,6 +65,32 @@ function remove(index: number) {
     >
       <i class="fa-solid fa-plus"></i> Agregar recargo
     </button>
+
+    <p class="surcharges__label surcharges__label--gap">Pedidos grandes</p>
+    <p class="surcharges__hint">
+      Para pedidos de mucho peso o volumen. Se suma aunque el envío sea gratis.
+    </p>
+    <div class="surcharges__row">
+      <AdminField label="Desde (unidades)" for="s-bulk-min" hint="Vacío = sin recargo.">
+        <input
+          id="s-bulk-min"
+          type="number"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          placeholder="Sin recargo"
+          :value="bulkMinUnits ?? ''"
+          @input="setBulkMin"
+        />
+      </AdminField>
+      <AdminField label="Recargo" for="s-bulk-amount">
+        <MoneyInput
+          id="s-bulk-amount"
+          :model-value="bulkAmount"
+          @update:model-value="bulkAmount = $event ?? 0"
+        />
+      </AdminField>
+    </div>
   </div>
 </template>
 
@@ -67,6 +102,10 @@ function remove(index: number) {
     font-size: 0.85rem;
     font-weight: 600;
     color: $ink;
+
+    &--gap {
+      margin-top: 0.8rem;
+    }
   }
 
   &__hint {

@@ -4,6 +4,7 @@
 import { computed } from 'vue'
 import type { BundlePrice } from '@/types'
 import { bundleFor, bundleOffers, money } from '@/utils/price'
+import { useSettingsStore } from '@/stores/settings'
 import { productCopy as copy } from '@/config/copy/product'
 
 const props = withDefaults(
@@ -19,8 +20,11 @@ const props = withDefaults(
 )
 const emit = defineEmits<{ select: [qty: number] }>()
 
-const offers = computed(() => bundleOffers(props.bundles, props.unitPrice))
-const active = computed(() => bundleFor(props.bundles, props.quantity)?.qty ?? 1)
+// Con los packs apagados en el panel no se muestra ninguna oferta.
+const settings = useSettingsStore()
+const bundles = computed(() => (settings.bundlesActive ? props.bundles : []))
+const offers = computed(() => bundleOffers(bundles.value, props.unitPrice))
+const active = computed(() => bundleFor(bundles.value, props.quantity)?.qty ?? 1)
 const best = computed(() => offers.value[offers.value.length - 1])
 </script>
 

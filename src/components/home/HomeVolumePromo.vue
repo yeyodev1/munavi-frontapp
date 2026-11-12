@@ -15,6 +15,7 @@ const { items } = useProducts(() => ({ limit: 48 }))
 
 // Orden y sabor los elige Munavi en el panel; sin vitrina, los primeros con pack.
 const packs = computed(() => {
+  if (!settings.bundlesActive) return []
   const bySlug = new Map(items.value.map((p) => [p.slug, p]))
   const chosen = settings.packShowcase.length
     ? settings.packShowcase.map((s) => ({ product: bySlug.get(s.product), variant: s.variant }))

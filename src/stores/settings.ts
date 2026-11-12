@@ -21,6 +21,8 @@ export const useSettingsStore = defineStore('settings', {
     communityPhotos: (state) => state.settings?.communityPhotos ?? [],
     promoCoupon: (state) => state.settings?.promoCoupon ?? null,
     packShowcase: (state) => state.settings?.packShowcase ?? [],
+    // Sin ajustes cargados se asume encendido: el servidor manda al cotizar.
+    bundlesActive: (state) => state.settings?.bundlesActive !== false,
     shipping: (state) => state.settings?.shipping ?? null,
     social: (state) => ({
       instagram: state.settings?.instagram || site.social.instagram,

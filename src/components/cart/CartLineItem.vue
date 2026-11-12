@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import { MAX_QTY, useCartStore, type CartItem } from '@/stores/cart'
 import { bundleFor, bundleLineTotal, hasPrice, money } from '@/utils/price'
+import { useSettingsStore } from '@/stores/settings'
 import type { QuoteItem } from '@/types'
 import { cartCopy as copy, checkoutCopy } from '@/config/copy/checkout'
 import { productCopy } from '@/config/copy/product'
@@ -15,6 +16,7 @@ const props = withDefaults(
 const emit = defineEmits<{ navigate: [] }>()
 
 const cart = useCartStore()
+const settings = useSettingsStore()
 
 const qty = computed({
   get: () => props.item.quantity,
@@ -22,7 +24,9 @@ const qty = computed({
 })
 
 const bundle = computed(() =>
-  bundleFor(props.item.snapshot.bundlePrices ?? [], cart.unitsOf(props.item.productId)),
+  settings.bundlesActive
+    ? bundleFor(props.item.snapshot.bundlePrices ?? [], cart.unitsOf(props.item.productId))
+    : null,
 )
 const showVariant = computed(
   () => props.item.variantSlug !== 'unico' && !!props.item.snapshot.variantName,

@@ -5,7 +5,14 @@ import type { AdminSettings, ApiError } from '@/types'
 
 function emptySettings(): AdminSettings {
   return {
-    shipping: { flatRate: 0, freeShippingThreshold: null, note: '', surcharges: [] },
+    shipping: {
+      flatRate: 0,
+      freeShippingThreshold: null,
+      note: '',
+      surcharges: [],
+      bulkMinUnits: null,
+      bulkAmount: 0,
+    },
     whatsapp: '',
     instagram: '',
     facebook: '',
@@ -14,10 +21,12 @@ function emptySettings(): AdminSettings {
     bankTransferInfo: '',
     heroSlides: [],
     volumePromo: { isActive: false, tiers: [] },
+    bundlesActive: true,
     communityPhotos: [],
     packShowcase: [],
     tracking: { metaPixelId: '', ga4Id: '', googleAdsId: '', googleAdsPurchaseLabel: '' },
     promoCouponCode: '',
+    payphone: { storeId: '', hasToken: false, tokenEnd: '' },
     subscribeCouponCode: '',
     notifyEmail: '',
   }
@@ -29,6 +38,8 @@ function pick(s: AdminSettings): AdminSettings {
     shipping: {
       ...s.shipping,
       surcharges: (s.shipping.surcharges ?? []).map((row) => ({ ...row })),
+      bulkMinUnits: s.shipping.bulkMinUnits ?? null,
+      bulkAmount: s.shipping.bulkAmount ?? 0,
     },
     whatsapp: s.whatsapp,
     instagram: s.instagram,
@@ -41,6 +52,7 @@ function pick(s: AdminSettings): AdminSettings {
       isActive: Boolean(s.volumePromo?.isActive),
       tiers: (s.volumePromo?.tiers ?? []).map((t) => ({ ...t })),
     },
+    bundlesActive: s.bundlesActive ?? true,
     communityPhotos: (s.communityPhotos ?? []).map((p) => ({ ...p })),
     packShowcase: (s.packShowcase ?? []).map((item) => ({ ...item })),
     tracking: {
@@ -50,6 +62,11 @@ function pick(s: AdminSettings): AdminSettings {
       googleAdsPurchaseLabel: s.tracking?.googleAdsPurchaseLabel ?? '',
     },
     promoCouponCode: s.promoCouponCode ?? '',
+    payphone: {
+      storeId: s.payphone?.storeId ?? '',
+      hasToken: Boolean(s.payphone?.hasToken),
+      tokenEnd: s.payphone?.tokenEnd ?? '',
+    },
     subscribeCouponCode: s.subscribeCouponCode,
     notifyEmail: s.notifyEmail,
   }
@@ -60,6 +77,8 @@ export function useAdminSettings() {
   const form = ref<AdminSettings>(emptySettings())
   const loading = ref(true)
   const saving = ref(false)
+  // El token escrito vive solo en memoria y se vacía al guardar: el API nunca lo devuelve.
+  const payphoneToken = ref('')
 
   async function load() {
     loading.value = true
@@ -103,8 +122,36 @@ export function useAdminSettings() {
         googleAdsId: payload.tracking.googleAdsId.trim().toUpperCase(),
         googleAdsPurchaseLabel: payload.tracking.googleAdsPurchaseLabel.trim(),
       }
-      form.value = pick(await adminSettingsService.save(payload))
+      // Bulk sin unidades válidas = sin recargo.
+      if (!payload.shipping.bulkMinUnits || payload.shipping.bulkMinUnits < 1) {
+        payload.shipping.bulkMinUnits = null
+      }
+      // El token vacío no se manda: así el API conserva el guardado.
+      const token = payphoneToken.value.trim()
+      form.value = pick(
+        await adminSettingsService.save({
+          ...payload,
+          payphone: { storeId: payload.payphone.storeId.trim(), ...(token ? { token } : {}) },
+        }),
+      )
+      payphoneToken.value = ''
       toast.success('Ajustes guardados. La tienda ya muestra los cambios')
+    } catch (e) {
+      toast.error((e as ApiError).message)
+    } finally {
+      saving.value = false
+    }
+  }
+
+  /** Se aplica al instante y solo toca Payphone, para no guardar a medias el resto del formulario. */
+  async function clearPayphoneToken() {
+    if (!window.confirm('¿Quitar el token de Payphone? El pago con tarjeta se desactiva.')) return
+    saving.value = true
+    try {
+      const res = await adminSettingsService.save({ payphone: { clearToken: true } })
+      form.value.payphone = pick(res).payphone
+      payphoneToken.value = ''
+      toast.success('Token de Payphone quitado')
     } catch (e) {
       toast.error((e as ApiError).message)
     } finally {
@@ -114,5 +161,5 @@ export function useAdminSettings() {
 
   load()
 
-  return { form, loading, saving, save }
+  return { form, loading, saving, save, payphoneToken, clearPayphoneToken }
 }

@@ -11,10 +11,11 @@ import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
 import TrackingEditor from '@/components/admin/TrackingEditor.vue'
 import ShippingSurchargesEditor from '@/components/admin/ShippingSurchargesEditor.vue'
 import PackShowcaseEditor from '@/components/admin/PackShowcaseEditor.vue'
+import PayphoneSettingsCard from '@/components/admin/PayphoneSettingsCard.vue'
 import { useAdminSettings } from '@/composables/admin/useAdminSettings'
 import { money } from '@/composables/admin/money'
 
-const { form, loading, saving, save } = useAdminSettings()
+const { form, loading, saving, save, payphoneToken, clearPayphoneToken } = useAdminSettings()
 
 // Resumen en palabras de la regla de envío, para que se entienda qué va a pasar.
 const shippingSummary = computed(() => {
@@ -71,7 +72,11 @@ const shippingSummary = computed(() => {
         >
           <input id="s-note" v-model="form.shipping.note" />
         </AdminField>
-        <ShippingSurchargesEditor v-model="form.shipping.surcharges" />
+        <ShippingSurchargesEditor
+          v-model="form.shipping.surcharges"
+          v-model:bulk-min-units="form.shipping.bulkMinUnits"
+          v-model:bulk-amount="form.shipping.bulkAmount"
+        />
       </AdminCard>
 
       <AdminCard title="Anuncio y suscripción" icon="fa-solid fa-bullhorn">
@@ -151,6 +156,13 @@ const shippingSummary = computed(() => {
         </AdminField>
       </AdminCard>
 
+      <PayphoneSettingsCard
+        v-model="form.payphone"
+        v-model:token="payphoneToken"
+        :disabled="saving"
+        @clear="clearPayphoneToken"
+      />
+
       <AdminCard
         title="Banners del inicio"
         icon="fa-solid fa-panorama"
@@ -179,6 +191,11 @@ const shippingSummary = computed(() => {
         icon="fa-solid fa-boxes-stacked"
         description="Se muestran en dos filas de cinco, en este orden. El sabor define la foto de la tarjeta."
       >
+        <ToggleSwitch
+          v-model="form.bundlesActive"
+          label="Compra más, ahorra más activo"
+          hint="Apágalo para pausar todos los packs de la tienda sin borrar sus precios."
+        />
         <PackShowcaseEditor v-model="form.packShowcase" />
       </AdminCard>
 

@@ -15,8 +15,8 @@ const model = defineModel<PaymentMethod>({ required: true })
 
 const savings = computed(() => {
   const card = props.quotes.card?.total
-  const cash = props.quotes.cash_on_delivery?.total
-  return card != null && cash != null && cash > card ? cash - card : 0
+  const other = props.quotes.transfer?.total
+  return card != null && other != null && other > card ? other - card : 0
 })
 </script>
 
@@ -29,15 +29,26 @@ const savings = computed(() => {
         v-for="method in PAYMENT_METHODS"
         :key="method"
         class="methods__option"
-        :class="{ 'methods__option--active': model === method, 'methods__option--off': method === 'card' && cardUnavailable }"
+        :class="{
+          'methods__option--active': model === method,
+          'methods__option--off': method === 'card' && cardUnavailable,
+        }"
       >
-        <input v-model="model" class="visually-hidden" type="radio" name="payment-method" :value="method" />
+        <input
+          v-model="model"
+          class="visually-hidden"
+          type="radio"
+          name="payment-method"
+          :value="method"
+        />
         <span class="methods__radio" aria-hidden="true"></span>
         <i :class="site.paymentMethods[method].icon" class="methods__icon" aria-hidden="true"></i>
         <span class="methods__text">
           <span class="methods__label">
             {{ site.paymentMethods[method].label }}
-            <span v-if="method === 'card'" class="methods__badge">{{ copy.bestPrice }}</span>
+            <span v-if="method === 'card' && savings" class="methods__badge">{{
+              copy.bestPrice
+            }}</span>
           </span>
           <span class="methods__hint">{{ site.paymentMethods[method].hint }}</span>
           <span v-if="method === 'card' && savings" class="methods__save">

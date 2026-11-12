@@ -13,7 +13,8 @@ export const productCopy = {
   freeShipping: 'Envío gratis',
   // "Compra más, ahorra más" por producto: packs de 2 a 6 unidades.
   bundlesTitle: 'Compra más, ahorra más',
-  bundlesHint: 'Elige cuántas unidades llevas. Puedes combinar sabores.',
+  bundlesHint: 'Elige cuántas unidades llevas.',
+  bundlesCombine: 'Puedes combinar sabores.',
   bundleUnits: (qty: number) => (qty === 1 ? '1 unidad' : `${qty} unidades`),
   bundleNormal: 'Precio normal',
   bundlePromo: 'Precio promocional',
@@ -22,8 +23,8 @@ export const productCopy = {
   bundleUnit: (unit: string) => `${unit} c/u`,
   bundleRegular: 'Precio regular',
   bundleActive: 'Elegido',
-  bundleFrom: (unit: string, percent: number) =>
-    `Desde ${unit} c/u · ahorra hasta ${Math.round(percent)} %`,
+  bundleUpTo: (percent: number) => `Ahorra hasta ${Math.round(percent)} %`,
+  bundleFrom: (unit: string) => `Desde ${unit} c/u`,
   bundleApplied: (qty: number) => `Precio de pack x${qty}`,
   // "Compra más, ahorra más": descuento por todo el pedido, combinando productos.
   promoTitle: 'Compra más, ahorra más',

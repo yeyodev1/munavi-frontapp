@@ -8,6 +8,7 @@ import VolumePromoTiers from '@/components/product/VolumePromoTiers.vue'
 import FlavorPicker from '@/components/product/FlavorPicker.vue'
 import QuantityStepper from '@/components/product/QuantityStepper.vue'
 import ProductDetails from '@/components/product/ProductDetails.vue'
+import ProductPerks from '@/components/product/ProductPerks.vue'
 import ProductRelated from '@/components/product/ProductRelated.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useProductDetail } from '@/composables/useProductDetail'
@@ -114,6 +115,7 @@ const askPriceLink = computed(() =>
             :bundles="product.bundlePrices"
             :unit-price="product.prices.card"
             :quantity="quantity"
+            :combinable="hasFlavors"
             @select="quantity = Math.min($event, maxQty)"
           />
           <VolumePromoTiers v-if="priced" :participates="product.inVolumePromo !== false" />
@@ -144,16 +146,7 @@ const askPriceLink = computed(() =>
             </button>
           </template>
 
-          <ul class="pdp__perks">
-            <li v-for="perk in copy.perks" :key="perk.text">
-              <i :class="perk.icon" aria-hidden="true"></i>
-              {{ perk.text }}
-            </li>
-          </ul>
-          <a v-if="priced" :href="askLink" target="_blank" rel="noopener" class="pdp__ask">
-            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-            {{ copy.ask }}
-          </a>
+          <ProductPerks :ask-link="priced ? askLink : ''" />
         </div>
       </div>
 
@@ -250,36 +243,6 @@ const askPriceLink = computed(() =>
   &__now {
     width: 100%;
     margin-top: -0.4rem;
-  }
-
-  &__perks {
-    list-style: none;
-    @include flex(column, flex-start, flex-start, 0.55rem);
-    padding: 1rem 1.1rem;
-    border-radius: $radius-md;
-    background: rgba($accent, 0.05);
-    font-size: $text-sm;
-    color: $ink-soft;
-
-    li {
-      @include flex(row, baseline, flex-start, 0.6rem);
-    }
-
-    i {
-      color: $accent;
-      width: 1rem;
-    }
-  }
-
-  &__ask {
-    @include flex(row, center, flex-start, 0.5rem);
-    font-size: $text-sm;
-    font-weight: 600;
-    color: #128c4a;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   &__details {

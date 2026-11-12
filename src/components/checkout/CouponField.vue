@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 import { checkoutCopy } from '@/config/copy/checkout'
 
 const props = defineProps<{
-  applied: { code: string; percent: number } | null
+  applied: { code: string; percent: number; excludedItems?: number } | null
   error: string
   loading: boolean
 }>()
@@ -29,7 +29,13 @@ function submit() {
 
 <template>
   <div class="coupon">
-    <button v-if="!open" type="button" class="coupon__toggle" :aria-expanded="open" @click="open = true">
+    <button
+      v-if="!open"
+      type="button"
+      class="coupon__toggle"
+      :aria-expanded="open"
+      @click="open = true"
+    >
       <i class="fa-solid fa-ticket" aria-hidden="true"></i>
       {{ copy.toggle }}
     </button>
@@ -37,7 +43,12 @@ function submit() {
     <div v-else-if="applied" class="coupon__applied" role="status">
       <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
       <span>{{ copy.applied(applied.code, applied.percent) }}</span>
-      <button type="button" class="coupon__remove" :aria-label="copy.remove" @click="emit('remove')">
+      <button
+        type="button"
+        class="coupon__remove"
+        :aria-label="copy.remove"
+        @click="emit('remove')"
+      >
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
     </div>
@@ -56,7 +67,12 @@ function submit() {
           :aria-describedby="error ? 'co-coupon-error' : undefined"
           @keydown.enter.prevent="submit"
         />
-        <button type="button" class="btn btn--dark coupon__apply" :disabled="loading || !code.trim()" @click="submit">
+        <button
+          type="button"
+          class="btn btn--dark coupon__apply"
+          :disabled="loading || !code.trim()"
+          @click="submit"
+        >
           {{ copy.apply }}
         </button>
       </div>
@@ -65,11 +81,28 @@ function submit() {
         {{ error }}
       </p>
     </div>
+    <p v-if="applied?.excludedItems" class="coupon__note" role="status">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      {{ copy.notStackable }}
+    </p>
   </div>
 </template>
 
 <style scoped lang="scss">
 .coupon {
+  &__note {
+    @include flex(row, flex-start, flex-start, 0.45rem);
+    margin-top: 0.5rem;
+    font-size: $text-xs;
+    line-height: 1.45;
+    color: $ink-soft;
+
+    i {
+      margin-top: 0.15rem;
+      color: $accent;
+    }
+  }
+
   &__toggle {
     @include flex(row, center, flex-start, 0.5rem);
     font-size: $text-sm;

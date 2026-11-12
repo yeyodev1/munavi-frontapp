@@ -69,20 +69,23 @@ export const checkoutCopy = {
     cardUnavailable: 'Elige transferencia o pago contra entrega para completar tu pedido ahora.',
   },
   bestPrice: 'Mejor precio',
-  saveVsCash: (amount: string) => `Ahorras ${amount} frente a pago contra entrega`,
+  saveVsCash: (amount: string) => `Ahorras ${amount} frente a transferencia`,
   quoting: 'Calculando…',
   coupon: {
     toggle: '¿Tienes un cupón?',
     label: 'Código de cupón',
-    placeholder: 'TEQUIEROVIDA20',
+    placeholder: 'MUNAVI20',
     apply: 'Aplicar',
     remove: 'Quitar cupón',
     applied: (code: string, percent: number) => `Cupón ${code} aplicado: ${percent}% de descuento`,
+    // Texto de Munavi (11 nov 2026): el cupón no se acumula con los packs.
+    notStackable:
+      'Este cupón no se puede aplicar a los productos que ya tienen descuentos por cantidad. Las promociones no son acumulables.',
   },
   summary: {
     title: 'Resumen del pedido',
     subtotal: 'Subtotal',
-    volume: 'Descuento por volumen',
+    volume: 'Compra más, ahorra más',
     volumePromo: 'Compra más, ahorra más',
     coupon: (code: string) => `Cupón ${code}`,
     shipping: 'Envío',

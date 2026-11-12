@@ -10,6 +10,7 @@ import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
 import VolumeTiersEditor from '@/components/admin/VolumeTiersEditor.vue'
 import TrackingEditor from '@/components/admin/TrackingEditor.vue'
 import ShippingSurchargesEditor from '@/components/admin/ShippingSurchargesEditor.vue'
+import PackShowcaseEditor from '@/components/admin/PackShowcaseEditor.vue'
 import { useAdminSettings } from '@/composables/admin/useAdminSettings'
 import { money } from '@/composables/admin/money'
 
@@ -156,6 +157,29 @@ const shippingSummary = computed(() => {
         description="Las imágenes grandes que rotan al abrir la tienda. Se muestran en este orden."
       >
         <HeroSlidesEditor v-model="form.heroSlides" />
+      </AdminCard>
+
+      <AdminCard
+        title="Banner de cupón del inicio"
+        icon="fa-solid fa-ticket"
+        description="El banner del inicio muestra este cupón con su porcentaje y compra mínima. Edita el cupón en Cupones; si está pausado o vencido, el banner se oculta."
+      >
+        <AdminField label="Cupón del banner" for="s-promo" hint="Vacío = sin banner.">
+          <input
+            id="s-promo"
+            v-model="form.promoCouponCode"
+            class="settings__upper"
+            placeholder="Ej. MUNAVI20"
+          />
+        </AdminField>
+      </AdminCard>
+
+      <AdminCard
+        title="Vitrina: Elige tu producto y ahorra por cantidad"
+        icon="fa-solid fa-boxes-stacked"
+        description="Se muestran en dos filas de cinco, en este orden. El sabor define la foto de la tarjeta."
+      >
+        <PackShowcaseEditor v-model="form.packShowcase" />
       </AdminCard>
 
       <AdminCard

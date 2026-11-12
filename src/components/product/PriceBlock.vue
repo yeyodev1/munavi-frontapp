@@ -45,7 +45,7 @@ const freeShipping = computed(() => settings.shipping?.flatRate === 0)
       </template>
     </div>
     <p class="price__legal">
-      <span>{{ copy.taxIncluded }}</span>
+      <span><i class="fa-solid fa-check" aria-hidden="true"></i> {{ copy.taxIncluded }}</span>
       <template v-if="freeShipping">
         <span aria-hidden="true">|</span>
         <span class="price__free"

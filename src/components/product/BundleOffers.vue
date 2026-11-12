@@ -12,8 +12,10 @@ const props = withDefaults(
     unitPrice: number
     quantity?: number
     compact?: boolean
+    /** Solo los productos con varios sabores dicen "Puedes combinar sabores". */
+    combinable?: boolean
   }>(),
-  { quantity: 0, compact: false },
+  { quantity: 0, compact: false, combinable: false },
 )
 const emit = defineEmits<{ select: [qty: number] }>()
 
@@ -24,14 +26,19 @@ const best = computed(() => offers.value[offers.value.length - 1])
 
 <template>
   <p v-if="compact && best" class="bundles-compact">
-    <i class="fa-solid fa-tags" aria-hidden="true"></i>
-    {{ copy.bundleFrom(money(best.unit), best.percent) }}
+    <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span>
+      <strong>{{ copy.bundleUpTo(best.percent) }}</strong>
+      {{ copy.bundleFrom(money(best.unit)) }}
+    </span>
   </p>
 
   <section v-else-if="offers.length" class="bundles" :aria-label="copy.bundlesTitle">
     <header class="bundles__head">
       <h2 class="bundles__title">{{ copy.bundlesTitle }}</h2>
-      <p class="bundles__hint">{{ copy.bundlesHint }}</p>
+      <p class="bundles__hint">
+        {{ copy.bundlesHint }}<template v-if="combinable"> {{ copy.bundlesCombine }}</template>
+      </p>
     </header>
 
     <ul class="bundles__list">
@@ -80,10 +87,26 @@ const best = computed(() => offers.value[offers.value.length - 1])
 
 <style scoped lang="scss">
 .bundles-compact {
-  @include flex(row, center, flex-start, 0.35rem);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: $accent;
+  @include flex(row, center, flex-start, 0.7rem);
+  padding: 0.55rem 0.8rem;
+  border-radius: $radius-sm;
+  background: rgba($accent, 0.12);
+  font-size: $text-sm;
+  line-height: 1.3;
+  color: $ink;
+
+  i {
+    font-size: 1.1rem;
+    color: $accent-deep;
+  }
+
+  span {
+    @include flex(column, flex-start, flex-start, 0);
+  }
+
+  strong {
+    font-weight: 800;
+  }
 }
 
 .bundles {

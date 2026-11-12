@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import SectionHead from './SectionHead.vue'
-import SubscribeForm from '@/components/SubscribeForm.vue'
+import HomePromoCoupon from './HomePromoCoupon.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { homeCopy } from '@/config/copy/home'
 
 const copy = homeCopy.community
-const subscribe = homeCopy.subscribe
 const settings = useSettingsStore()
 settings.load()
 
@@ -20,15 +19,17 @@ const photos = computed(() =>
 )
 
 const networks = computed(() =>
-  copy.social
-    .map((net) => ({ ...net, href: settings.social[net.key] }))
-    .filter((net) => net.href),
+  copy.social.map((net) => ({ ...net, href: settings.social[net.key] })).filter((net) => net.href),
 )
 </script>
 
 <template>
   <section id="suscribete" class="community">
-    <SectionHead :eyebrow="copy.eyebrow" :title="copy.title" :text="photos.length ? copy.text : ''" />
+    <SectionHead
+      :eyebrow="copy.eyebrow"
+      :title="copy.title"
+      :text="photos.length ? copy.text : ''"
+    />
 
     <ul v-if="photos.length" class="community__gallery">
       <li v-for="(photo, index) in photos" :key="photo.url + index">
@@ -60,15 +61,7 @@ const networks = computed(() =>
       </div>
     </div>
 
-    <div class="community__sub">
-      <span class="community__badge" aria-hidden="true">20%</span>
-      <div class="community__sub-copy">
-        <p class="community__sub-eyebrow">{{ subscribe.eyebrow }}</p>
-        <h3 class="community__sub-title">{{ subscribe.title }}</h3>
-        <p class="community__sub-text">{{ subscribe.text }}</p>
-      </div>
-      <SubscribeForm source="home" tone="dark" class="community__form" />
-    </div>
+    <HomePromoCoupon />
   </section>
 </template>
 
@@ -136,69 +129,6 @@ const networks = computed(() =>
 
     &:hover {
       background: $sage;
-    }
-  }
-
-  &__sub {
-    position: relative;
-    overflow: hidden;
-    @include flex(column, flex-start, flex-start, 1.4rem);
-    margin-top: $space-lg;
-    padding: $space-lg 1.5rem;
-    border-radius: $radius-lg;
-    color: $surface;
-    background:
-      radial-gradient(circle at 100% 0%, rgba($olive, 0.55), transparent 50%),
-      linear-gradient(135deg, $accent-deep, $accent);
-
-    @include from('md') {
-      flex-direction: row;
-      align-items: center;
-      padding: $space-xl;
-      gap: $space-lg;
-    }
-  }
-
-  &__badge {
-    position: absolute;
-    right: -0.5rem;
-    top: -1.5rem;
-    font-family: $font-display;
-    font-size: clamp(6rem, 4rem + 10vw, 12rem);
-    line-height: 1;
-    color: rgba($surface, 0.08);
-    pointer-events: none;
-  }
-
-  &__sub-copy {
-    position: relative;
-    @include flex(column, flex-start, flex-start, 0.6rem);
-
-    @include from('md') {
-      flex: 1 1 55%;
-    }
-  }
-
-  &__sub-eyebrow {
-    @include eyebrow;
-    color: $sage;
-  }
-
-  &__sub-title {
-    @include display($display-sm);
-  }
-
-  &__sub-text {
-    color: rgba($surface, 0.85);
-    max-width: 46ch;
-  }
-
-  &__form {
-    position: relative;
-    width: 100%;
-
-    @include from('md') {
-      flex: 1 1 45%;
     }
   }
 }

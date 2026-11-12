@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import HeaderSearch from '@/components/layout/HeaderSearch.vue'
+import HeaderAnnounce from '@/components/layout/HeaderAnnounce.vue'
 import MunaviLogo from '@/components/brand/MunaviLogo.vue'
 import { site, whatsappLink } from '@/config/site'
 import { layoutCopy } from '@/config/copy/layout'
@@ -41,7 +42,7 @@ function toggleSearch() {
 
 <template>
   <header class="header">
-    <p v-if="settings.announcement" class="header__announce">{{ settings.announcement }}</p>
+    <HeaderAnnounce />
 
     <div class="header__bar">
       <div class="header__inner">
@@ -124,16 +125,6 @@ function toggleSearch() {
     display: block;
     height: 4px;
     @include brand-stripe;
-  }
-
-  &__announce {
-    background: $accent-deep;
-    color: $surface;
-    text-align: center;
-    font-size: $text-xs;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 0.5rem 1rem;
   }
 
   &__bar {

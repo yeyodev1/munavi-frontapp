@@ -3,7 +3,8 @@ import type { ApiError, PaymentMethod, Quote } from '@/types'
 import { useCartStore } from '@/stores/cart'
 import { orderService } from '@/services/order.service'
 
-export const PAYMENT_METHODS: PaymentMethod[] = ['card', 'transfer', 'cash_on_delivery']
+// Munavi no habilitó el pago contra entrega (nov 2026).
+export const PAYMENT_METHODS: PaymentMethod[] = ['card', 'transfer']
 
 const DEBOUNCE_MS = 350
 

@@ -170,10 +170,28 @@ export interface PublicSettings {
   heroSlides: HeroSlide[]
   volumePromo: VolumePromo
   communityPhotos: CommunityPhoto[]
+  /** Orden y sabor de la vitrina "Elige tu producto y ahorra por cantidad" (slugs). */
+  packShowcase: PackShowcaseItem[]
+  /** El cupón del banner del inicio, solo si está vigente. */
+  promoCoupon: PromoCoupon | null
   tracking: TrackingIds
 }
 
-export interface AdminSettings extends PublicSettings {
+export interface PackShowcaseItem {
+  product: string
+  variant: string
+}
+
+export interface PromoCoupon {
+  code: string
+  percent: number
+  minSubtotal: number | null
+  regularPriceOnly: boolean
+}
+
+export interface AdminSettings extends Omit<PublicSettings, 'promoCoupon'> {
+  /** Código del cupón que anuncia el banner del inicio (MUNAVI20). */
+  promoCouponCode: string
   subscribeCouponCode: string
   notifyEmail: string
 }
@@ -214,7 +232,13 @@ export interface Quote {
   subtotal: number
   volumeDiscount: number
   couponDiscount: number
-  coupon: { code: string; percent: number; firstPurchaseOnly: boolean } | null
+  coupon: {
+    code: string
+    percent: number
+    firstPurchaseOnly: boolean
+    /** Líneas con pack que el cupón no descuenta (no se acumula). */
+    excludedItems: number
+  } | null
   shipping: number
   total: number
   freeShippingThreshold: number | null

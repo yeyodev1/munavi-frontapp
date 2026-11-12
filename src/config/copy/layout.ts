@@ -1,6 +1,11 @@
 // Textos del header, footer y botón flotante de WhatsApp.
 export const layoutCopy = {
   header: {
+    announceIcons: [
+      { match: /env[ií]o/i, icon: 'fa-solid fa-motorcycle' },
+      { match: /hora|entrega/i, icon: 'fa-regular fa-clock' },
+    ],
+    announceDefaultIcon: 'fa-solid fa-leaf',
     searchPlaceholder: 'Busca colágeno, vitaminas, creatina…',
     searchLabel: 'Buscar productos',
     openSearch: 'Abrir buscador',
@@ -12,16 +17,23 @@ export const layoutCopy = {
     menuWhatsapp: 'Escríbenos por WhatsApp',
   },
   footer: {
-    subscribeTitle: '20% de descuento en tu primera compra',
-    subscribeText:
-      'Suscríbete y recibe tu cupón al instante. Solo novedades y promociones, nada de spam.',
     categories: 'Categorías',
     help: 'Ayuda',
     payments: 'Pagos seguros',
-    paymentsNote: 'Tarjetas procesadas con Payphone.',
     cardsAccepted: 'Tarjetas y medios de pago aceptados',
-    transferShort: 'Transferencia',
-    follow: 'Síguenos',
+    cardLogos: [
+      { file: 'visa', label: 'Visa' },
+      { file: 'mastercard', label: 'Mastercard' },
+      { file: 'amex', label: 'American Express' },
+      { file: 'diners', label: 'Diners Club' },
+      { file: 'discover', label: 'Discover' },
+    ],
+    cardsText: 'Tarjetas de crédito y débito. Pagos seguros y cifrados.',
+    transfer: 'Transferencia bancaria',
+    transferText: 'A nuestras cuentas autorizadas.',
+    otherPayment: '¿Necesitas otra forma de pago? Consúltanos por WhatsApp.',
+    otherPaymentMessage: 'Hola Munavi, quiero consultar otra forma de pago',
+    follow: 'Síguenos en nuestras redes',
     links: [
       { label: 'Consultar mi pedido', to: '/mi-pedido', icon: 'fa-solid fa-box' },
       { label: 'Nosotros', to: '/nosotros', icon: 'fa-solid fa-heart' },

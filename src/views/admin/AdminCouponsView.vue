@@ -1,20 +1,36 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AdminPageHeader from '@/components/admin/AdminPageHeader.vue'
-import AdminCard from '@/components/admin/AdminCard.vue'
-import AdminField from '@/components/admin/AdminField.vue'
 import AdminEmpty from '@/components/admin/AdminEmpty.vue'
 import ToggleSwitch from '@/components/admin/ToggleSwitch.vue'
-import MoneyInput from '@/components/admin/MoneyInput.vue'
+import CouponForm from '@/components/admin/CouponForm.vue'
 import BaseModal from '@/components/ui/BaseModal.vue'
 import { useAdminCoupons } from '@/composables/admin/useAdminCoupons'
 import { formatDate } from '@/utils/format'
 import { money } from '@/composables/admin/money'
 import type { Coupon } from '@/types'
 
-const { items, subscribeCode, draft, loading, busy, create, toggle, remove, isExpired } =
-  useAdminCoupons()
+const {
+  items,
+  subscribeCode,
+  draft,
+  editing,
+  loading,
+  busy,
+  submit,
+  startEdit,
+  cancelEdit,
+  toggle,
+  remove,
+  isExpired,
+} = useAdminCoupons()
 const toDelete = ref<Coupon | null>(null)
+
+function edit(coupon: Coupon) {
+  startEdit(coupon)
+  // El formulario está arriba de la lista: se sube para que se vea qué se está editando.
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 async function confirmDelete() {
   const coupon = toDelete.value
@@ -30,49 +46,13 @@ async function confirmDelete() {
       subtitle="Códigos de descuento que la clienta escribe al pagar. El porcentaje se aplica sobre el subtotal."
     />
 
-    <AdminCard title="Nuevo cupón" icon="fa-solid fa-plus">
-      <form class="coupons__form" @submit.prevent="create">
-        <AdminField label="Código" for="c-code" hint="Letras y números, sin espacios. Ej. MAMA15">
-          <input
-            id="c-code"
-            v-model="draft.code"
-            class="coupons__code"
-            required
-            minlength="3"
-            maxlength="40"
-          />
-        </AdminField>
-        <AdminField label="Descuento (%)" for="c-percent">
-          <input
-            id="c-percent"
-            v-model.number="draft.percent"
-            type="number"
-            min="1"
-            max="100"
-            step="1"
-            required
-          />
-        </AdminField>
-        <AdminField label="Vence el (opcional)" for="c-expires" hint="Vacío = no vence">
-          <input id="c-expires" v-model="draft.expiresAt" type="date" />
-        </AdminField>
-        <AdminField label="Compra mínima (opcional)" for="c-min" hint="Vacío = sin mínimo">
-          <MoneyInput id="c-min" v-model="draft.minSubtotal" nullable placeholder="Sin mínimo" />
-        </AdminField>
-        <div class="coupons__toggles">
-          <ToggleSwitch v-model="draft.firstPurchaseOnly" label="Solo primera compra" />
-          <ToggleSwitch
-            v-model="draft.regularPriceOnly"
-            label="Solo productos a precio regular (no se acumula con packs)"
-          />
-        </div>
-        <div class="coupons__submit">
-          <button class="btn btn--primary" type="submit" :disabled="busy">
-            <i class="fa-solid fa-plus"></i> Crear cupón
-          </button>
-        </div>
-      </form>
-    </AdminCard>
+    <CouponForm
+      v-model="draft"
+      :editing="editing?.code ?? null"
+      :busy="busy"
+      @submit="submit"
+      @cancel="cancelEdit"
+    />
 
     <p v-if="loading && !items.length" class="coupons__loading">
       <i class="fa-solid fa-spinner fa-spin"></i> Cargando…
@@ -118,6 +98,9 @@ async function confirmDelete() {
             label="Activo"
             @update:model-value="toggle(coupon)"
           />
+          <button class="coupons__edit" type="button" @click="edit(coupon)">
+            <i class="fa-solid fa-pen"></i> Editar
+          </button>
           <button class="coupons__delete" type="button" @click="toDelete = coupon">
             <i class="fa-solid fa-trash-can"></i> Eliminar
           </button>
@@ -147,25 +130,6 @@ async function confirmDelete() {
 
   :deep(.phead) {
     margin-bottom: 0.2rem;
-  }
-
-  &__form {
-    @include flex(row, flex-start, flex-start, 1rem);
-    flex-wrap: wrap;
-  }
-
-  &__code {
-    text-transform: uppercase;
-  }
-
-  &__toggles {
-    @include flex(column, stretch, flex-start, 0.6rem);
-    flex: 1 1 100%;
-  }
-
-  &__submit {
-    @include flex(row, flex-end, flex-start);
-    flex: 1 1 100%;
   }
 
   &__loading {
@@ -235,11 +199,16 @@ async function confirmDelete() {
     flex-wrap: wrap;
   }
 
+  &__edit,
   &__delete {
     @include flex(row, center, center, 0.4rem);
     font-size: 0.82rem;
     font-weight: 600;
     color: $danger;
+  }
+
+  &__edit {
+    color: $accent;
   }
 }
 </style>

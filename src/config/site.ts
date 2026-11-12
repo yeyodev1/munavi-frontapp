@@ -9,7 +9,7 @@ export const site = {
   description:
     'Suplementos Munavi: colágenos, vitaminas y bienestar para toda la familia. Hechos en Ecuador con materias primas importadas. Envíos a todo el país.',
   url: 'https://munavi.ec',
-  email: 'hola@munavi.ec',
+  email: 'info@munavi.ec',
   // Solo dígitos con código de país. Respaldo si Ajustes no trae número (Nathalie, 15 oct 2026).
   whatsapp: '593998859352',
   social: {
@@ -46,18 +46,10 @@ export const site = {
       },
     ],
   },
-  // Tarjetas que acepta Payphone en Ecuador: logos de confianza en el pie de página.
-  cardBrands: [
-    { label: 'Visa', icon: 'fa-brands fa-cc-visa', color: '#1a1f71' },
-    { label: 'Mastercard', icon: 'fa-brands fa-cc-mastercard', color: '#eb001b' },
-    { label: 'American Express', icon: 'fa-brands fa-cc-amex', color: '#2e77bc' },
-    { label: 'Diners Club', icon: 'fa-brands fa-cc-diners-club', color: '#004a97' },
-    { label: 'Discover', icon: 'fa-brands fa-cc-discover', color: '#e55c20' },
-  ],
   paymentMethods: {
     card: {
       label: 'Tarjeta de crédito o débito',
-      hint: 'El mejor precio. Pago seguro con Payphone y confirmación inmediata.',
+      hint: 'Pago seguro con Payphone y confirmación inmediata.',
       icon: 'fa-solid fa-credit-card',
     },
     transfer: {

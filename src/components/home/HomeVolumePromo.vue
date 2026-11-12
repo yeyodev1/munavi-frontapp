@@ -2,21 +2,40 @@
 // "Compra más, ahorra más" (Arquitectura Comercial – Propuesta 03): sección propia
 // después de destacados, con el banner de la diseñadora y los packs de cada producto.
 import { computed } from 'vue'
+import type { ProductCard } from '@/types'
 import { useProducts } from '@/composables/useCatalog'
+import { useSettingsStore } from '@/stores/settings'
 import { bundleOffers, money } from '@/utils/price'
 import { homeCopy } from '@/config/copy/home'
 
 const copy = homeCopy.volumePromo
+const settings = useSettingsStore()
 // shortcut: trae los primeros 48 publicados; si el catálogo crece, filtrar en el API.
 const { items } = useProducts(() => ({ limit: 48 }))
 
-const packs = computed(() =>
-  items.value
-    .map((p) => ({ product: p, best: bundleOffers(p.bundlePrices, p.prices.card).pop() }))
-    .filter((x) => x.best)
-    // Dos filas en computador; el resto está en la tienda.
-    .slice(0, 10),
-)
+// Orden y sabor los elige Munavi en el panel; sin vitrina, los primeros con pack.
+const packs = computed(() => {
+  const bySlug = new Map(items.value.map((p) => [p.slug, p]))
+  const chosen = settings.packShowcase.length
+    ? settings.packShowcase.map((s) => ({ product: bySlug.get(s.product), variant: s.variant }))
+    : items.value.map((product) => ({ product, variant: '' }))
+  return (
+    chosen
+      .filter((x): x is { product: ProductCard; variant: string } => !!x.product)
+      .map(({ product, variant }) => {
+        const flavor = product.variants.find((v) => v.slug === variant)
+        return {
+          product,
+          variant: flavor?.slug ?? '',
+          image: flavor?.image?.url || product.image,
+          best: bundleOffers(product.bundlePrices, product.prices.card).pop(),
+        }
+      })
+      .filter((x) => x.best)
+      // Dos filas de cinco en computador; el resto está en la tienda.
+      .slice(0, 10)
+  )
+})
 </script>
 
 <template>
@@ -35,24 +54,26 @@ const packs = computed(() =>
       </header>
 
       <ul class="vpromo__list">
-        <li v-for="{ product, best } in packs" :key="product._id">
-          <RouterLink :to="{ name: 'Product', params: { slug: product.slug } }" class="pack">
+        <li v-for="{ product, variant, image, best } in packs" :key="product._id + variant">
+          <RouterLink
+            :to="{
+              name: 'Product',
+              params: { slug: product.slug },
+              query: variant ? { sabor: variant } : {},
+            }"
+            class="pack"
+          >
             <span class="pack__badge">-{{ Math.round(best!.percent) }}%</span>
-            <img
-              v-if="product.image"
-              :src="product.image"
-              :alt="product.name"
-              loading="lazy"
-              class="pack__img"
-            />
+            <img v-if="image" :src="image" :alt="product.name" loading="lazy" class="pack__img" />
             <strong class="pack__name">{{ product.name }}</strong>
-            <span class="pack__deal">
-              {{ copy.units(best!.qty) }} · <b>{{ copy.unit(money(best!.unit)) }}</b>
+            <span class="pack__unit">
+              <small>{{ copy.perUnit }}</small>
+              {{ money(best!.unit) }}
             </span>
-            <span class="pack__save">{{ copy.save(best!.percent) }}</span>
-            <span class="pack__cta"
-              >{{ copy.see }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i
-            ></span>
+            <span class="pack__taking">{{ copy.taking(best!.qty) }}</span>
+            <span class="pack__cta">
+              {{ copy.see }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </span>
           </RouterLink>
         </li>
       </ul>
@@ -134,11 +155,12 @@ const packs = computed(() =>
 .pack {
   position: relative;
   height: 100%;
-  @include flex(column, flex-start, flex-start, 0.3rem);
-  padding: 0.9rem;
+  @include flex(column, center, flex-start, 0.35rem);
+  padding: 0.9rem 0.8rem 1rem;
   border-radius: $radius-md;
   background: $surface;
   border: 1px solid rgba($line, 0.7);
+  text-align: center;
   @include transition;
 
   &:hover {
@@ -150,49 +172,59 @@ const packs = computed(() =>
     position: absolute;
     top: 0.7rem;
     left: 0.7rem;
-    font-size: $text-xs;
+    font-size: $text-sm;
     font-weight: 800;
     color: $surface;
     background: $sale;
-    padding: 0.15rem 0.5rem;
+    padding: 0.15rem 0.55rem;
     border-radius: $radius-pill;
   }
 
   &__img {
-    align-self: center;
     width: 100%;
     aspect-ratio: 1;
     object-fit: contain;
-    margin-bottom: 0.3rem;
   }
 
+  // Altura fija de dos líneas: así precios y enlaces quedan alineados en la fila.
   &__name {
+    @include flex(column, center, center);
+    min-height: 2.6em;
     font-weight: 700;
-    color: $ink;
     line-height: 1.25;
+    color: $ink;
   }
 
-  &__deal {
-    font-size: $text-sm;
-    color: $ink-soft;
+  &__unit {
+    @include flex(column, center, center, 0);
+    width: 100%;
+    margin-top: auto;
+    padding: 0.45rem 0.5rem;
+    border-radius: $radius-sm;
+    background: rgba($accent, 0.12);
+    font-size: clamp(1.35rem, 1.2rem + 0.5vw, 1.65rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: $ink;
 
-    b {
-      color: $accent-deep;
+    small {
+      font-size: $text-xs;
+      font-weight: 600;
+      color: $ink-soft;
     }
   }
 
-  &__save {
+  &__taking {
     font-size: $text-sm;
-    font-weight: 700;
-    color: $sale;
+    color: $ink-soft;
   }
 
   &__cta {
-    margin-top: auto;
-    padding-top: 0.3rem;
     font-size: $text-sm;
     font-weight: 700;
     color: $accent;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 </style>

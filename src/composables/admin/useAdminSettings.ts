@@ -15,7 +15,9 @@ function emptySettings(): AdminSettings {
     heroSlides: [],
     volumePromo: { isActive: false, tiers: [] },
     communityPhotos: [],
+    packShowcase: [],
     tracking: { metaPixelId: '', ga4Id: '', googleAdsId: '', googleAdsPurchaseLabel: '' },
+    promoCouponCode: '',
     subscribeCouponCode: '',
     notifyEmail: '',
   }
@@ -40,12 +42,14 @@ function pick(s: AdminSettings): AdminSettings {
       tiers: (s.volumePromo?.tiers ?? []).map((t) => ({ ...t })),
     },
     communityPhotos: (s.communityPhotos ?? []).map((p) => ({ ...p })),
+    packShowcase: (s.packShowcase ?? []).map((item) => ({ ...item })),
     tracking: {
       metaPixelId: s.tracking?.metaPixelId ?? '',
       ga4Id: s.tracking?.ga4Id ?? '',
       googleAdsId: s.tracking?.googleAdsId ?? '',
       googleAdsPurchaseLabel: s.tracking?.googleAdsPurchaseLabel ?? '',
     },
+    promoCouponCode: s.promoCouponCode ?? '',
     subscribeCouponCode: s.subscribeCouponCode,
     notifyEmail: s.notifyEmail,
   }
@@ -89,6 +93,9 @@ export function useAdminSettings() {
       payload.communityPhotos = payload.communityPhotos
         .filter((p) => p.image)
         .map((p) => ({ ...p, link: p.link.trim() }))
+      // Filas sin producto elegido no se muestran: no se mandan.
+      payload.packShowcase = payload.packShowcase.filter((item) => item.product)
+      payload.promoCouponCode = payload.promoCouponCode.trim().toUpperCase()
       // Se pegan desde Meta y Google con espacios o en minúsculas; el API valida el formato.
       payload.tracking = {
         metaPixelId: payload.tracking.metaPixelId.replace(/\s/g, ''),

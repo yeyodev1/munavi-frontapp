@@ -40,9 +40,8 @@ export const homeCopy = {
     bannerAlt: 'Compra más, ahorra más: más unidades de tu favorito, mejor precio. Ver descuentos',
     title: 'Elige tu producto y ahorra por cantidad',
     text: 'Lleva de 2 a 6 unidades del mismo producto (puedes combinar sabores). IVA incluido y envío gratis.',
-    units: (n: number) => `${n} unidades`,
-    unit: (price: string) => `${price} c/u`,
-    save: (percent: number) => `Ahorra hasta ${Math.round(percent)}\u00a0%`,
+    perUnit: 'Por unidad:',
+    taking: (n: number) => `Llevando ${n} unidades`,
     see: 'Ver precios',
   },
   // Solo hechos confirmados por la clienta: nada de certificaciones ni cifras extra.
@@ -126,10 +125,22 @@ export const homeCopy = {
       { key: 'tiktok', label: 'TikTok', icon: 'fa-brands fa-tiktok' },
     ] as { key: 'instagram' | 'facebook' | 'tiktok'; label: string; icon: string }[],
   },
-  subscribe: {
-    eyebrow: 'Únete a la familia Munavi',
-    title: '20% de descuento en tu primera compra',
-    text: 'Déjanos tu correo y recibe tu cupón al instante. Te contamos primero de lanzamientos, sabores nuevos y promociones.',
+  // Banner del cupón del inicio (reemplaza la suscripción, pedido del 11 nov 2026).
+  // Código, % y mínimo salen del cupón configurado en el panel.
+  promoCoupon: {
+    eyebrow: 'Beneficio especial',
+    brand: 'Munavi',
+    title: (percent: number) => `${percent}% de descuento en tu compra`,
+    text: 'Usa el código y obtén tu descuento en productos a precio regular.',
+    textAny: 'Usa el código y obtén tu descuento en tu compra.',
+    codeLabel: 'Código:',
+    copy: 'Copiar código',
+    copied: 'Código copiado',
+    copiedToast: (code: string) => `Copiaste ${code}. Pégalo en el checkout.`,
+    min: (amount: string) => `En compras desde ${amount}`,
+    regular: 'Válido en productos a precio regular',
+    combine: 'Puedes combinar diferentes productos',
+    noStack: 'No acumulable con promociones por cantidad ni otros descuentos',
   },
   help: {
     title: '¿No sabes cuál elegir?',

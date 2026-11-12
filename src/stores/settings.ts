@@ -19,6 +19,8 @@ export const useSettingsStore = defineStore('settings', {
     heroSlides: (state) => state.settings?.heroSlides ?? [],
     volumePromo: (state) => state.settings?.volumePromo ?? { isActive: false, tiers: [] },
     communityPhotos: (state) => state.settings?.communityPhotos ?? [],
+    promoCoupon: (state) => state.settings?.promoCoupon ?? null,
+    packShowcase: (state) => state.settings?.packShowcase ?? [],
     shipping: (state) => state.settings?.shipping ?? null,
     social: (state) => ({
       instagram: state.settings?.instagram || site.social.instagram,

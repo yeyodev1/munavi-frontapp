@@ -21,6 +21,8 @@ export function useAdminCoupons() {
   const items = ref<Coupon[]>([])
   const subscribeCode = ref('')
   const draft = ref<CouponInput>(emptyDraft())
+  /** Cupón que se está editando; null = el formulario crea uno nuevo. */
+  const editing = ref<Coupon | null>(null)
   const loading = ref(false)
   const busy = ref(false)
 
@@ -40,20 +42,45 @@ export function useAdminCoupons() {
     }
   }
 
-  async function create() {
+  function startEdit(coupon: Coupon) {
+    const { code, percent, isActive, expiresAt, firstPurchaseOnly, regularPriceOnly, minSubtotal } =
+      coupon
+    editing.value = coupon
+    draft.value = {
+      code,
+      percent,
+      isActive,
+      // El input date pide "AAAA-MM-DD" del día de vencimiento en Ecuador.
+      expiresAt: expiresAt
+        ? new Date(expiresAt).toLocaleDateString('en-CA', { timeZone: 'America/Guayaquil' })
+        : null,
+      firstPurchaseOnly,
+      regularPriceOnly,
+      minSubtotal,
+    }
+  }
+
+  function cancelEdit() {
+    editing.value = null
+    draft.value = emptyDraft()
+  }
+
+  async function submit() {
     busy.value = true
     try {
       const { code, percent, isActive, expiresAt, ...restrictions } = draft.value
       // La fecha del input es "AAAA-MM-DD": vence al final de ese día en Ecuador.
-      await adminCouponsService.create({
+      const input = {
         ...restrictions,
         code: code.trim().toUpperCase(),
         percent: Number(percent),
-        isActive,
         expiresAt: expiresAt ? `${expiresAt}T23:59:59-05:00` : null,
-      })
-      toast.success('Cupón creado')
-      draft.value = emptyDraft()
+      }
+      // Al editar no se manda isActive: lo maneja el switch de la lista.
+      if (editing.value) await adminCouponsService.update(editing.value._id, input)
+      else await adminCouponsService.create({ ...input, isActive })
+      toast.success(editing.value ? 'Cupón actualizado' : 'Cupón creado')
+      cancelEdit()
       await load()
     } catch (e) {
       toast.error((e as ApiError).message)
@@ -79,6 +106,7 @@ export function useAdminCoupons() {
       await adminCouponsService.remove(coupon._id)
       toast.success('Cupón eliminado')
       items.value = items.value.filter((c) => c._id !== coupon._id)
+      if (editing.value?._id === coupon._id) cancelEdit()
     } catch (e) {
       toast.error((e as ApiError).message)
     }
@@ -90,5 +118,18 @@ export function useAdminCoupons() {
 
   load()
 
-  return { items, subscribeCode, draft, loading, busy, create, toggle, remove, isExpired }
+  return {
+    items,
+    subscribeCode,
+    draft,
+    editing,
+    loading,
+    busy,
+    submit,
+    startEdit,
+    cancelEdit,
+    toggle,
+    remove,
+    isExpired,
+  }
 }

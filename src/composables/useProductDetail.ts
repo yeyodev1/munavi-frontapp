@@ -1,5 +1,5 @@
 import { computed, ref, shallowRef, watch, type Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { ApiError, Product } from '@/types'
 import { site } from '@/config/site'
 import { hasPrice } from '@/utils/price'
@@ -10,6 +10,7 @@ import { trackViewContent } from '@/composables/useTracking'
 /** Estado de la ficha: producto, sabor elegido, galería, cantidad y compra. */
 export function useProductDetail(slug: Ref<string>) {
   const router = useRouter()
+  const route = useRoute()
   const { addToCart } = useAddToCart()
 
   const product = shallowRef<Product | null>(null)
@@ -56,8 +57,12 @@ export function useProductDetail(slug: Ref<string>) {
       const data = await catalogService.getProduct(slug.value)
       product.value = data
       const active = data.variants.filter((v) => v.isActive)
-      const first =
-        active.find((v) => v.inStock !== false && (v.stock == null || v.stock > 0)) ?? active[0]
+      const available = active.filter(
+        (v) => v.inStock !== false && (v.stock == null || v.stock > 0),
+      )
+      // ?sabor= llega desde la vitrina de packs: abre la ficha en el sabor de la foto.
+      const wanted = available.find((v) => v.slug === route.query.sabor)
+      const first = wanted ?? available[0] ?? active[0]
       variantSlug.value = first?.slug ?? ''
       quantity.value = 1
       activeImage.value = 0

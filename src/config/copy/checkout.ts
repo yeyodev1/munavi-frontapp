@@ -66,7 +66,7 @@ export const checkoutCopy = {
     city: 'Escribe tu ciudad',
     address: 'Escribe tu dirección de entrega',
     form: 'Revisa los datos marcados en rojo',
-    cardUnavailable: 'Elige transferencia o pago contra entrega para completar tu pedido ahora.',
+    cardUnavailable: 'Elige transferencia bancaria para completar tu pedido ahora.',
   },
   bestPrice: 'Mejor precio',
   saveVsCash: (amount: string) => `Ahorras ${amount} frente a transferencia`,

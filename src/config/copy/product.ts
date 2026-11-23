@@ -55,7 +55,7 @@ export const productDetailCopy = {
   gallery: 'Ver imagen',
   perks: [
     { icon: 'fa-solid fa-truck-fast', text: 'Envío gratis a todo Ecuador' },
-    { icon: 'fa-solid fa-lock', text: 'Pago seguro con tarjeta, transferencia o contra entrega' },
+    { icon: 'fa-solid fa-lock', text: 'Pago seguro con tarjeta o transferencia bancaria' },
     { icon: 'fa-solid fa-flask', text: 'Hecho en Ecuador con materia prima importada' },
   ],
   ask: '¿Tienes dudas? Pregúntanos por WhatsApp',

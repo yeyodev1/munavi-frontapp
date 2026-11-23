@@ -112,9 +112,10 @@ const copy = homeCopy.flavors
     transform: translateY(-3px) scale(1.04);
   }
 
+  // Margen para que la fruta no toque el borde del círculo.
   &__img {
-    width: 100%;
-    height: 100%;
+    width: 78%;
+    height: 78%;
     object-fit: contain;
   }
 

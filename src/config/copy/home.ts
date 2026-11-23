@@ -78,17 +78,17 @@ export const homeCopy = {
     eyebrow: 'Sabores y líneas especiales',
     title: 'Deliciosos sabores para tu rutina diaria',
     text: 'Elige tu sabor favorito y encuentra los productos que lo tienen.',
-    // image: ruta en /brand/sabores/<slug>.webp cuando la diseñadora entregue
-    // los archivos. Mientras sea null se pinta el círculo de color, sin 404.
+    // image: íconos que entregó Munavi en /brand/sabores/<slug>.webp; con null
+    // se pinta el círculo de color.
     items: [
-      { name: 'Vainilla', slug: 'vainilla', color: '#f4e4b8', ink: '#6b5313', image: null },
-      { name: 'Chocolate', slug: 'chocolate', color: '#7a4a2f', ink: '#ffffff', image: null },
-      { name: 'Frutos rojos', slug: 'frutos-rojos', color: '#b4324b', ink: '#ffffff', image: null },
-      { name: 'Guanábana', slug: 'guanabana', color: '#d6e8bf', ink: '#3d5a1f', image: null },
-      { name: 'Fresa', slug: 'fresa', color: '#f6c2c9', ink: '#a32a3d', image: null },
-      { name: 'Piña', slug: 'pina', color: '#fbd76a', ink: '#6e5200', image: null },
-      { name: 'Coco', slug: 'coco', color: '#efe8dc', ink: '#5e4b35', image: null },
-      { name: 'Blueberry', slug: 'blueberry', color: '#4c5199', ink: '#ffffff', image: null },
+      { name: 'Vainilla', slug: 'vainilla', color: '#f4e4b8', ink: '#6b5313', image: '/brand/sabores/vainilla.webp' },
+      { name: 'Chocolate', slug: 'chocolate', color: '#7a4a2f', ink: '#ffffff', image: '/brand/sabores/chocolate.webp' },
+      { name: 'Frutos rojos', slug: 'frutos-rojos', color: '#b4324b', ink: '#ffffff', image: '/brand/sabores/frutos-rojos.webp' },
+      { name: 'Guanábana', slug: 'guanabana', color: '#d6e8bf', ink: '#3d5a1f', image: '/brand/sabores/guanabana.webp' },
+      { name: 'Fresa', slug: 'fresa', color: '#f6c2c9', ink: '#a32a3d', image: '/brand/sabores/fresa.webp' },
+      { name: 'Piña', slug: 'pina', color: '#fbd76a', ink: '#6e5200', image: '/brand/sabores/pina.webp' },
+      { name: 'Coco', slug: 'coco', color: '#efe8dc', ink: '#5e4b35', image: '/brand/sabores/coco.webp' },
+      { name: 'Blueberry', slug: 'blueberry', color: '#4c5199', ink: '#ffffff', image: '/brand/sabores/blueberry.webp' },
     ] as { name: string; slug: string; color: string; ink: string; image: string | null }[],
     linesTitle: 'Líneas especiales',
     // La tienda filtra por categoría en la ruta: /tienda/<slug>.

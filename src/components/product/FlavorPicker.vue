@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Variant } from '@/types'
 import { productCopy, productDetailCopy as copy } from '@/config/copy/product'
+import { flavorIcon } from '@/config/flavors'
 
 defineProps<{ variants: Variant[] }>()
 const model = defineModel<string>({ required: true })
@@ -25,7 +26,12 @@ const isAvailable = (v: Variant) => v.inStock !== false && (v.stock == null || v
         }"
       >
         <input v-model="model" type="radio" :value="variant.slug" class="visually-hidden" name="flavor" />
-        <img v-if="variant.image" :src="variant.image.url" alt="" class="flavors__thumb" />
+        <img
+          v-if="flavorIcon(variant.slug) || variant.image"
+          :src="flavorIcon(variant.slug) ?? variant.image?.url"
+          alt=""
+          class="flavors__thumb"
+        />
         <span>{{ variant.name }}</span>
         <span v-if="!isAvailable(variant)" class="flavors__out">{{ productCopy.outOfStock }}</span>
       </label>
